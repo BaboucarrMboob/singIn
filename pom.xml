@@ -152,6 +152,12 @@
 			<artifactId>graphview</artifactId>
 			<version>4.0.0</version>
 			<type>aar</type>
+			<exclusions>
+				<exclusion>
+					<groupId>com.android.support</groupId>
+					<artifactId>appcompat-v7</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.google.android</groupId>
