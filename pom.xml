@@ -61,9 +61,12 @@
 					<run>
 						<debug>true</debug>
 					</run>
-					<resourceDirectory>${basedir}/src/main/resources</resourceDirectory>
+					<resourceDirectory>${basedir}/res</resourceDirectory>
 					<assetsDirectory>${basedir}/src/main/assets</assetsDirectory>
-					<androidManifestFile>${basedir}/src/main/AndroidManifest.xml</androidManifestFile>
+					<androidManifestFile>${basedir}/AndroidManifest.xml</androidManifestFile>
+					<genDirectory>${basedir}/gen</genDirectory>
+					<genDirectoryAidl>${basedir}/gen</genDirectoryAidl>
+					<nativeLibrariesDirectory>${basedir}/libs</nativeLibrariesDirectory>
 					<excludeJarResources>
 						<excludeJarResource>.*\.jar$</excludeJarResource>
 					</excludeJarResources>
