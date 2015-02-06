@@ -19,4 +19,5 @@ bin/*
 /target/
 /gen/
 /res
+/libs/
 AndroidManifest.xml
