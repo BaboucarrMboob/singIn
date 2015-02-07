@@ -8,38 +8,15 @@
 	<packaging>apk</packaging>
 	<description>App to compose a song with the help of your voice</description>
 	<build>
-		<sourceDirectory>src/main/java</sourceDirectory>
-		<testSourceDirectory>src/test/java</testSourceDirectory>
+		<directory>bin</directory>
+		<outputDirectory>bin/classes</outputDirectory>
+		<sourceDirectory>src</sourceDirectory>
 		<resources>
 			<resource>
-				<directory>src/main/java</directory>
-			</resource>
-			<resource>
-				<directory>src/main/assets</directory>
-				<excludes>
-					<exclude>**/*.java</exclude>
-				</excludes>
-			</resource>
-			<resource>
-				<directory>src/main/resources</directory>
-				<excludes>
-					<exclude>**/*.java</exclude>
-				</excludes>
-			</resource>
-			<resource>
-				<directory>assets</directory>
-				<excludes>
-					<exclude>**/*.java</exclude>
-				</excludes>
+				<directory>src</directory>
 			</resource>
 		</resources>
 		<testResources>
-			<testResource>
-				<directory>src/test/resources</directory>
-				<excludes>
-					<exclude>**/*.java</exclude>
-				</excludes>
-			</testResource>
 		</testResources>
 		<plugins>
 			<plugin>
@@ -49,7 +26,7 @@
 				<version>4.1.0</version>
 				<configuration>
 					<sdk>
-						<platform>19</platform>
+						<platform>21</platform>
 					</sdk>
 					<sign>
 						<debug>both</debug>
@@ -67,6 +44,7 @@
 					<genDirectory>${basedir}/gen</genDirectory>
 					<genDirectoryAidl>${basedir}/gen</genDirectoryAidl>
 					<nativeLibrariesDirectory>${basedir}/libs</nativeLibrariesDirectory>
+					<unpackedLibsFolder>${basedir}/bin/unpacked-libs</unpackedLibsFolder>
 					<excludeJarResources>
 						<excludeJarResource>.*\.jar$</excludeJarResource>
 					</excludeJarResources>
