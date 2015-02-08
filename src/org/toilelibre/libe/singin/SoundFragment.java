@@ -18,6 +18,7 @@ public class SoundFragment extends Fragment {
 
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        
         View rootView = inflater.inflate (R.layout.channels, container, false);
         GraphView graph = (GraphView) rootView.findViewById (R.id.graph1);
         PointsGraphSeries<DataPoint> series = new PointsGraphSeries<DataPoint> (new DataPoint [] { new DataPoint (0, -2), new DataPoint (1, 5), new DataPoint (2, 3), new DataPoint (3, 2),
