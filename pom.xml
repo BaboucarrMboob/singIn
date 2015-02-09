@@ -111,6 +111,7 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.11</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.googlecode.soundlibs</groupId>
@@ -161,7 +162,7 @@
 		<dependency>
 			<groupId>org.toilelibre.libe</groupId>
 			<artifactId>soundtransform</artifactId>
-			<version>1.0.0</version>
+			<version>1.0.1</version>
 			<type>aar</type>
 			<exclusions>
 				<exclusion>
