@@ -7,12 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class SoundFragment extends Fragment {
-
+public class StatusBarFragment extends Fragment {
+    
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate (R.layout.channels, container, false);
+        View rootView = inflater.inflate (R.layout.status_bar, container, false);
         return rootView;
     }
 
@@ -20,5 +20,4 @@ public class SoundFragment extends Fragment {
     public void onAttach (Activity activity) {
         super.onAttach (activity);
     }
-
 }

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black_overlay"
-    tools:context="org.toilelibre.libe.singin.HomeScreen" >
+    tools:context="org.toilelibre.libe.singin.HomeScreenActivity" >
 
     <!--
          The primary full-screen view. This can be replaced with whatever view
@@ -20,8 +20,14 @@
     <fragment
         android:id="@+id/fragment1"
         android:name="org.toilelibre.libe.singin.SoundFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
 
+    <fragment
+        android:id="@+id/fragment2"
+        android:name="org.toilelibre.libe.singin.StatusBarFragment"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" 
+    	android:layout_gravity="bottom" />
 
 </FrameLayout>
