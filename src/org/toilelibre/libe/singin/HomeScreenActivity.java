@@ -29,6 +29,8 @@ public class HomeScreenActivity extends Activity {
         }
         @Override
         public void handleMessage(Message msg) {
+            ((com.jjoe64.graphview.GraphView)this.context.findViewById (R.id.graph1)).getViewport ().setMinX (0);
+            ((com.jjoe64.graphview.GraphView)this.context.findViewById (R.id.graph1)).getViewport ().setMaxX (((Series<?>) msg.obj).getHighestValueX ());
             ((com.jjoe64.graphview.GraphView)this.context.findViewById (R.id.graph1)).addSeries ((Series<?>) msg.obj);
         }
     }
@@ -72,6 +74,9 @@ public class HomeScreenActivity extends Activity {
         this.graphHandler = new GraphHandler (this);
         this.startService (new Intent (this, DisplaySoundChannelService.class));
         this.doBindService ();
+        ((com.jjoe64.graphview.GraphView)this.findViewById (R.id.graph1)).getViewport ().setScalable (true);
+        ((com.jjoe64.graphview.GraphView)this.findViewById (R.id.graph1)).getViewport ().setScrollable (true);
+        ((com.jjoe64.graphview.GraphView)this.findViewById (R.id.graph1)).getViewport ().setXAxisBoundsManual (true);
     }
 
     private void doBindService () {
