@@ -51,7 +51,7 @@ public class DisplaySoundChannelService extends IntentService {
             new AndroidRootModule ();
             Sound [] sounds = FluentClient.start ().withAnObserver (new Slf4jObserver (), observer)
                     .withFile (new File (Environment.getExternalStorageDirectory ().getPath () + "/before.wav")).convertIntoSound ().stopWithSounds ();
-            LineGraphSeries<DataPoint> series = new Sound2GraphSeries ().convert (sounds [0]);
+            LineGraphSeries<DataPoint> series = new Sound2GraphSeries ().convert (sounds [0], 1024);
             series.setThickness (2);
             this.graphMessenger.send (Message.obtain (this.graphHandler, 1, series));
         } catch (SoundTransformException e) {

@@ -7,8 +7,8 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 
 public class Sound2GraphSeries {
 
-    public LineGraphSeries<DataPoint> convert (Sound sound){
-        int stepping = 1000;
+    public LineGraphSeries<DataPoint> convert (Sound sound, int screenWidth){
+        int stepping = sound.getSamples ().length / screenWidth;
         DataPoint [] dataPointArray = new DataPoint [sound.getSamples ().length / stepping + 1];
         this.getNeutral (sound.getNbBytesPerSample ());
         for (int i = 0 ; i < sound.getSamples ().length ; i += stepping){
