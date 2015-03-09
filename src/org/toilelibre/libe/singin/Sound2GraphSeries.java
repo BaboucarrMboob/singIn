@@ -10,7 +10,7 @@ public class Sound2GraphSeries {
     public LineGraphSeries<DataPoint> convert (Sound sound, int screenWidth){
         int stepping = sound.getSamples ().length / screenWidth;
         DataPoint [] dataPointArray = new DataPoint [sound.getSamples ().length / stepping + 1];
-        this.getNeutral (sound.getNbBytesPerSample ());
+        this.getNeutral (sound.getSampleSize ());
         for (int i = 0 ; i < sound.getSamples ().length ; i += stepping){
             dataPointArray [i / stepping] = new DataPoint (i, sound.getSamples () [i]);
         }
