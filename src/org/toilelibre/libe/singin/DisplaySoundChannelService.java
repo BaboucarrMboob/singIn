@@ -8,6 +8,7 @@ import org.toilelibre.libe.soundtransform.ioc.android.AndroidRootModule;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
+import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
 import org.toilelibre.libe.soundtransform.model.observer.Observer;
 
 import android.app.IntentService;
@@ -49,7 +50,8 @@ public class DisplaySoundChannelService extends IntentService {
         Observer observer = this.createObserver ();
         try {
             new AndroidRootModule ();
-            Sound [] sounds = FluentClient.start ().withAnObserver (new Slf4jObserver (), observer)
+            FluentClient.setDefaultObservers (new Slf4jObserver (LogLevel.INFO), observer);
+            Sound [] sounds = FluentClient.start ().withAPack ("default", this.getResources ().openRawResource (R.raw.defaultpack))
                     .withFile (new File (Environment.getExternalStorageDirectory ().getPath () + "/before.wav")).convertIntoSound ().stopWithSounds ();
             LineGraphSeries<DataPoint> series = new Sound2GraphSeries ().convert (sounds [0], 1024);
             series.setThickness (2);
@@ -66,7 +68,8 @@ public class DisplaySoundChannelService extends IntentService {
 
             @Override
             public void notify (final LogEvent logEvent) {
-                if (DisplaySoundChannelService.this.statusHandler == null) {
+                if (DisplaySoundChannelService.this.statusHandler == null ||
+                        logEvent.getLevel ().compareTo (LogLevel.VERBOSE) < 0) {
                     return;
                 }
                 DisplaySoundChannelService.this.statusHandler.post (new Runnable () {
