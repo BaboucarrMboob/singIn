@@ -2,6 +2,9 @@ package org.toilelibre.libe.singin;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.http.util.ByteArrayBuffer;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
@@ -49,7 +52,7 @@ public class RecordActivity extends Activity {
                                                                    }
                                                                };
     private int size;
-    private ByteArrayBuffer buffer;
+    private List<Byte> buffer;
     private int bufferSize;
 
     private void enableButton (int id, boolean isEnable) {
@@ -86,9 +89,9 @@ public class RecordActivity extends Activity {
     }
 
     //convert short to byte
-    private byte [] short2byte (short [] sData) {
+    private Byte [] short2byte (short [] sData) {
         final int shortArrsize = sData.length;
-        final byte [] bytes = new byte [shortArrsize * 2];
+        final Byte [] bytes = new Byte [shortArrsize * 2];
         for (int i = 0; i < shortArrsize; i++) {
             bytes [i * 2] = (byte) (sData [i] & 0x00FF);
             bytes [ (i * 2) + 1] = (byte) (sData [i] >> 8);
@@ -121,8 +124,13 @@ public class RecordActivity extends Activity {
             this.isRecording = false;
             this.recorder.stop ();
             this.recorder.release ();
-            StreamInfo si = new StreamInfo (1, this.size, this.bytesPerElement, RECORDER_SAMPLERATE, false, true, null);
-            ByteArrayInputStream baos = new ByteArrayInputStream (this.buffer.toByteArray ());
+            StreamInfo si = new StreamInfo (1, this.buffer.size () / this.bytesPerElement, this.bytesPerElement, RECORDER_SAMPLERATE, false, true, null);
+            byte[] b2 = new byte[this.buffer.size ()];
+            for (int i = 0; i < this.buffer.size (); i++)
+            {
+                b2[i] = this.buffer.get (i);
+            }
+            ByteArrayInputStream baos = new ByteArrayInputStream (b2);
             File file = new File (Environment.getExternalStorageDirectory () + "/shaped.wav");
             try {
                 FluentClient.start ().withRawInputStream (baos, si).importToSound ().findLoudestFrequencies ().shapeIntoSound ("default", "simple_piano", si).exportToFile (file);
@@ -140,14 +148,14 @@ public class RecordActivity extends Activity {
 
         final short sData [] = new short [this.bufferElements2Rec];
 
-        this.buffer = new ByteArrayBuffer (this.bufferSize);
+        this.buffer = new ArrayList<Byte> (this.bufferSize);
 
         while (this.isRecording) {
             // gets the voice output from microphone to byte format
 
             this.recorder.read (sData, 0, this.bufferElements2Rec);
-            final byte bData [] = this.short2byte (sData);
-            buffer.append (bData, this.size * 2, 2);
+            final Byte bData [] = this.short2byte (sData);
+            buffer.addAll (Arrays.asList (bData));
         }
     }
 }
