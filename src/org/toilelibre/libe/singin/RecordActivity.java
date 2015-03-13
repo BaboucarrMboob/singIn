@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.http.util.ByteArrayBuffer;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
@@ -14,7 +13,7 @@ import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import android.app.Activity;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
-import android.media.MediaRecorder;
+import android.media.MediaRecorder.AudioSource;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.KeyEvent;
@@ -51,7 +50,6 @@ public class RecordActivity extends Activity {
                                                                        }
                                                                    }
                                                                };
-    private int size;
     private List<Byte> buffer;
     private int bufferSize;
 
@@ -101,11 +99,33 @@ public class RecordActivity extends Activity {
 
     }
 
+    private static int[] SAMPLE_RATES = new int[] { 8000, 11025, 22050, 44100 };
+    
+    public AudioRecord findAudioRecorder() {
+        for (int rate : SAMPLE_RATES) {
+            for (short audioFormat : new short[] { AudioFormat.ENCODING_PCM_8BIT, AudioFormat.ENCODING_PCM_16BIT }) {
+                for (short channelConfig : new short[] { AudioFormat.CHANNEL_IN_MONO, AudioFormat.CHANNEL_IN_STEREO }) {
+                    try {
+                        int bufferSize = AudioRecord.getMinBufferSize(rate, channelConfig, audioFormat);
+
+                        if (bufferSize != AudioRecord.ERROR_BAD_VALUE) {
+                            // check if we can instantiate and have a success
+                            AudioRecord recorder = new AudioRecord(AudioSource.DEFAULT, rate, channelConfig, audioFormat, bufferSize);
+
+                            if (recorder.getState() == AudioRecord.STATE_INITIALIZED)
+                                return recorder;
+                        }
+                    } catch (Exception e) {
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
     private void startRecording () {
 
-        this.size = 0;
-        this.recorder = new AudioRecord (MediaRecorder.AudioSource.MIC, RecordActivity.RECORDER_SAMPLERATE, RecordActivity.RECORDER_CHANNELS,
-                RecordActivity.RECORDER_AUDIO_ENCODING, this.bufferElements2Rec * this.bytesPerElement);
+        this.recorder = findAudioRecorder();
 
         this.recorder.startRecording ();
         this.isRecording = true;
