@@ -22,16 +22,9 @@ import android.widget.Button;
 
 public class RecordActivity extends Activity {
 
-    private static final int           RECORDER_SAMPLERATE     = 8000;
-    private static final int           RECORDER_CHANNELS       = AudioFormat.CHANNEL_IN_MONO;
-    private static final int           RECORDER_AUDIO_ENCODING = AudioFormat.ENCODING_PCM_16BIT;
     private AudioRecord                recorder                = null;
     private Thread                     recordingThread         = null;
     private boolean                    isRecording             = false;
-
-    int                                bufferElements2Rec      = 1024;                          // want to play 2048 (2K) since 2 bytes we use only 1024
-
-    int                                bytesPerElement         = 2;                             // 2 bytes in 16bit format
 
     private final View.OnClickListener btnClick                = new View.OnClickListener () {
                                                                    @Override
@@ -52,6 +45,7 @@ public class RecordActivity extends Activity {
                                                                };
     private List<Byte> buffer;
     private int bufferSize;
+    private int bytesPerElement;
 
     private void enableButton (int id, boolean isEnable) {
         ((Button) this.findViewById (id)).setEnabled (isEnable);
@@ -70,7 +64,8 @@ public class RecordActivity extends Activity {
         this.setButtonHandlers ();
         this.enableButtons (false);
 
-        this.bufferSize = AudioRecord.getMinBufferSize (RecordActivity.RECORDER_SAMPLERATE, RecordActivity.RECORDER_CHANNELS, RecordActivity.RECORDER_AUDIO_ENCODING);
+        this.recorder = findAudioRecorder();
+        this.bytesPerElement = this.recorder.getAudioFormat () == AudioFormat.ENCODING_PCM_8BIT ? 8 : 16;
     }
 
     @Override
@@ -106,9 +101,9 @@ public class RecordActivity extends Activity {
             for (short audioFormat : new short[] { AudioFormat.ENCODING_PCM_8BIT, AudioFormat.ENCODING_PCM_16BIT }) {
                 for (short channelConfig : new short[] { AudioFormat.CHANNEL_IN_MONO, AudioFormat.CHANNEL_IN_STEREO }) {
                     try {
-                        int bufferSize = AudioRecord.getMinBufferSize(rate, channelConfig, audioFormat);
+                        this.bufferSize = AudioRecord.getMinBufferSize(rate, channelConfig, audioFormat);
 
-                        if (bufferSize != AudioRecord.ERROR_BAD_VALUE) {
+                        if (this.bufferSize != AudioRecord.ERROR_BAD_VALUE) {
                             // check if we can instantiate and have a success
                             AudioRecord recorder = new AudioRecord(AudioSource.DEFAULT, rate, channelConfig, audioFormat, bufferSize);
 
@@ -125,7 +120,6 @@ public class RecordActivity extends Activity {
 
     private void startRecording () {
 
-        this.recorder = findAudioRecorder();
 
         this.recorder.startRecording ();
         this.isRecording = true;
@@ -144,18 +138,18 @@ public class RecordActivity extends Activity {
             this.isRecording = false;
             this.recorder.stop ();
             this.recorder.release ();
-            StreamInfo si = new StreamInfo (1, this.buffer.size () / this.bytesPerElement, this.bytesPerElement, RECORDER_SAMPLERATE, false, true, null);
-            byte[] b2 = new byte[this.buffer.size ()];
+            StreamInfo si = new StreamInfo (this.recorder.getChannelConfiguration () ==  AudioFormat.CHANNEL_IN_MONO ? 1 : 2, 
+                    this.buffer.size () / this.bytesPerElement, this.bytesPerElement, this.recorder.getSampleRate (), false, true, null);
+            byte[] byteArray = new byte[this.buffer.size ()];
             for (int i = 0; i < this.buffer.size (); i++)
             {
-                b2[i] = this.buffer.get (i);
+                byteArray[i] = this.buffer.get (i);
             }
-            ByteArrayInputStream baos = new ByteArrayInputStream (b2);
+            ByteArrayInputStream baos = new ByteArrayInputStream (byteArray);
             File file = new File (Environment.getExternalStorageDirectory () + "/shaped.wav");
             try {
                 FluentClient.start ().withRawInputStream (baos, si).importToSound ().findLoudestFrequencies ().shapeIntoSound ("default", "simple_piano", si).exportToFile (file);
             } catch (SoundTransformException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             this.recorder = null;
@@ -166,14 +160,14 @@ public class RecordActivity extends Activity {
     private void writeAudioDataToFile () {
         // Write the output audio in byte
 
-        final short sData [] = new short [this.bufferElements2Rec];
+        final short sData [] = new short [this.bytesPerElement * 1024];
 
         this.buffer = new ArrayList<Byte> (this.bufferSize);
 
         while (this.isRecording) {
             // gets the voice output from microphone to byte format
 
-            this.recorder.read (sData, 0, this.bufferElements2Rec);
+            this.recorder.read (sData, 0, this.bytesPerElement);
             final Byte bData [] = this.short2byte (sData);
             buffer.addAll (Arrays.asList (bData));
         }
