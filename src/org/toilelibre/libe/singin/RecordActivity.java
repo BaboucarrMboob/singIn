@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 
@@ -146,7 +147,9 @@ public class RecordActivity extends Activity {
             ByteArrayInputStream baos = new ByteArrayInputStream (this.baos.toByteArray ());
             File file = new File (Environment.getExternalStorageDirectory () + "/shaped.wav");
             try {
-                FluentClient.start ().withRawInputStream (baos, si).importToSound ().findLoudestFrequencies ().shapeIntoSound ("default", "simple_piano", si).exportToFile (file);
+                Sound [] sounds = FluentClient.start ().withRawInputStream (baos, si).importToSound ().stopWithSounds ();
+                FluentClient.start ().withSounds (sounds).findLoudestFrequencies ().shapeIntoSound ("default", "simple_piano", si).exportToFile (file);
+                FluentClient.start ().withSounds (sounds).exportToFile (new File (Environment.getExternalStorageDirectory () + "/recorded.wav"));
             } catch (SoundTransformException e) {
                 e.printStackTrace();
             }
