@@ -1,10 +1,9 @@
 package org.toilelibre.libe.singin;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.io.IOException;
 
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
@@ -43,7 +42,8 @@ public class RecordActivity extends Activity {
                                                                        }
                                                                    }
                                                                };
-    private List<Byte> buffer;
+
+    private ByteArrayOutputStream baos;
     private int bufferSize;
     private int bytesPerElement;
 
@@ -64,8 +64,6 @@ public class RecordActivity extends Activity {
         this.setButtonHandlers ();
         this.enableButtons (false);
 
-        this.recorder = findAudioRecorder();
-        this.bytesPerElement = this.recorder.getAudioFormat () == AudioFormat.ENCODING_PCM_8BIT ? 8 : 16;
     }
 
     @Override
@@ -82,9 +80,9 @@ public class RecordActivity extends Activity {
     }
 
     //convert short to byte
-    private Byte [] short2byte (short [] sData) {
+    private byte [] short2byte (short [] sData) {
         final int shortArrsize = sData.length;
-        final Byte [] bytes = new Byte [shortArrsize * 2];
+        final byte [] bytes = new byte [shortArrsize * 2];
         for (int i = 0; i < shortArrsize; i++) {
             bytes [i * 2] = (byte) (sData [i] & 0x00FF);
             bytes [ (i * 2) + 1] = (byte) (sData [i] >> 8);
@@ -120,15 +118,21 @@ public class RecordActivity extends Activity {
 
     private void startRecording () {
 
-
-        this.recorder.startRecording ();
+        this.baos = new ByteArrayOutputStream(this.bufferSize);
+        this.recorder = findAudioRecorder();
+        this.bytesPerElement = this.recorder.getAudioFormat () == AudioFormat.ENCODING_PCM_8BIT ? 1 : 2;
         this.isRecording = true;
         this.recordingThread = new Thread (new Runnable () {
             @Override
             public void run () {
-                RecordActivity.this.writeAudioDataToFile ();
+                try {
+                    RecordActivity.this.writeAudioDataToFile ();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }, "AudioRecorder Thread");
+        this.recorder.startRecording ();
         this.recordingThread.start ();
     }
 
@@ -138,14 +142,8 @@ public class RecordActivity extends Activity {
             this.isRecording = false;
             this.recorder.stop ();
             this.recorder.release ();
-            StreamInfo si = new StreamInfo (this.recorder.getChannelConfiguration () ==  AudioFormat.CHANNEL_IN_MONO ? 1 : 2, 
-                    this.buffer.size () / this.bytesPerElement, this.bytesPerElement, this.recorder.getSampleRate (), false, true, null);
-            byte[] byteArray = new byte[this.buffer.size ()];
-            for (int i = 0; i < this.buffer.size (); i++)
-            {
-                byteArray[i] = this.buffer.get (i);
-            }
-            ByteArrayInputStream baos = new ByteArrayInputStream (byteArray);
+            StreamInfo si = new StreamInfo (this.recorder.getChannelConfiguration () ==  AudioFormat.CHANNEL_IN_MONO ? 1 : 2, this.baos.size () / this.bytesPerElement, this.bytesPerElement, this.recorder.getSampleRate (), false, true, null);
+            ByteArrayInputStream baos = new ByteArrayInputStream (this.baos.toByteArray ());
             File file = new File (Environment.getExternalStorageDirectory () + "/shaped.wav");
             try {
                 FluentClient.start ().withRawInputStream (baos, si).importToSound ().findLoudestFrequencies ().shapeIntoSound ("default", "simple_piano", si).exportToFile (file);
@@ -157,19 +155,21 @@ public class RecordActivity extends Activity {
         }
     }
 
-    private void writeAudioDataToFile () {
+    private void writeAudioDataToFile () throws IOException {
         // Write the output audio in byte
 
-        final short sData [] = new short [this.bytesPerElement * 1024];
-
-        this.buffer = new ArrayList<Byte> (this.bufferSize);
+        final short sData [] = new short [1024];
 
         while (this.isRecording) {
             // gets the voice output from microphone to byte format
-
-            this.recorder.read (sData, 0, this.bytesPerElement);
-            final Byte bData [] = this.short2byte (sData);
-            buffer.addAll (Arrays.asList (bData));
+            if (this.recorder.getRecordingState () != AudioRecord.STATE_UNINITIALIZED){
+                int read = this.recorder.read (sData, 0, sData.length);
+                if (read > 0){
+                    baos.write (this.short2byte (sData), 0, read);
+                }else if (read == 0) {
+                    this.isRecording = false;
+                }
+            }
         }
     }
 }
