@@ -2,7 +2,7 @@ package org.toilelibre.libe.singin;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Intent;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,12 +17,18 @@ public class SoundFragment extends Fragment {
 
         final View rootView = inflater.inflate (R.layout.channels, container, false);
         Button recordButton = (Button) rootView.findViewById (R.id.recordButton);
+        ((com.jjoe64.graphview.GraphView)rootView.findViewById (R.id.graph1)).getViewport ().setScalable (true);
+        ((com.jjoe64.graphview.GraphView)rootView.findViewById (R.id.graph1)).getViewport ().setScrollable (true);
+        ((com.jjoe64.graphview.GraphView)rootView.findViewById (R.id.graph1)).getViewport ().setXAxisBoundsManual (true);
         recordButton.setOnClickListener (new OnClickListener () {
 
             @Override
             public void onClick (View v) {
-                Intent intent = new Intent (rootView.getContext (), RecordActivity.class);
-                startActivity (intent);
+
+                RecordFragment rif = new RecordFragment ();
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.fragment_container, rif);
+                ft.commit ();
             }
 
         });

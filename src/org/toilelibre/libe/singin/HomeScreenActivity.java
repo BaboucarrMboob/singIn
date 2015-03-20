@@ -1,9 +1,8 @@
 package org.toilelibre.libe.singin;
 
 
-import com.jjoe64.graphview.series.Series;
-
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +12,8 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.widget.TextView;
+
+import com.jjoe64.graphview.series.Series;
 
 public class HomeScreenActivity extends Activity {
 
@@ -29,9 +30,11 @@ public class HomeScreenActivity extends Activity {
         }
         @Override
         public void handleMessage(Message msg) {
-            ((com.jjoe64.graphview.GraphView)this.context.findViewById (R.id.graph1)).getViewport ().setMinX (0);
-            ((com.jjoe64.graphview.GraphView)this.context.findViewById (R.id.graph1)).getViewport ().setMaxX (((Series<?>) msg.obj).getHighestValueX ());
-            ((com.jjoe64.graphview.GraphView)this.context.findViewById (R.id.graph1)).addSeries ((Series<?>) msg.obj);
+            if (this.context.findViewById (R.id.graph1) != null){
+              ((com.jjoe64.graphview.GraphView)this.context.findViewById (R.id.graph1)).getViewport ().setMinX (0);
+              ((com.jjoe64.graphview.GraphView)this.context.findViewById (R.id.graph1)).getViewport ().setMaxX (((Series<?>) msg.obj).getHighestValueX ());
+              ((com.jjoe64.graphview.GraphView)this.context.findViewById (R.id.graph1)).addSeries ((Series<?>) msg.obj);
+            }
         }
     }
     
@@ -70,13 +73,11 @@ public class HomeScreenActivity extends Activity {
     @Override
     public void onStart () {
         super.onStart ();
+        getFragmentManager().beginTransaction().add(R.id.fragment_container, new SoundFragment ()).commit();
         this.handler = new StatusTextHandler ((TextView) this.findViewById (R.id.currentStatus));
         this.graphHandler = new GraphHandler (this);
         this.startService (new Intent (this, DisplaySoundChannelService.class));
         this.doBindService ();
-        ((com.jjoe64.graphview.GraphView)this.findViewById (R.id.graph1)).getViewport ().setScalable (true);
-        ((com.jjoe64.graphview.GraphView)this.findViewById (R.id.graph1)).getViewport ().setScrollable (true);
-        ((com.jjoe64.graphview.GraphView)this.findViewById (R.id.graph1)).getViewport ().setXAxisBoundsManual (true);
     }
 
     private void doBindService () {

@@ -28,7 +28,7 @@
         </activity>
         
         <activity
-            android:name=".RecordActivity"
+            android:name=".RecordFragment"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:theme="@style/FullscreenTheme" >
