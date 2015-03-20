@@ -1,52 +1,50 @@
 package org.toilelibre.libe.singin;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-
-import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
-import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
-import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
-import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
-
 import android.app.Activity;
-import android.media.AudioFormat;
-import android.media.AudioRecord;
-import android.media.MediaRecorder.AudioSource;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.Environment;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 
 public class RecordActivity extends Activity {
 
-    private AudioRecord                recorder                = null;
-    private Thread                     recordingThread         = null;
-    private boolean                    isRecording             = false;
+    private static Object              stop     = null;
+    private final View.OnClickListener btnClick = new View.OnClickListener () {
+                                                    @Override
+                                                    public void onClick (View v) {
+                                                        switch (v.getId ()) {
+                                                            case R.id.btnRecordStart: {
+                                                                RecordActivity.this.enableButtons (true);
+                                                                RecordActivity.this.startRecording ();
+                                                                break;
+                                                            }
+                                                            case R.id.btnRecordStop: {
+                                                                RecordActivity.this.enableButtons (false);
+                                                                RecordActivity.this.stopRecording ();
+                                                                break;
+                                                            }
+                                                        }
+                                                    }
+                                                };
+    protected StopObjectHandler handler = new StopObjectHandler ();
+    protected RecordAudioService service;
 
-    private final View.OnClickListener btnClick                = new View.OnClickListener () {
-                                                                   @Override
-                                                                   public void onClick (View v) {
-                                                                       switch (v.getId ()) {
-                                                                           case R.id.btnRecordStart: {
-                                                                               RecordActivity.this.enableButtons (true);
-                                                                               RecordActivity.this.startRecording ();
-                                                                               break;
-                                                                           }
-                                                                           case R.id.btnRecordStop: {
-                                                                               RecordActivity.this.enableButtons (false);
-                                                                               RecordActivity.this.stopRecording ();
-                                                                               break;
-                                                                           }
-                                                                       }
-                                                                   }
-                                                               };
+    static class StopObjectHandler extends Handler { // Handler of incoming messages from clients.
+        public StopObjectHandler () {
+        }
 
-    private ByteArrayOutputStream baos;
-    private int bufferSize;
-    private int bytesPerElement;
+        @Override
+        public void handleMessage (Message msg) {
+            RecordActivity.stop = msg.obj;
+        }
+    }
 
     private void enableButton (int id, boolean isEnable) {
         ((Button) this.findViewById (id)).setEnabled (isEnable);
@@ -80,99 +78,30 @@ public class RecordActivity extends Activity {
         ((Button) this.findViewById (R.id.btnRecordStop)).setOnClickListener (this.btnClick);
     }
 
-    //convert short to byte
-    private byte [] short2byte (short [] sData) {
-        final int shortArrsize = sData.length;
-        final byte [] bytes = new byte [shortArrsize * 2];
-        for (int i = 0; i < shortArrsize; i++) {
-            bytes [i * 2] = (byte) (sData [i] & 0x00FF);
-            bytes [ (i * 2) + 1] = (byte) (sData [i] >> 8);
-            sData [i] = 0;
+    private void startRecording () {    
+        ServiceConnection          connection                 = new ServiceConnection () {
+        @Override
+        public void onServiceConnected (ComponentName componentName, IBinder iBinder) {
+            RecordActivity.this.service = ((RecordAudioService.LocalBinder) iBinder).getInstance ();
+            RecordActivity.this.service.setStopObjectHandler (RecordActivity.this.handler);
         }
-        return bytes;
 
-    }
-
-    private static int[] SAMPLE_RATES = new int[] { 8000, 11025, 22050, 44100 };
-    
-    public AudioRecord findAudioRecorder() {
-        for (int rate : SAMPLE_RATES) {
-            for (short audioFormat : new short[] { AudioFormat.ENCODING_PCM_8BIT, AudioFormat.ENCODING_PCM_16BIT }) {
-                for (short channelConfig : new short[] { AudioFormat.CHANNEL_IN_MONO, AudioFormat.CHANNEL_IN_STEREO }) {
-                    try {
-                        this.bufferSize = AudioRecord.getMinBufferSize(rate, channelConfig, audioFormat);
-
-                        if (this.bufferSize != AudioRecord.ERROR_BAD_VALUE) {
-                            // check if we can instantiate and have a success
-                            AudioRecord recorder = new AudioRecord(AudioSource.DEFAULT, rate, channelConfig, audioFormat, bufferSize);
-
-                            if (recorder.getState() == AudioRecord.STATE_INITIALIZED)
-                                return recorder;
-                        }
-                    } catch (Exception e) {
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-    private void startRecording () {
-
-        this.baos = new ByteArrayOutputStream(this.bufferSize);
-        this.recorder = findAudioRecorder();
-        this.bytesPerElement = this.recorder.getAudioFormat () == AudioFormat.ENCODING_PCM_8BIT ? 1 : 2;
-        this.isRecording = true;
-        this.recordingThread = new Thread (new Runnable () {
-            @Override
-            public void run () {
-                try {
-                    RecordActivity.this.writeAudioDataToFile ();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, "AudioRecorder Thread");
-        this.recorder.startRecording ();
-        this.recordingThread.start ();
+        @Override
+        public void onServiceDisconnected (ComponentName name) {
+            RecordActivity.this.service = null;            
+        }};
+        Intent intent = new Intent (this, RecordAudioService.class);
+        this.bindService (intent, connection, Context.BIND_AUTO_CREATE);
+        this.startService (intent);
     }
 
     private void stopRecording () {
-        // stops the recording activity
-        if (null != this.recorder) {
-            this.isRecording = false;
-            this.recorder.stop ();
-            this.recorder.release ();
-            StreamInfo si = new StreamInfo (this.recorder.getChannelConfiguration () ==  AudioFormat.CHANNEL_IN_MONO ? 1 : 2, this.baos.size () / this.bytesPerElement, this.bytesPerElement, this.recorder.getSampleRate (), false, true, null);
-            ByteArrayInputStream baos = new ByteArrayInputStream (this.baos.toByteArray ());
-            File file = new File (Environment.getExternalStorageDirectory () + "/shaped.wav");
-            try {
-                Sound [] sounds = FluentClient.start ().withRawInputStream (baos, si).importToSound ().stopWithSounds ();
-                FluentClient.start ().withSounds (sounds).findLoudestFrequencies ().shapeIntoSound ("default", "simple_piano", si).exportToFile (file);
-                FluentClient.start ().withSounds (sounds).exportToFile (new File (Environment.getExternalStorageDirectory () + "/recorded.wav"));
-            } catch (SoundTransformException e) {
-                e.printStackTrace();
-            }
-            this.recorder = null;
-            this.recordingThread = null;
+        if (RecordActivity.stop == null) {
+            return;
         }
-    }
-
-    private void writeAudioDataToFile () throws IOException {
-        // Write the output audio in byte
-
-        final short sData [] = new short [1024];
-
-        while (this.isRecording) {
-            // gets the voice output from microphone to byte format
-            if (this.recorder.getRecordingState () != AudioRecord.STATE_UNINITIALIZED){
-                int read = this.recorder.read (sData, 0, sData.length);
-                if (read > 0){
-                    baos.write (this.short2byte (sData), 0, read);
-                }else if (read == 0) {
-                    this.isRecording = false;
-                }
-            }
+        synchronized (RecordActivity.stop) {
+            RecordActivity.stop.notify ();
         }
+        RecordActivity.stop = null;
     }
 }
