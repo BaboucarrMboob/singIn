@@ -5,6 +5,7 @@ import java.io.File;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.transform.NormalizeSoundTransformation;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 
@@ -34,9 +35,9 @@ public class RecordAudioService extends IntentService {
     protected void onHandleIntent (Intent intent) {
         this.stop = new Object ();
         try {
-            Sound [] sounds = FluentClient.start ().withRecordedInputStream (new StreamInfo (1, -1, 2, 8000, false, true, null), this.stop).importToSound ().stopWithSounds();
+            Sound [] sounds = FluentClient.start ().withRecordedInputStream (new StreamInfo (1, -1, 2, 8000, false, true, null), this.stop).importToSound ().apply (new NormalizeSoundTransformation (1)).stopWithSounds();
             FluentClient.start().withSounds(sounds).exportToFile (new File (Environment.getExternalStorageDirectory () + "/recorded.wav"));
-            FluentClient.start().withSounds(sounds).findLoudestFrequencies ().shapeIntoSound ("default", "simple_piano", new FormatInfo (2, 41000)).exportToFile (new File (Environment.getExternalStorageDirectory () + "/shaped.wav"));
+            FluentClient.start().withSounds(sounds).findLoudestFrequencies ().shapeIntoSound ("default", "simple_piano", new FormatInfo (2, 8000)).exportToFile (new File (Environment.getExternalStorageDirectory () + "/shaped.wav"));
         } catch (SoundTransformException e) {
             e.printStackTrace();
         }
