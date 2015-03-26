@@ -33,7 +33,7 @@ public class RecordAudioService extends IntentService {
     protected void onHandleIntent (Intent intent) {
         this.stop = new Object ();
         try {
-            FluentClient.start ().withRecordedInputStream (new StreamInfo (1, -1, 1, 8000, false, true, null), this.stop).importToSound ().findLoudestFrequencies ().shapeIntoSound ("default", "simple_piano", new FormatInfo (2, 41000)).exportToFile (new File (Environment.getExternalStorageDirectory () + "/shaped.wav"));
+            FluentClient.start ().withRecordedInputStream (new StreamInfo (1, -1, 2, 8000, false, true, null), this.stop).importToSound ().findLoudestFrequencies ().shapeIntoSound ("default", "simple_piano", new FormatInfo (2, 41000)).exportToFile (new File (Environment.getExternalStorageDirectory () + "/shaped.wav"));
         } catch (SoundTransformException e) {
             e.printStackTrace();
         }
