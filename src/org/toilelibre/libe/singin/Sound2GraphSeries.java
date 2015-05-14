@@ -1,18 +1,18 @@
 package org.toilelibre.libe.singin;
 
-import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Channel;
 
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
 public class Sound2GraphSeries {
 
-    public LineGraphSeries<DataPoint> convert (Sound sound, int screenWidth){
-        int stepping = sound.getSamples ().length / screenWidth;
-        DataPoint [] dataPointArray = new DataPoint [sound.getSamples ().length / stepping + 1];
-        this.getNeutral (sound.getSampleSize ());
-        for (int i = 0 ; i < sound.getSamples ().length ; i += stepping){
-            dataPointArray [i / stepping] = new DataPoint (i, sound.getSamples () [i]);
+    public LineGraphSeries<DataPoint> convert (Channel channel, int screenWidth){
+        int stepping = channel.getSamples ().length / screenWidth;
+        DataPoint [] dataPointArray = new DataPoint [channel.getSamples ().length / stepping + 1];
+        this.getNeutral (channel.getSampleSize ());
+        for (int i = 0 ; i < channel.getSamples ().length ; i += stepping){
+            dataPointArray [i / stepping] = new DataPoint (i, channel.getSamples () [i]);
         }
         return new LineGraphSeries<DataPoint> (dataPointArray);
     }

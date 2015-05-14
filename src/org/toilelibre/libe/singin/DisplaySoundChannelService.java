@@ -51,9 +51,9 @@ public class DisplaySoundChannelService extends IntentService {
         try {
             new AndroidRootModule ();
             FluentClient.setDefaultObservers (new Slf4jObserver (LogLevel.INFO), observer);
-            Sound [] sounds = FluentClient.start ().withAPack ("default", this, org.toilelibre.libe.soundtransform.R.raw.class, org.toilelibre.libe.soundtransform.R.raw.defaultpack)
-                    .withFile (new File (Environment.getExternalStorageDirectory ().getPath () + "/before.wav")).convertIntoSound ().stopWithSounds ();
-            LineGraphSeries<DataPoint> series = new Sound2GraphSeries ().convert (sounds [0], 1024);
+            Sound sound = FluentClient.start ().withAPack ("default", this, org.toilelibre.libe.soundtransform.R.raw.class, org.toilelibre.libe.soundtransform.R.raw.defaultpack)
+                    .withFile (new File (Environment.getExternalStorageDirectory ().getPath () + "/before.wav")).convertIntoSound ().stopWithSound ();
+            LineGraphSeries<DataPoint> series = new Sound2GraphSeries ().convert (sound.getChannels () [0], 1024);
             series.setThickness (2);
             this.graphMessenger.send (Message.obtain (this.graphHandler, 1, series));
         } catch (SoundTransformException e) {
