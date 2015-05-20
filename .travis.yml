@@ -36,6 +36,6 @@ script:
  - cd target
  - git clone git://github.com/mosabua/maven-android-sdk-deployer.git maven-android-sdk-deployer
  - cd maven-android-sdk-deployer/extras/compatibility-v7-appcompat
- - mvn clean install 
+ - mvn -P4.4 clean install android:aar
  - cd ../../../../
  - mvn -B org.jacoco:jacoco-maven-plugin:prepare-agent test org.jacoco:jacoco-maven-plugin:report org.eluder.coveralls:coveralls-maven-plugin:report -DrepoToken=$COVERALLS_TOKEN
