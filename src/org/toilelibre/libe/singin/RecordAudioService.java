@@ -3,6 +3,8 @@ package org.toilelibre.libe.singin;
 import java.io.File;
 
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
+import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.EqualizerSoundTransform;
+import org.toilelibre.libe.soundtransform.infrastructure.service.converted.sound.transforms.ReduceNoiseSoundTransform;
 import org.toilelibre.libe.soundtransform.model.converted.FormatInfo;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.converted.sound.transform.NormalizeSoundTransform;
@@ -36,8 +38,8 @@ public class RecordAudioService extends IntentService {
         this.stop = new Object ();
         try {
             Sound sound = FluentClient.start ().withRecordedInputStream (new StreamInfo (1, -1, 2, 8000, false, true, null), this.stop).importToSound ().apply (new NormalizeSoundTransform (1)).stopWithSound();
-            FluentClient.start().withSound(sound).exportToFile (new File (Environment.getExternalStorageDirectory () + "/recorded.wav"));
-            FluentClient.start().withSound(sound).findLoudestFrequencies ().shapeIntoSound ("default", "simple_piano", new FormatInfo (2, 8000)).exportToFile (new File (Environment.getExternalStorageDirectory () + "/shaped.wav"));
+            FluentClient.start().withSound(sound).apply(new ReduceNoiseSoundTransform(30)).apply(new EqualizerSoundTransform(new double [] {0, 99, 100, 200, 300, 400, 500, 600, 700, 800, 801, 20000}, new double [] {0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0})).exportToFile (new File (Environment.getExternalStorageDirectory () + "/recorded.wav"));
+            FluentClient.start().withSound(sound).findLoudestFrequencies ().surroundInRange(130, 800).shapeIntoSound ("default", "simple_piano", new FormatInfo (2, 8000)).exportToFile (new File (Environment.getExternalStorageDirectory () + "/shaped.wav"));
         } catch (SoundTransformException e) {
             e.printStackTrace();
         }
