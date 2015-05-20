@@ -32,9 +32,9 @@ jdk:
  - oraclejdk8
 
 script: 
-  - cd target
-  - git clone git://github.com/mosabua/maven-android-sdk-deployer.git maven-android-sdk-deployer
-  - cd maven-android-sdk-deployer/platforms/android-19
-  - mvn clean install -N 
-  - cd ../../../../
+ - cd target
+ - git clone git://github.com/mosabua/maven-android-sdk-deployer.git maven-android-sdk-deployer
+ - cd maven-android-sdk-deployer/platforms/android-19
+ - mvn clean install -N 
+ - cd ../../../../
  - mvn -B org.jacoco:jacoco-maven-plugin:prepare-agent test org.jacoco:jacoco-maven-plugin:report org.eluder.coveralls:coveralls-maven-plugin:report -DrepoToken=$COVERALLS_TOKEN
