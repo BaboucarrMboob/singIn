@@ -151,7 +151,7 @@
 			<groupId>com.android.support</groupId>
 			<artifactId>appcompat-v7</artifactId>
 			<version>19.0.1</version>
-			<type>aar</type>
+			<type>apklib</type>
 		</dependency>
 		<dependency>
 			<groupId>org.toilelibre.libe</groupId>
