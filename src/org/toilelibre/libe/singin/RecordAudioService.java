@@ -38,7 +38,7 @@ public class RecordAudioService extends IntentService {
         try {
             Sound sound = FluentClient.start ().withRecordedInputStream (new StreamInfo (1, -1, 2, 8000, false, true, null), this.stop).importToSound ().stopWithSound();
             FluentClient.start().withSound(sound).exportToFile (new File (Environment.getExternalStorageDirectory () + "/recorded.wav"));
-            FluentClient.start().withSound(sound).findLoudestFrequencies (new HarmonicProductSpectrumSoundTransform<Serializable> (false)).shapeIntoSound ("default", "simple_piano", new FormatInfo (2, 8000)).exportToFile (new File (Environment.getExternalStorageDirectory () + "/shaped.wav"));
+            FluentClient.start().withSound(sound).findLoudestFrequencies (new HarmonicProductSpectrumSoundTransform<Serializable> (false, true, 0.1f)).shapeIntoSound ("default", "simple_piano", new FormatInfo (2, 8000)).exportToFile (new File (Environment.getExternalStorageDirectory () + "/shaped.wav"));
         } catch (SoundTransformException e) {
             e.printStackTrace();
         }
