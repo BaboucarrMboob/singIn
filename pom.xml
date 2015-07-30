@@ -166,7 +166,7 @@
 		<dependency>
 			<groupId>org.toile-libre.libe</groupId>
 			<artifactId>soundtransform</artifactId>
-			<version>1.0.18-SNAPSHOT</version>
+			<version>1.0.19-SNAPSHOT</version>
 			<type>aar</type>
 			<exclusions>
 				<exclusion>
