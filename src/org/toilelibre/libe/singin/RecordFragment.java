@@ -98,7 +98,7 @@ public class RecordFragment extends Fragment {
             return;
         }
         synchronized (RecordFragment.stop) {
-            RecordFragment.stop.notify ();
+            RecordFragment.stop.notifyAll ();
         }
         RecordFragment.stop = null;
     }
