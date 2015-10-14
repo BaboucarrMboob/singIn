@@ -2,7 +2,6 @@ package org.toilelibre.libe.singin;
 
 
 import android.app.Activity;
-import android.app.FragmentTransaction;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;

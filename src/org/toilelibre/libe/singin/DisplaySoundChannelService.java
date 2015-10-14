@@ -7,9 +7,9 @@ import org.toilelibre.libe.soundtransform.infrastructure.service.observer.Slf4jO
 import org.toilelibre.libe.soundtransform.ioc.android.AndroidRootModule;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
-import org.toilelibre.libe.soundtransform.model.observer.LogEvent;
-import org.toilelibre.libe.soundtransform.model.observer.LogEvent.LogLevel;
-import org.toilelibre.libe.soundtransform.model.observer.Observer;
+import org.toilelibre.libe.soundtransform.model.logging.LogEvent;
+import org.toilelibre.libe.soundtransform.model.logging.LogEvent.LogLevel;
+import org.toilelibre.libe.soundtransform.model.logging.Observer;
 
 import android.app.IntentService;
 import android.content.Intent;
