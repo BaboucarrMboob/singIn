@@ -10,10 +10,10 @@ android:
     # - tools
 
     # The BuildTools version used by your project
-    - build-tools-19.1.0
+    - build-tools-24.4
 
     # The SDK version used to compile your project
-    - android-19
+    - android-23
 
     # Additional components
     - extra-android-support
@@ -22,7 +22,7 @@ android:
 
     # Specify at least one system image,
     # if you need to run emulator(s) during your tests
-    - sys-img-armeabi-v7a-android-19
+    - sys-img-armeabi-v7a-android-23
 
 cache:
  directories:
@@ -36,7 +36,6 @@ script:
  - cd target
  - git clone git://github.com/mosabua/maven-android-sdk-deployer.git maven-android-sdk-deployer
  - cd maven-android-sdk-deployer
- - git checkout 2a2455e5bf28cc614c473ed594031f2483cc70c7
  - mvn install -pl extras/compatibility-v4,extras/compatibility-v7-appcompat -Dextras.compatibility.v4.groupid=com.android.support -Dextras.compatibility.v4.artifactid=support-v4 -Dextras.compatibility.v7.appcompat.groupid=com.android.support -Dextras.compatibility.v7.appcompat.artifactid=appcompat-v7 -DPkg.Revision=19.0.1
  - cd ../../
  - mvn -B org.jacoco:jacoco-maven-plugin:prepare-agent test org.jacoco:jacoco-maven-plugin:report org.eluder.coveralls:coveralls-maven-plugin:report -DrepoToken=$COVERALLS_TOKEN
