@@ -13,56 +13,62 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 public class RecordFragment extends Fragment {
 
+    @Bind (R.id.btnRecordStart)
+    Button                             recordStart;
+    @Bind (R.id.btnRecordStop)
+    Button                             recordStop;
+
     private static Object              stop     = null;
     private final View.OnClickListener btnClick = new View.OnClickListener () {
-                                                    @Override
-                                                    public void onClick (View v) {
-                                                        switch (v.getId ()) {
-                                                            case R.id.btnRecordStart: {
-                                                                RecordFragment.this.enableButtons (v, true);
-                                                                RecordFragment.this.startRecording ();
-                                                                break;
-                                                            }
-                                                            case R.id.btnRecordStop: {
-                                                                RecordFragment.this.enableButtons (v, false);
-                                                                RecordFragment.this.stopRecording ();
-                                                                break;
-                                                            }
-                                                        }
-                                                    }
-                                                };
-    protected StopObjectHandler handler = new StopObjectHandler ();
-    protected RecordAudioService service;
+        @Override
+        public void onClick (final View v) {
+            switch (v.getId ()) {
+                case R.id.btnRecordStart : {
+                    RecordFragment.this.enableButtons (v, true);
+                    RecordFragment.this.startRecording ();
+                    break;
+                }
+                case R.id.btnRecordStop : {
+                    RecordFragment.this.enableButtons (v, false);
+                    RecordFragment.this.stopRecording ();
+                    break;
+                }
+            }
+        }
+    };
+    protected StopObjectHandler        handler  = new StopObjectHandler ();
+    protected RecordAudioService       service;
 
     static class StopObjectHandler extends Handler { // Handler of incoming messages from clients.
         public StopObjectHandler () {
-        }
-
-        @Override
-        public void handleMessage (Message msg) {
-            RecordFragment.stop = msg.obj;
-        }
-    }
-
-    private void enableButton (final View view, int id, boolean isEnable) {
-        if (view != null && view.findViewById (id) != null){
-            ((Button) view.findViewById (id)).setEnabled (isEnable);
-        }else if (this.getView () != null && this.getView ().findViewById (id) != null){
-            ((Button) this.getView ().findViewById (id)).setEnabled (isEnable);
-        }
-    }
-
-    private void enableButtons (final View view, boolean isRecording) {
-        this.enableButton (view, R.id.btnRecordStart, !isRecording);
-        this.enableButton (view, R.id.btnRecordStop, isRecording);
     }
 
     @Override
-    public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public void handleMessage (final Message msg) {
+        RecordFragment.stop = msg.obj;
+    }
+    }
+
+    private void enableButton (final Button button, final boolean isEnable) {
+        if (button != null) {
+            button.setEnabled (isEnable);
+        }
+    }
+
+    private void enableButtons (final View view, final boolean isRecording) {
+        this.enableButton (this.recordStart, !isRecording);
+        this.enableButton (this.recordStop, isRecording);
+    }
+
+    @Override
+    public View onCreateView (final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         final View rootView = inflater.inflate (R.layout.record, container, false);
+        ButterKnife.bind (this, rootView);
         super.onCreate (savedInstanceState);
 
         this.setButtonHandlers (rootView);
@@ -72,23 +78,24 @@ public class RecordFragment extends Fragment {
     }
 
     private void setButtonHandlers (final View view) {
-        ((Button) view.findViewById (R.id.btnRecordStart)).setOnClickListener (this.btnClick);
-        ((Button) view.findViewById (R.id.btnRecordStop)).setOnClickListener (this.btnClick);
+        this.recordStart.setOnClickListener (this.btnClick);
+        this.recordStop.setOnClickListener (this.btnClick);
     }
 
-    private void startRecording () {    
-        ServiceConnection          connection                 = new ServiceConnection () {
-        @Override
-        public void onServiceConnected (ComponentName componentName, IBinder iBinder) {
-            RecordFragment.this.service = ((RecordAudioService.LocalBinder) iBinder).getInstance ();
-            RecordFragment.this.service.setStopObjectHandler (RecordFragment.this.handler);
-        }
+    private void startRecording () {
+        final ServiceConnection connection = new ServiceConnection () {
+            @Override
+            public void onServiceConnected (final ComponentName componentName, final IBinder iBinder) {
+                RecordFragment.this.service = ((RecordAudioService.LocalBinder) iBinder).getInstance ();
+                RecordFragment.this.service.setStopObjectHandler (RecordFragment.this.handler);
+            }
 
-        @Override
-        public void onServiceDisconnected (ComponentName name) {
-            RecordFragment.this.service = null;            
-        }};
-        Intent intent = new Intent (this.getActivity (), RecordAudioService.class);
+            @Override
+            public void onServiceDisconnected (final ComponentName name) {
+                RecordFragment.this.service = null;
+            }
+        };
+        final Intent intent = new Intent (this.getActivity (), RecordAudioService.class);
         this.getActivity ().bindService (intent, connection, Context.BIND_AUTO_CREATE);
         this.getActivity ().startService (intent);
     }

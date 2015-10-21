@@ -12,6 +12,7 @@
 		<outputDirectory>bin/classes</outputDirectory>
 		<sourceDirectory>src</sourceDirectory>
 		<testSourceDirectory>test</testSourceDirectory>
+		<testOutputDirectory>bin/test-classes</testOutputDirectory>
 		<resources>
 			<resource>
 				<directory>src</directory>
@@ -60,6 +61,12 @@
 				<configuration>
 					<source>1.6</source>
 					<target>1.6</target>
+				
+					<annotationProcessors>
+						<annotationProcessor>
+							butterknife.internal.ButterKnifeProcessor
+						</annotationProcessor>
+					</annotationProcessors>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -156,6 +163,11 @@
 			<artifactId>support-v4</artifactId>
 			<version>23.0.0</version>
 			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>com.jakewharton</groupId>
+			<artifactId>butterknife</artifactId>
+			<version>7.0.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.android.support</groupId>
