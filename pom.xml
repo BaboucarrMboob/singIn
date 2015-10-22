@@ -79,6 +79,17 @@
 					</classpathDependencyExcludes>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.eluder.coveralls</groupId>
+				<artifactId>coveralls-maven-plugin</artifactId>
+				<version>3.1.0</version>
+				<configuration>
+					<sourceDirectories>
+						<sourceDirectory>src</sourceDirectory>
+						<sourceDirectory>bin/generated-sources/annotations</sourceDirectory>
+					</sourceDirectories>
+				</configuration>
+			</plugin>
 		</plugins>
 		<pluginManagement>
 			<plugins>
