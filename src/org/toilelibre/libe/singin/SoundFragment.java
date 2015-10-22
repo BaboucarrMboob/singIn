@@ -21,11 +21,18 @@ public class SoundFragment extends Fragment {
     @Bind (R.id.recordButton)
     Button    recordButton;
 
+    private HomeScreenActivity parentActivity;
+
+    public SoundFragment (HomeScreenActivity homeScreenActivity) {
+        this.parentActivity = homeScreenActivity;
+    }
+
     @Override
     public View onCreateView (final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
 
         final View rootView = inflater.inflate (R.layout.channels, container, false);
         ButterKnife.bind (this, rootView);
+        this.parentActivity.initGraphHandler (this.graph1);
         this.graph1.getViewport ().setScalable (true);
         this.graph1.getViewport ().setScrollable (true);
         this.graph1.getViewport ().setXAxisBoundsManual (true);

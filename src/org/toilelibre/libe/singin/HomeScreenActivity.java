@@ -1,5 +1,7 @@
 package org.toilelibre.libe.singin;
 
+import com.jjoe64.graphview.GraphView;
+
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -11,12 +13,8 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-import com.jjoe64.graphview.GraphView;
-
 public class HomeScreenActivity extends Activity {
 
-    @Bind (R.id.graph1)
-    GraphView graphView;
     @Bind (R.id.currentStatus)
     TextView  currentStatus;
 
@@ -49,9 +47,9 @@ public class HomeScreenActivity extends Activity {
     @Override
     public void onStart () {
         super.onStart ();
-        this.getFragmentManager ().beginTransaction ().add (R.id.fragment_container, new SoundFragment ()).commit ();
+        SoundFragment soundFragment = new SoundFragment (this);
+        this.getFragmentManager ().beginTransaction ().add (R.id.fragment_container, soundFragment).commit ();
         this.handler = new StatusTextHandler (this.currentStatus);
-        this.graphHandler = new GraphHandler (this.graphView);
         this.startService (new Intent (this, DisplaySoundChannelService.class));
         this.doBindService ();
     }
@@ -73,6 +71,10 @@ public class HomeScreenActivity extends Activity {
     public void onDestroy () {
         super.onDestroy ();
         this.doUnbindService ();
+    }
+
+    public void initGraphHandler (GraphView graph1) {
+        this.graphHandler = new GraphHandler (graph1);
     }
 
 }
