@@ -1,5 +1,6 @@
 package org.toilelibre.libe.singin;
 
+import com.jjoe64.graphview.GraphView;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -7,88 +8,62 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
 import android.widget.TextView;
-
-import com.jjoe64.graphview.series.Series;
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 public class HomeScreenActivity extends Activity {
 
+    @Bind (R.id.currentStatus)
+    TextView  currentStatus;
+
     @Override
-    protected void onCreate (Bundle savedInstanceState) {
+    protected void onCreate (final Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
-        this.setContentView(R.layout.activity_home_screen);
+        this.setContentView (R.layout.activity_home_screen);
+        ButterKnife.bind (this);
     }
 
-    static class GraphHandler extends Handler { // Handler of incoming messages from clients.
-        private Activity context;
-        public GraphHandler (Activity context){
-            this.context = context;
-        }
-        @Override
-        public void handleMessage(Message msg) {
-            if (this.context.findViewById (R.id.graph1) != null){
-              ((com.jjoe64.graphview.GraphView)this.context.findViewById (R.id.graph1)).getViewport ().setMinX (0);
-              ((com.jjoe64.graphview.GraphView)this.context.findViewById (R.id.graph1)).getViewport ().setMaxX (((Series<?>) msg.obj).getHighestValueX ());
-              ((com.jjoe64.graphview.GraphView)this.context.findViewById (R.id.graph1)).addSeries ((Series<?>) msg.obj);
-            }
-        }
-    }
-    
-    static class StatusTextHandler extends Handler { // Handler of incoming messages from clients.
-        private TextView statusTextView;
-        public StatusTextHandler (TextView statusTextView1){
-            this.statusTextView = statusTextView1;
-        }
-        @Override
-        public void handleMessage(Message msg) {
-            this.statusTextView.setText (msg.obj.toString ());
-        }
-    }
-    
-    
     private StatusTextHandler          handler;
     private GraphHandler               graphHandler;
     private boolean                    isBound;
     private DisplaySoundChannelService displaySoundChannelService = null;
-    private ServiceConnection          connection                 = new ServiceConnection () {
-                                                                      @Override
-                                                                      public void onServiceConnected (ComponentName componentName, IBinder iBinder) {
-                                                                          HomeScreenActivity.this.displaySoundChannelService = ((DisplaySoundChannelService.LocalBinder) iBinder).getInstance ();
-                                                                          HomeScreenActivity.this.displaySoundChannelService.setStatusHandler (HomeScreenActivity.this.handler);
-                                                                          HomeScreenActivity.this.displaySoundChannelService.setGraphHandler (HomeScreenActivity.this.graphHandler);
+    private final ServiceConnection          connection                 = new ServiceConnection () {
+        @Override
+        public void onServiceConnected (final ComponentName componentName, final IBinder iBinder) {
+            HomeScreenActivity.this.displaySoundChannelService = ((DisplaySoundChannelService.LocalBinder) iBinder).getInstance ();
+            HomeScreenActivity.this.displaySoundChannelService.setStatusHandler (HomeScreenActivity.this.handler);
+            HomeScreenActivity.this.displaySoundChannelService.setGraphHandler (HomeScreenActivity.this.graphHandler);
 
-                                                                      }
+        }
 
-                                                                      @Override
-                                                                      public void onServiceDisconnected (ComponentName componentName) {
-                                                                          HomeScreenActivity.this.displaySoundChannelService = null;
-                                                                      }
+        @Override
+        public void onServiceDisconnected (final ComponentName componentName) {
+            HomeScreenActivity.this.displaySoundChannelService = null;
+        }
     };
-
 
     @Override
     public void onStart () {
         super.onStart ();
-        getFragmentManager().beginTransaction().add(R.id.fragment_container, new SoundFragment ()).commit();
-        this.handler = new StatusTextHandler ((TextView) this.findViewById (R.id.currentStatus));
-        this.graphHandler = new GraphHandler (this);
+        SoundFragment soundFragment = new SoundFragment (this);
+        this.getFragmentManager ().beginTransaction ().add (R.id.fragment_container, soundFragment).commit ();
+        this.handler = new StatusTextHandler (this.currentStatus);
         this.startService (new Intent (this, DisplaySoundChannelService.class));
         this.doBindService ();
     }
 
     private void doBindService () {
         this.bindService (new Intent (this, DisplaySoundChannelService.class), this.connection, Context.BIND_AUTO_CREATE);
-        isBound = true;
+        this.isBound = true;
     }
 
     private void doUnbindService () {
-        if (isBound) {
+        if (this.isBound) {
             // Detach our existing connection.
-            this.unbindService (connection);
-            isBound = false;
+            this.unbindService (this.connection);
+            this.isBound = false;
         }
     }
 
@@ -96,6 +71,10 @@ public class HomeScreenActivity extends Activity {
     public void onDestroy () {
         super.onDestroy ();
         this.doUnbindService ();
+    }
+
+    public void initGraphHandler (GraphView graph1) {
+        this.graphHandler = new GraphHandler (graph1);
     }
 
 }

@@ -29,8 +29,8 @@ public class DisplaySoundChannelService extends IntentService {
     private Handler       statusHandler;
     private Handler       graphHandler;
     private final IBinder mIBinder = new LocalBinder ();
-    private Messenger messenger;
-    private Messenger graphMessenger;
+    private Messenger     messenger;
+    private Messenger     graphMessenger;
 
     /**
      * A constructor is required, and must call the super IntentService(String)
@@ -46,20 +46,20 @@ public class DisplaySoundChannelService extends IntentService {
      * IntentService stops the service, as appropriate.
      */
     @Override
-    protected void onHandleIntent (Intent intent) {
-        Observer observer = this.createObserver ();
+    protected void onHandleIntent (final Intent intent) {
+        final Observer observer = this.createObserver ();
         try {
             new AndroidRootModule ();
             FluentClient.setDefaultObservers (new Slf4jObserver (LogLevel.INFO), observer);
-            Sound sound = FluentClient.start ().withAPack ("default", this, org.toilelibre.libe.soundtransform.R.raw.class, org.toilelibre.libe.soundtransform.R.raw.defaultpack)
-                    .withFile (new File (Environment.getExternalStorageDirectory ().getPath () + "/before.wav")).convertIntoSound ().stopWithSound ();
-            LineGraphSeries<DataPoint> series = new Sound2GraphSeries ().convert (sound.getChannels () [0], 1024);
+            final Sound sound = FluentClient.start ().withAPack ("default", this, org.toilelibre.libe.soundtransform.R.raw.class, org.toilelibre.libe.soundtransform.R.raw.defaultpack).withFile (new File (Environment.getExternalStorageDirectory ().getPath () + "/before.wav")).convertIntoSound ()
+                    .stopWithSound ();
+            final LineGraphSeries<DataPoint> series = new Sound2GraphSeries ().convert (sound.getChannels () [0], 1024);
             series.setThickness (2);
             this.graphMessenger.send (Message.obtain (this.graphHandler, 1, series));
-        } catch (SoundTransformException e) {
+        } catch (final SoundTransformException e) {
             e.printStackTrace ();
-        } catch (RemoteException e) {
-            e.printStackTrace();
+        } catch (final RemoteException e) {
+            e.printStackTrace ();
         }
     }
 
@@ -68,16 +68,16 @@ public class DisplaySoundChannelService extends IntentService {
 
             @Override
             public void notify (final LogEvent logEvent) {
-                if (DisplaySoundChannelService.this.statusHandler == null ||
-                        logEvent.getLevel ().compareTo (LogLevel.VERBOSE) < 0) {
+                if (DisplaySoundChannelService.this.statusHandler == null || logEvent.getLevel ().compareTo (LogLevel.VERBOSE) < 0) {
                     return;
                 }
                 DisplaySoundChannelService.this.statusHandler.post (new Runnable () {
+                    @Override
                     public void run () {
                         try {
-                            DisplaySoundChannelService.this.messenger.send (Message.obtain (statusHandler, 1, logEvent));
-                        } catch (RemoteException e) {
-                            e.printStackTrace();
+                            DisplaySoundChannelService.this.messenger.send (Message.obtain (DisplaySoundChannelService.this.statusHandler, 1, logEvent));
+                        } catch (final RemoteException e) {
+                            e.printStackTrace ();
                         }
                     }
                 });
@@ -86,12 +86,12 @@ public class DisplaySoundChannelService extends IntentService {
         };
     }
 
-    public void setStatusHandler (Handler handler1) {
+    public void setStatusHandler (final Handler handler1) {
         this.messenger = new Messenger (handler1);
         this.statusHandler = handler1;
     }
 
-    public void setGraphHandler (Handler handler1) {
+    public void setGraphHandler (final Handler handler1) {
         this.graphMessenger = new Messenger (handler1);
         this.graphHandler = handler1;
     }
@@ -103,14 +103,14 @@ public class DisplaySoundChannelService extends IntentService {
     }
 
     @Override
-    public IBinder onBind (Intent intent) {
-        return mIBinder;
+    public IBinder onBind (final Intent intent) {
+        return this.mIBinder;
     }
 
     @Override
     public void onDestroy () {
-        if (statusHandler != null) {
-            statusHandler = null;
+        if (this.statusHandler != null) {
+            this.statusHandler = null;
         }
     }
 }

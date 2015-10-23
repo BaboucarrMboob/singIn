@@ -1,6 +1,5 @@
 package org.toilelibre.libe.singin;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -9,35 +8,47 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
+import com.jjoe64.graphview.GraphView;
 
 public class SoundFragment extends Fragment {
 
+    @Bind (R.id.graph1)
+    GraphView graph1;
+
+    @Bind (R.id.recordButton)
+    Button    recordButton;
+
+    private HomeScreenActivity parentActivity;
+
+    public SoundFragment (HomeScreenActivity homeScreenActivity) {
+        this.parentActivity = homeScreenActivity;
+    }
+
     @Override
-    public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView (final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
 
         final View rootView = inflater.inflate (R.layout.channels, container, false);
-        Button recordButton = (Button) rootView.findViewById (R.id.recordButton);
-        ((com.jjoe64.graphview.GraphView)rootView.findViewById (R.id.graph1)).getViewport ().setScalable (true);
-        ((com.jjoe64.graphview.GraphView)rootView.findViewById (R.id.graph1)).getViewport ().setScrollable (true);
-        ((com.jjoe64.graphview.GraphView)rootView.findViewById (R.id.graph1)).getViewport ().setXAxisBoundsManual (true);
-        recordButton.setOnClickListener (new OnClickListener () {
+        ButterKnife.bind (this, rootView);
+        this.parentActivity.initGraphHandler (this.graph1);
+        this.graph1.getViewport ().setScalable (true);
+        this.graph1.getViewport ().setScrollable (true);
+        this.graph1.getViewport ().setXAxisBoundsManual (true);
+        this.recordButton.setOnClickListener (new OnClickListener () {
 
             @Override
-            public void onClick (View v) {
+            public void onClick (final View v) {
 
-                RecordFragment rif = new RecordFragment ();
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.fragment_container, rif);
+                final RecordFragment rif = new RecordFragment ();
+                final FragmentTransaction ft = SoundFragment.this.getFragmentManager ().beginTransaction ();
+                ft.replace (R.id.fragment_container, rif);
                 ft.commit ();
             }
 
         });
         return rootView;
-    }
-
-    @Override
-    public void onAttach (Activity activity) {
-        super.onAttach (activity);
     }
 
 }
