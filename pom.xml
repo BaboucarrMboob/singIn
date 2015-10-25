@@ -115,6 +115,9 @@
 										</versionRange>
 										<goals>
 											<goal>emma</goal>
+											<goal>
+												generate-sources
+											</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>
@@ -172,19 +175,19 @@
 		<dependency>
 			<groupId>com.android.support</groupId>
 			<artifactId>support-v4</artifactId>
-			<version>23.0.0</version>
+			<version>23.1.0</version>
 			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>com.android.support</groupId>
+			<artifactId>appcompat-v7</artifactId>
+			<version>23.1.0</version>
+			<type>apklib</type>
 		</dependency>
 		<dependency>
 			<groupId>com.jakewharton</groupId>
 			<artifactId>butterknife</artifactId>
 			<version>7.0.1</version>
-		</dependency>
-		<dependency>
-			<groupId>com.android.support</groupId>
-			<artifactId>appcompat-v7</artifactId>
-			<version>23.0.0</version>
-			<type>apklib</type>
 		</dependency>
 		<dependency>
 			<groupId>org.toile-libre.libe</groupId>
