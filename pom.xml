@@ -182,7 +182,25 @@
 			<groupId>com.android.support</groupId>
 			<artifactId>appcompat-v7</artifactId>
 			<version>23.1.0</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>com.android.support</groupId>
+			<artifactId>appcompat-v7</artifactId>
+			<version>23.1.0</version>
 			<type>apklib</type>
+		</dependency>
+		<dependency>
+			<groupId>com.android.support</groupId>
+			<artifactId>recyclerview-v7</artifactId>
+			<version>23.1.0</version>
+			<type>apklib</type>
+		</dependency>
+		<dependency>
+			<groupId>com.android.support</groupId>
+			<artifactId>design</artifactId>
+			<version>23.1.0</version>
+			<type>aar</type>
 		</dependency>
 		<dependency>
 			<groupId>com.jakewharton</groupId>

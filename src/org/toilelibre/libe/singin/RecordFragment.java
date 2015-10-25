@@ -13,13 +13,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class RecordFragment extends Fragment {
 
     @Bind (R.id.btnRecordStart)
-    Button                             recordStart;
+    ImageButton                        recordStart;
     @Bind (R.id.btnRecordStop)
     Button                             recordStop;
 
@@ -60,12 +61,18 @@ public class RecordFragment extends Fragment {
         }
     }
 
+    private void enableButton(ImageButton button, boolean isEnable) {
+        if (button != null) {
+            button.setEnabled (isEnable);
+        }
+	}
+
     private void enableButtons (final View view, final boolean isRecording) {
         this.enableButton (this.recordStart, !isRecording);
         this.enableButton (this.recordStop, isRecording);
     }
 
-    @Override
+	@Override
     public View onCreateView (final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         final View rootView = inflater.inflate (R.layout.record, container, false);
         ButterKnife.bind (this, rootView);
