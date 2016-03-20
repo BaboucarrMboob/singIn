@@ -1,2 +1,2 @@
 # singIn
-![Sing'In !](res/drawable-xxhdpi/gic_launcher-web.png "Sing'In !")
+![Sing'In !](res/drawable-xxhdpi/ic_launcher.png "Sing'In !")
