@@ -24,7 +24,7 @@
 
     <fragment
         android:id="@+id/fragment2"
-        android:name="org.toilelibre.libe.singin.StatusBarFragment"
+        android:name="org.toilelibre.libe.singin.poc.StatusBarFragment"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" 
     	android:layout_gravity="bottom" />

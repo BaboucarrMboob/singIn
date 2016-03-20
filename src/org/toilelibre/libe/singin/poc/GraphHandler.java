@@ -1,4 +1,4 @@
-package org.toilelibre.libe.singin;
+package org.toilelibre.libe.singin.poc;
 
 import android.os.Handler;
 import android.os.Message;
@@ -6,7 +6,7 @@ import android.os.Message;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.Series;
 
-class GraphHandler extends Handler { // Handler of incoming messages from clients.
+public class GraphHandler extends Handler { // Handler of incoming messages from clients.
     private final GraphView graphView;
 
     public GraphHandler (final GraphView graphView) {

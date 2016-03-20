@@ -1,10 +1,10 @@
-package org.toilelibre.libe.singin;
+package org.toilelibre.libe.singin.poc;
 
 import android.os.Handler;
 import android.os.Message;
 import android.widget.TextView;
 
-class StatusTextHandler extends Handler { // Handler of incoming messages from clients.
+public class StatusTextHandler extends Handler { // Handler of incoming messages from clients.
     private final TextView statusTextView;
 
     public StatusTextHandler (final TextView statusTextView1) {

@@ -1,4 +1,6 @@
-package org.toilelibre.libe.singin;
+package org.toilelibre.libe.singin.poc;
+
+import org.toilelibre.libe.singin.R;
 
 import com.jjoe64.graphview.GraphView;
 
@@ -21,7 +23,7 @@ public class HomeScreenActivity extends Activity {
     @Override
     protected void onCreate (final Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
-        this.setContentView (R.layout.activity_home_screen);
+        this.setContentView (R.layout.poc_activity_home_screen);
         ButterKnife.bind (this);
     }
 

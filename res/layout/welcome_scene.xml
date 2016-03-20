@@ -1,0 +1,22 @@
+<LinearLayout android:id="@+id/welcome_scene"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" 
+        xmlns:android="http://schemas.android.com/apk/res/android"
+    	xmlns:app="http://schemas.android.com/apk/res-auto">
+            <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/btnRecordSound"
+			        android:src="@drawable/record_sound"
+        			app:fabSize="normal"
+        			app:backgroundTint="@color/yellow"
+        			android:layout_width="100dp"
+        			android:layout_height="100dp" />
+            <Space android:layout_height="100dp" 
+                android:layout_width="20dp"></Space>
+            <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/btnOpenProject"
+			        android:src="@drawable/open_project"
+        			app:fabSize="normal"
+        			app:backgroundTint="@color/yellow"
+        			android:layout_width="100dp"
+        			android:layout_height="100dp" />
+	</LinearLayout>

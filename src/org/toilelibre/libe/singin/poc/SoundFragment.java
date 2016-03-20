@@ -1,4 +1,4 @@
-package org.toilelibre.libe.singin;
+package org.toilelibre.libe.singin.poc;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -10,6 +10,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+
+import org.toilelibre.libe.singin.R;
+import org.toilelibre.libe.singin.R.id;
+import org.toilelibre.libe.singin.R.layout;
 
 import com.jjoe64.graphview.GraphView;
 
@@ -30,7 +34,7 @@ public class SoundFragment extends Fragment {
     @Override
     public View onCreateView (final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
 
-        final View rootView = inflater.inflate (R.layout.channels, container, false);
+        final View rootView = inflater.inflate (R.layout.poc_channels, container, false);
         ButterKnife.bind (this, rootView);
         this.parentActivity.initGraphHandler (this.graph1);
         this.graph1.getViewport ().setScalable (true);

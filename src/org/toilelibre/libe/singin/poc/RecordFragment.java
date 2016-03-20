@@ -1,4 +1,6 @@
-package org.toilelibre.libe.singin;
+package org.toilelibre.libe.singin.poc;
+
+import org.toilelibre.libe.singin.R;
 
 import android.app.Fragment;
 import android.content.ComponentName;
@@ -74,7 +76,7 @@ public class RecordFragment extends Fragment {
 
 	@Override
     public View onCreateView (final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-        final View rootView = inflater.inflate (R.layout.record, container, false);
+        final View rootView = inflater.inflate (R.layout.poc_record, container, false);
         ButterKnife.bind (this, rootView);
         super.onCreate (savedInstanceState);
 
