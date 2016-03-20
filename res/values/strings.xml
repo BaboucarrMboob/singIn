@@ -2,7 +2,10 @@
 <resources>
 
     <string name="app_name">SingIn</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
 
+    <string name="welcome_back">Welcome back !</string>
+    <string name="record_sound">Record a song</string>
+    <string name="open_project">Open a project</string>
+    
+    <string name="sing_now">Sing now !</string>
 </resources>

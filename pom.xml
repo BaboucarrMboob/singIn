@@ -44,7 +44,7 @@
 						<debug>true</debug>
 					</run>
 					<resourceDirectory>${basedir}/res</resourceDirectory>
-					<assetsDirectory>${basedir}/src/main/assets</assetsDirectory>
+					<assetsDirectory>${basedir}/assets</assetsDirectory>
 					<androidManifestFile>${basedir}/AndroidManifest.xml</androidManifestFile>
 					<genDirectory>${basedir}/gen</genDirectory>
 					<genDirectoryAidl>${basedir}/gen</genDirectoryAidl>
