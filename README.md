@@ -1,2 +1,2 @@
 # singIn
-![Sing'In !](res/drawable-xxhdpi/ic_launcher.png "Sing'In !")
+![Sing'In !](svg/ic_launcher.svg "Sing'In !")
