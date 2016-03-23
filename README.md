@@ -1,2 +1,2 @@
 # singIn
-![Sing'In !](res/drawable-xxhdpi/ic_launcher.png "Sing'In !")
+![Sing'In !](https://cdn.rawgit.com/libetl/singin/master/svg/ic_launcher.svg "Sing'In !")
