@@ -22,4 +22,10 @@
             android:text="@string/sing_now"
             android:textSize="40sp" />
     </LinearLayout>
+    <ImageView
+            android:id="@+id/earAnim1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ear"
+            android:contentDescription="@string/ear_description" />
 </LinearLayout>
