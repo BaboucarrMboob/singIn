@@ -36,10 +36,7 @@ public class WelcomeScreenActivity extends Activity {
 
             @Override
             public void onClick (View v) {
-                WelcomeScreenActivity activity = WelcomeScreenActivity.this;
-                Transitions.recordScene (activity);
-                ButterKnife.bind (activity);
-                activity.earAnim.startRippleAnimation ();
+                WelcomeScreenActivity.this.onRecordSound ();
             }
             
         });
@@ -51,6 +48,12 @@ public class WelcomeScreenActivity extends Activity {
             }
             
         });
+    }
+
+    protected void onRecordSound () {
+        Transitions.recordScene (this);
+        ButterKnife.bind (this);
+        this.earAnim.startRippleAnimation ();
     }
     
     
