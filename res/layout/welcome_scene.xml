@@ -37,7 +37,7 @@
             android:orientation="vertical" >
 
             <android.support.design.widget.FloatingActionButton
-                android:id="@+id/btnRecordSound"
+                android:id="@+id/btn_record_sound"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:src="@drawable/record_sound"
@@ -66,7 +66,7 @@
             android:orientation="vertical" >
 
             <android.support.design.widget.FloatingActionButton
-                android:id="@+id/btnOpenProject"
+                android:id="@+id/btn_open_project"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:src="@drawable/open_project"

@@ -15,11 +15,11 @@
         android:orientation="horizontal" >
 
         <org.toilelibre.libe.singin.text.TextView
-            android:id="@+id/textView1"
+            android:id="@+id/ready_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="@string/sing_now"
+            android:text="@string/ready"
             android:textSize="40sp" />
     </LinearLayout>
 
@@ -27,7 +27,7 @@
         android:id="@+id/rippleEar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal">
+        android:layout_gravity="center_horizontal" >
 
         <ImageView
             android:id="@+id/earAnim"
@@ -35,6 +35,34 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/ear_description"
             android:src="@drawable/ear" />
+
+        <com.romainpiel.shimmer.ShimmerTextView
+            android:id="@+id/countdown_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:gravity="center"
+            android:shadowColor="@color/white"
+            android:text="@string/countdown_text"
+            android:textSize="40sp" />
     </com.skyfishjy.library.RippleBackground>
+
+    <LinearLayout
+        android:id="@+id/record_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_gravity="end"
+        android:gravity="end"
+        android:orientation="horizontal" >
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/btn_record_cancel_button"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:clickable="true"
+            android:scaleType="centerCrop"
+            android:src="@+drawable/back"
+            app:backgroundTint="@color/turquoise" />
+    </LinearLayout>
 
 </LinearLayout>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="1000"
+   height="1000"
+   viewBox="0 0 1000 1000"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="back.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.35000001"
+     inkscape:cx="392.99481"
+     inkscape:cy="549.39132"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     units="px"
+     inkscape:window-width="1366"
+     inkscape:window-height="706"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     showguides="false" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:groupmode="layer"
+     id="layer6"
+     inkscape:label="Layer 6" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-52.36216)">
+    <path
+       style="fill:#ffffff;fill-opacity:0.25098041;stroke:none;stroke-opacity:1"
+       d="m 499.33502,52.693961 a 499.33154,499.8344 0 0 1 2.1892,0.07634 l 0,999.481396 a 499.33154,499.8344 0 0 1 -2.1892,0.1105 A 499.33154,499.8344 0 0 1 -3.1728446e-5,552.53023 499.33154,499.8344 0 0 1 499.33502,52.693961 Z"
+       id="path4186"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4211"
+       d="m 500.83823,52.693961 a 499.33154,499.8344 0 0 0 -2.1892,0.07634 l 0,999.481396 a 499.33154,499.8344 0 0 0 2.1892,0.1105 A 499.33154,499.8344 0 0 0 1000.1733,552.53023 499.33154,499.8344 0 0 0 500.83823,52.693961 Z"
+       style="fill:#57c2ae;fill-opacity:0;stroke:none;stroke-opacity:1" />
+    <path
+       style="fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 499.31056,933.75497 c 198.16199,-182.96733 226.05248,-306.91561 9.22167,-337.93904 -5.67293,82.1169 -0.32245,16.06798 -9.87232,184.68018 C 346.24063,666.52538 227.95084,568.51253 102.79914,468.42352 334.08948,290.96372 334.62852,285.18487 498.65991,158.09865 c 0,125.45047 -0.10276,28.94228 -0.1936,155.35662 598.38749,22.78157 451.94897,668.4108 0.84425,620.2997 z"
+       id="path3371"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccc" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Layer 2"
+     transform="translate(0,-52.36216)">
+    <g
+       id="g4221"
+       transform="matrix(2.1680394,0,0,2.1749927,-239.44136,-381.85429)">
+      <path
+         sodipodi:nodetypes="cccccccc"
+         inkscape:connector-curvature="0"
+         id="path3375"
+         d="M 567.70048,453.34175 C 453.15012,341.25608 452.13235,343.87753 340.41616,248.28079 272.62735,301.65988 209.8841,348.56683 157.82255,390.96389 c 68.85097,71.26442 138.85034,138.29836 207.85267,207.33474 l -24.75021,6.54106 c 0,0 0.0121,-0.44781 0.0121,-0.11109 19.11815,19.96601 35.14362,28.91962 54.53759,46.09797 97.18402,-15.68539 168.51044,-118.77189 172.22575,-197.48482 z"
+         style="fill:#000000;fill-opacity:0.1254902;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    </g>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="Layer 3"
+     transform="translate(0,-52.36216)" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer4"
+     inkscape:label="Layer 4"
+     transform="translate(0,-52.36216)" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer5"
+     inkscape:label="Layer 5"
+     transform="translate(0,-52.36216)" />
+</svg>

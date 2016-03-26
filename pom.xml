@@ -337,6 +337,12 @@
 			<type>aar</type>
 		</dependency>
 		<dependency>
+			<groupId>com.romainpiel.shimmer</groupId>
+			<artifactId>library</artifactId>
+			<version>1.4.0</version>
+			<type>aar</type>
+		</dependency>
+		<dependency>
 			<groupId>org.toile-libre.libe</groupId>
 			<artifactId>soundtransform</artifactId>
 			<version>1.0.20</version>
