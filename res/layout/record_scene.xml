@@ -46,15 +46,11 @@
             android:text="@string/countdown_text"
             android:textSize="40sp" />
     </com.skyfishjy.library.RippleBackground>
-
     <LinearLayout
-        android:id="@+id/record_cancel"
+        android:id="@+id/buttons"
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:layout_gravity="end"
-        android:gravity="end"
         android:orientation="horizontal" >
-
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/btn_record_cancel_button"
             android:layout_width="100dp"
@@ -62,7 +58,19 @@
             android:clickable="true"
             android:scaleType="centerCrop"
             android:src="@+drawable/back"
-            app:backgroundTint="@color/turquoise" />
-    </LinearLayout>
+            app:backgroundTint="@color/turquoise" 
+        	android:gravity="start"/>
+        <Space android:layout_width="100dp"
+            android:layout_height="100dp"/>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/btn_validate_record_button"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:clickable="true"
+            android:scaleType="centerCrop"
+            android:src="@+drawable/thumb_up"
+            app:backgroundTint="@color/lightred"
+        	android:gravity="end"/>
+        </LinearLayout>
 
 </LinearLayout>

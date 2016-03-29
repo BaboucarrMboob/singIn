@@ -5,6 +5,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import org.toilelibre.libe.singin.scenes.Transitions;
+import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
+import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 
 import com.romainpiel.shimmer.Shimmer;
 import com.romainpiel.shimmer.ShimmerTextView;
@@ -41,6 +45,9 @@ public class WelcomeScreenActivity extends Activity {
     @Bind(R.id.countdown_textview)
     @Nullable
     ShimmerTextView countdownText;
+    
+    private Sound  sound;
+    private Object recordMonitor = new Object ();
     
     private Timer timer = null;
     private Handler handler = null;
@@ -136,6 +143,11 @@ public class WelcomeScreenActivity extends Activity {
     }
     
     protected void startRecording () {
+        /*try {
+            this.sound = FluentClient.start ().whileRecordingASound (new StreamInfo (1, -1, 2, 8000, false, true, null), this.recordMonitor).stopWithSound ();
+        } catch (SoundTransformException e) {
+            throw new RuntimeException (e);
+        }*/
     }
 
 }
