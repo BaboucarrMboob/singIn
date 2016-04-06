@@ -5,4 +5,11 @@
     <color name="yellow">#ec9e00</color>
 	<color name="turquoise">#57c2ae</color>
 	<color name="lightred">#e0584a</color>
+
+  <color name="inside_progress">#ff6c4d70</color>
+  <color name="external_progress">#9C27B0</color>
+  <color name="bottom_velocimeter">#e515171d</color>
+  <color name="internal_velocimeter">#ffb4b4b4</color>
+  <color name="needle">#e0584a</color>
+  <color name="digital_number">#ffdcefff</color>
 </resources>

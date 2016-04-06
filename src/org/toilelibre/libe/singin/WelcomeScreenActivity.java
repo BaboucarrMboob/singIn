@@ -9,7 +9,9 @@ import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
+import org.toilelibre.libe.soundtransform.model.record.AmplitudeObserver;
 
+import com.github.glomadrian.velocimeterlibrary.VelocimeterView;
 import com.romainpiel.shimmer.Shimmer;
 import com.romainpiel.shimmer.ShimmerTextView;
 import com.skyfishjy.library.RippleBackground;
@@ -45,9 +47,12 @@ public class WelcomeScreenActivity extends Activity {
     @Bind(R.id.countdown_textview)
     @Nullable
     ShimmerTextView countdownText;
+    @Bind(R.id.velocimeter)
+    @Nullable
+    VelocimeterView velocimeterView;
     
     private Sound  sound;
-    private Object recordMonitor = new Object ();
+    private Object stopRecording = new Object ();
     
     private Timer timer = null;
     private Handler handler = null;
@@ -86,12 +91,14 @@ public class WelcomeScreenActivity extends Activity {
         Transitions.recordScene (this);
         ButterKnife.bind (this);
         this.startTimerForSoundRecording ();
+        this.velocimeterView.setVisibility (View.INVISIBLE);
         this.readyText.setText (R.string.ready);
         this.cancelRecord.setOnClickListener (new OnClickListener () {
 
             @Override
             public void onClick (View v) {
                 WelcomeScreenActivity.this.cancelTimer();
+                WelcomeScreenActivity.this.stopRecording.notifyAll ();
                 WelcomeScreenActivity.this.earAnim.stopRippleAnimation ();
                 WelcomeScreenActivity.this.onWelcome ();
             }
@@ -116,6 +123,7 @@ public class WelcomeScreenActivity extends Activity {
                         public void run () {
                             WelcomeScreenActivity.this.readyText.setText (R.string.sing_now);
                             WelcomeScreenActivity.this.countdownText.setText ("");
+                            WelcomeScreenActivity.this.velocimeterView.setVisibility (View.VISIBLE);
                             WelcomeScreenActivity.this.earAnim.startRippleAnimation ();
                     }});
                     this.cancel ();
@@ -135,6 +143,7 @@ public class WelcomeScreenActivity extends Activity {
         if (this.timer != null) {
             this.timer.cancel ();
             this.shimmer.cancel ();
+            this.velocimeterView.setVisibility (View.INVISIBLE);
             this.timer = null;
             this.handler = null;
             this.shimmer = null;
@@ -143,11 +152,21 @@ public class WelcomeScreenActivity extends Activity {
     }
     
     protected void startRecording () {
-        /*try {
-            this.sound = FluentClient.start ().whileRecordingASound (new StreamInfo (1, -1, 2, 8000, false, true, null), this.recordMonitor).stopWithSound ();
+        try {
+            this.sound = FluentClient.start ().whileRecordingASound (
+                    new StreamInfo (1, -1, 2, 8000, false, true, null), new AmplitudeObserver () {
+                        @Override
+                        public void update (final float soundLevel) {
+                            WelcomeScreenActivity.this.handler.post (new Runnable () {
+                                public void run () {
+                                    WelcomeScreenActivity.this.velocimeterView.setValue (soundLevel);
+                            }});
+                        }
+                    }, this.stopRecording).stopWithSound ();
         } catch (SoundTransformException e) {
+            this.stopRecording.notifyAll ();
             throw new RuntimeException (e);
-        }*/
+        }
     }
 
 }

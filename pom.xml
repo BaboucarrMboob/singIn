@@ -7,6 +7,13 @@
 	<name>SingIn</name>
 	<packaging>apk</packaging>
 	<description>App to compose a song with the help of your voice</description>
+	<repositories>
+		<repository>
+			<id>repositoryForVuMeter</id>
+			<name>repositoryForVuMeter</name>
+			<url>http://dl.bintray.com/glomadrian/maven</url>
+		</repository>
+	</repositories>
 	<build>
 		<directory>bin</directory>
 		<outputDirectory>bin/classes</outputDirectory>
@@ -299,12 +306,6 @@
 			<groupId>com.android.support</groupId>
 			<artifactId>appcompat-v7</artifactId>
 			<version>23.1.0</version>
-			<type>jar</type>
-		</dependency>
-		<dependency>
-			<groupId>com.android.support</groupId>
-			<artifactId>appcompat-v7</artifactId>
-			<version>23.1.0</version>
 			<type>apklib</type>
 		</dependency>
 		<dependency>
@@ -345,8 +346,20 @@
 		<dependency>
 			<groupId>org.toile-libre.libe</groupId>
 			<artifactId>soundtransform</artifactId>
-			<version>1.0.20</version>
+			<version>1.0.21-SNAPSHOT</version>
 			<type>aar</type>
+		</dependency>
+		<dependency>
+			<groupId>com.github.glomadrian</groupId>
+			<artifactId>velocimeterlibrary</artifactId>
+			<version>1.0</version>
+			<type>aar</type>
+			<exclusions>
+				<exclusion>
+					<artifactId>appcompat-v7</artifactId>
+					<groupId>com.android.support</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 	<properties>
