@@ -98,7 +98,9 @@ public class WelcomeScreenActivity extends Activity {
             @Override
             public void onClick (View v) {
                 WelcomeScreenActivity.this.cancelTimer();
-                WelcomeScreenActivity.this.stopRecording.notifyAll ();
+                synchronized (WelcomeScreenActivity.this.stopRecording) {
+                    WelcomeScreenActivity.this.stopRecording.notifyAll ();
+                }
                 WelcomeScreenActivity.this.earAnim.stopRippleAnimation ();
                 WelcomeScreenActivity.this.onWelcome ();
             }
@@ -145,7 +147,6 @@ public class WelcomeScreenActivity extends Activity {
             this.shimmer.cancel ();
             this.velocimeterView.setVisibility (View.INVISIBLE);
             this.timer = null;
-            this.handler = null;
             this.shimmer = null;
         }
         
@@ -159,12 +160,17 @@ public class WelcomeScreenActivity extends Activity {
                         public void update (final float soundLevel) {
                             WelcomeScreenActivity.this.handler.post (new Runnable () {
                                 public void run () {
-                                    WelcomeScreenActivity.this.velocimeterView.setValue (soundLevel);
+                                    VelocimeterView view = WelcomeScreenActivity.this.velocimeterView;
+                                    if (view != null) {
+                                        WelcomeScreenActivity.this.velocimeterView.setValue (soundLevel);
+                                    }
                             }});
                         }
                     }, this.stopRecording).stopWithSound ();
         } catch (SoundTransformException e) {
-            this.stopRecording.notifyAll ();
+            synchronized (this.stopRecording) {
+                this.stopRecording.notifyAll ();
+            }
             throw new RuntimeException (e);
         }
     }
