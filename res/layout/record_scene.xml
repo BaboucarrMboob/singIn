@@ -16,10 +16,19 @@
 
         <org.toilelibre.libe.singin.text.TextView
             android:id="@+id/ready_textview"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
             android:text="@string/ready"
+            android:textSize="40sp" />
+        
+        <com.romainpiel.shimmer.ShimmerTextView
+            android:id="@+id/countdown_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:shadowColor="@color/white"
+            android:text="@string/countdown_text"
             android:textSize="40sp" />
     </LinearLayout>
 
@@ -64,15 +73,6 @@
                 app:units="DB" />
         </FrameLayout>
 
-        <com.romainpiel.shimmer.ShimmerTextView
-            android:id="@+id/countdown_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:gravity="center"
-            android:shadowColor="@color/white"
-            android:text="@string/countdown_text"
-            android:textSize="40sp" />
     </com.skyfishjy.library.RippleBackground>
 
     <LinearLayout
