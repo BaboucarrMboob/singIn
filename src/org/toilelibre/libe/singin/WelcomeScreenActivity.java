@@ -23,6 +23,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -70,7 +71,6 @@ public class WelcomeScreenActivity extends Activity {
         Transitions.welcomeScene (this);
         ButterKnife.bind (this);
         this.recordASound.setOnClickListener (new OnClickListener () {
-
             @Override
             public void onClick (View v) {
                 WelcomeScreenActivity.this.onRecordSound ();
@@ -78,10 +78,8 @@ public class WelcomeScreenActivity extends Activity {
             
         });
         this.openAProject.setOnClickListener (new OnClickListener () {
-
             @Override
             public void onClick (View v) {
-                
             }
             
         });
@@ -119,13 +117,13 @@ public class WelcomeScreenActivity extends Activity {
             @Override
             public void run () {
                 if (occurence == 0) {
-                    WelcomeScreenActivity.this.startRecording ();
+                    new Thread () {public void run () {WelcomeScreenActivity.this.startRecording ();}}.start();
                     WelcomeScreenActivity.this.handler.post (new Runnable () {
-
                         public void run () {
                             WelcomeScreenActivity.this.readyText.setText (R.string.sing_now);
                             WelcomeScreenActivity.this.countdownText.setText ("");
                             WelcomeScreenActivity.this.velocimeterView.setVisibility (View.VISIBLE);
+                            WelcomeScreenActivity.this.velocimeterView.setProgress (new DecelerateInterpolator (10));
                             WelcomeScreenActivity.this.earAnim.startRippleAnimation ();
                     }});
                     this.cancel ();
@@ -162,7 +160,7 @@ public class WelcomeScreenActivity extends Activity {
                                 public void run () {
                                     VelocimeterView view = WelcomeScreenActivity.this.velocimeterView;
                                     if (view != null) {
-                                        WelcomeScreenActivity.this.velocimeterView.setValue (soundLevel);
+                                        WelcomeScreenActivity.this.velocimeterView.setValue (soundLevel, false);
                                     }
                             }});
                         }
