@@ -12,4 +12,6 @@
   <color name="internal_velocimeter">#ff07527e</color>
   <color name="needle">#e0584a</color>
   <color name="digital_number">#ffdcefff</color>
+  
+  <color name="background_red">#fffcae88</color>
 </resources>

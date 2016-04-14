@@ -13,6 +13,10 @@
 			<name>repositoryForVuMeter</name>
 			<url>http://dl.bintray.com/glomadrian/maven</url>
 		</repository>
+		<repository>
+		    <id>jitpack.io</id>
+		    <url>https://jitpack.io</url>
+		</repository>
 	</repositories>
 	<build>
 		<directory>bin</directory>
@@ -360,6 +364,12 @@
 					<groupId>com.android.support</groupId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		<dependency>
+	    	<groupId>com.github.ozodrukh</groupId>
+	    	<artifactId>CircularReveal</artifactId>
+	    	<version>1.3.1</version>
+			<type>aar</type>
 		</dependency>
 	</dependencies>
 	<properties>

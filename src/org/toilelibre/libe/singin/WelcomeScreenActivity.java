@@ -23,10 +23,15 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.codetail.animation.SupportAnimator;
+import io.codetail.animation.ViewAnimationUtils;
+import io.codetail.widget.RevealFrameLayout;
 
 public class WelcomeScreenActivity extends Activity {
 
@@ -51,6 +56,15 @@ public class WelcomeScreenActivity extends Activity {
     @Bind(R.id.velocimeter)
     @Nullable
     VelocimeterView velocimeterView;
+    @Bind(R.id.btn_validate_record_button)
+    @Nullable
+    FloatingActionButton validateSoundRecord;
+    @Bind(R.id.reveal_record_frame_layout)
+    @Nullable
+    RevealFrameLayout revealFrameLayout;
+    @Bind(R.id.edition_screen)
+    @Nullable
+    LinearLayout editionScreenLayout;
     
     private Sound  sound;
     private Object stopRecording = new Object ();
@@ -90,9 +104,9 @@ public class WelcomeScreenActivity extends Activity {
         ButterKnife.bind (this);
         this.startTimerForSoundRecording ();
         this.velocimeterView.setVisibility (View.INVISIBLE);
+        this.editionScreenLayout.setVisibility (View.INVISIBLE);
         this.readyText.setText (R.string.ready);
         this.cancelRecord.setOnClickListener (new OnClickListener () {
-
             @Override
             public void onClick (View v) {
                 WelcomeScreenActivity.this.cancelTimer();
@@ -101,6 +115,18 @@ public class WelcomeScreenActivity extends Activity {
                 }
                 WelcomeScreenActivity.this.earAnim.stopRippleAnimation ();
                 WelcomeScreenActivity.this.onWelcome ();
+            }
+            
+        });
+        this.validateSoundRecord.setOnClickListener (new OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                editionScreenLayout.setVisibility (View.VISIBLE);
+                SupportAnimator animator =
+                        ViewAnimationUtils.createCircularReveal(editionScreenLayout, 200, 200, 0, 1000);
+                animator.setInterpolator(new AccelerateDecelerateInterpolator());
+                animator.setDuration(1500);
+                animator.start();
             }
             
         });
