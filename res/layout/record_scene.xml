@@ -4,12 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
+    android:gravity="center"
     android:orientation="vertical" >
 
     <io.codetail.widget.RevealFrameLayout
         android:id="@+id/reveal_record_frame_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_gravity="center"
         android:gravity="center" >
 
         <LinearLayout
@@ -19,7 +21,6 @@
             android:layout_gravity="center"
             android:background="@color/background_red"
             android:gravity="center"
-            android:orientation="horizontal"
             android:visibility="invisible" >
 
             <org.toilelibre.libe.singin.text.TextView
@@ -35,6 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
+        android:gravity="center"
         android:orientation="vertical" >
 
         <LinearLayout
@@ -65,16 +67,17 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-         	android:layout_height="0dip" android:layout_weight="1"
+            android:layout_height="0dip"
             android:layout_gravity="center"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_weight="1"
+            android:gravity="center" >
 
             <com.skyfishjy.library.RippleBackground
                 android:id="@+id/rippleEar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal" >
+                android:layout_gravity="center"
+                android:gravity="center" >
 
                 <ImageView
                     android:id="@+id/earAnim"
@@ -84,37 +87,38 @@
                     android:gravity="center"
                     android:scaleType="center"
                     android:src="@drawable/ear" />
-
-                <com.github.glomadrian.velocimeterlibrary.VelocimeterView
-                    android:id="@+id/velocimeter"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center_horizontal"
-                    app:bottom_velocimeter_color="@color/bottom_velocimeter"
-                    app:digital_number_blur_color="@color/digital_number"
-                    app:digital_number_color="@color/digital_number"
-                    app:external_progress_color="@color/external_progress"
-                    app:inside_progress_color="@color/inside_progress"
-                    app:internal_velocimeter_color="@color/internal_velocimeter"
-                    app:max="100"
-                    app:needle_blur_color="@color/needle"
-                    app:needle_color="@color/needle"
-                    app:progress_blur_color="@color/external_progress"
-                    app:units="DB" />
             </com.skyfishjy.library.RippleBackground>
+
+            <com.github.glomadrian.velocimeterlibrary.VelocimeterView
+                android:id="@+id/velocimeter"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                app:bottom_velocimeter_color="@color/bottom_velocimeter"
+                app:digital_number_blur_color="@color/digital_number"
+                app:digital_number_color="@color/digital_number"
+                app:external_progress_color="@color/external_progress"
+                app:inside_progress_color="@color/inside_progress"
+                app:internal_velocimeter_color="@color/internal_velocimeter"
+                app:max="100"
+                app:needle_blur_color="@color/needle"
+                app:needle_color="@color/needle"
+                app:progress_blur_color="@color/external_progress"
+                app:units="DB" />
         </FrameLayout>
 
         <LinearLayout
             android:id="@+id/buttons"
             android:layout_width="match_parent"
             android:layout_height="120dp"
-            android:orientation="horizontal"
-            android:gravity="bottom">
+            android:gravity="bottom"
+            android:orientation="horizontal" >
+
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/btn_record_cancel_button"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
                 android:clickable="true"
                 android:gravity="start"
                 android:scaleType="centerCrop"
@@ -122,13 +126,14 @@
                 app:backgroundTint="@color/turquoise" />
 
             <Space
-                android:layout_width="100dp"
-                android:layout_height="100dp" />
+                android:layout_width="0dip"
+                android:layout_height="120dp"
+                android:layout_weight="1" />
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/btn_validate_record_button"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
                 android:layout_gravity="end"
                 android:clickable="true"
                 android:gravity="end"

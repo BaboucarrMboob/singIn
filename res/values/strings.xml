@@ -12,5 +12,6 @@
     <string name="ear_description">&#8230;recording&#8230;</string>
     <string name="countdown_text">&#8230;</string>
     <string name="impressive">Wow ! Impressive !</string>
+    <string name="nevermind">&#8230; Never mind &#8230;</string>
     
 </resources>

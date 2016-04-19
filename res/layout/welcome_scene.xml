@@ -2,50 +2,40 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/welcome_scene"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:gravity="center"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-    	android:gravity="center"
-        android:layout_gravity="center"
-        android:orientation="horizontal" 
-    	android:id="@+id/welcome_back">
-
-        <org.toilelibre.libe.singin.text.TextView
+    <org.toilelibre.libe.singin.text.TextView
             android:id="@+id/textView1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+	    	android:gravity="center"
             android:text="@string/welcome_back"
             android:textSize="40sp" />
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+	    android:gravity="center"
         android:orientation="horizontal" 
     	android:id="@+id/welcome_actions">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:orientation="vertical" >
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/btn_record_sound"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
                 android:src="@drawable/record_sound"
                 app:backgroundTint="@color/yellow"
                 android:clickable="true"/>
 
             <org.toilelibre.libe.singin.text.TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:text="@string/record_sound"
@@ -56,25 +46,24 @@
 
         <Space
             android:layout_width="20dp"
-            android:layout_height="150dp" >
+            android:layout_height="200dp" >
         </Space>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:orientation="vertical" >
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/btn_open_project"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
                 android:src="@drawable/open_project"
                 app:backgroundTint="@color/yellow"
                 android:clickable="true"/>
 
             <org.toilelibre.libe.singin.text.TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:text="@string/open_project"

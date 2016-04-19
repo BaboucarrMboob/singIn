@@ -17,6 +17,7 @@ import com.romainpiel.shimmer.ShimmerTextView;
 import com.skyfishjy.library.RippleBackground;
 
 import android.app.Activity;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -65,6 +66,9 @@ public class WelcomeScreenActivity extends Activity {
     @Bind(R.id.edition_screen)
     @Nullable
     LinearLayout editionScreenLayout;
+    @Bind(R.id.edition_screen_text_view)
+    @Nullable
+    TextView endOfRecordingTextView;
     
     private Sound  sound;
     private Object stopRecording = new Object ();
@@ -109,6 +113,7 @@ public class WelcomeScreenActivity extends Activity {
         this.cancelRecord.setOnClickListener (new OnClickListener () {
             @Override
             public void onClick (View v) {
+                endOfRecordingTextView.setText (R.string.nevermind);
                 WelcomeScreenActivity.this.cancelTimer();
                 synchronized (WelcomeScreenActivity.this.stopRecording) {
                     WelcomeScreenActivity.this.stopRecording.notifyAll ();
@@ -121,9 +126,13 @@ public class WelcomeScreenActivity extends Activity {
         this.validateSoundRecord.setOnClickListener (new OnClickListener () {
             @Override
             public void onClick (View v) {
+                endOfRecordingTextView.setText (R.string.impressive);
                 editionScreenLayout.setVisibility (View.VISIBLE);
+                int sizeOfTheButton = validateSoundRecord.getWidth ();
+                int screenDiagonal = (int) Math.sqrt (Math.pow (editionScreenLayout.getWidth (), 2) + Math.pow (editionScreenLayout.getHeight (), 2));
                 SupportAnimator animator =
-                        ViewAnimationUtils.createCircularReveal(editionScreenLayout, 200, 200, 0, 1000);
+                        ViewAnimationUtils.createCircularReveal(
+                                editionScreenLayout, editionScreenLayout.getWidth () - sizeOfTheButton / 2, editionScreenLayout.getHeight () - sizeOfTheButton / 2, sizeOfTheButton, screenDiagonal);
                 animator.setInterpolator(new AccelerateDecelerateInterpolator());
                 animator.setDuration(1500);
                 animator.start();
