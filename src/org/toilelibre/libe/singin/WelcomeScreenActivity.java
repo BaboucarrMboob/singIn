@@ -1,6 +1,5 @@
 package org.toilelibre.libe.singin;
 
-
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -17,7 +16,6 @@ import com.romainpiel.shimmer.ShimmerTextView;
 import com.skyfishjy.library.RippleBackground;
 
 import android.app.Activity;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -26,6 +24,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import butterknife.Bind;
@@ -35,47 +34,50 @@ import io.codetail.animation.ViewAnimationUtils;
 import io.codetail.widget.RevealFrameLayout;
 
 public class WelcomeScreenActivity extends Activity {
-
-    @Bind(R.id.btn_record_cancel_button)
+    
+    @Bind (R.id.btn_record_cancel_button)
     @Nullable
     FloatingActionButton cancelRecord;
-    @Bind(R.id.btn_record_sound)
+    @Bind (R.id.btn_record_sound)
     @Nullable
     FloatingActionButton recordASound;
-    @Bind(R.id.btn_open_project)
+    @Bind (R.id.btn_open_project)
     @Nullable
     FloatingActionButton openAProject;
-    @Bind(R.id.rippleEar)
+    @Bind (R.id.earAnim)
     @Nullable
-    RippleBackground earAnim;
-    @Bind(R.id.ready_textview)
+    ImageView            earAnimPicture;
+    @Bind (R.id.rippleEar)
     @Nullable
-    TextView readyText;
-    @Bind(R.id.countdown_textview)
+    RippleBackground     earAnim;
+    @Bind (R.id.ready_textview)
     @Nullable
-    ShimmerTextView countdownText;
-    @Bind(R.id.velocimeter)
+    TextView             readyText;
+    @Bind (R.id.countdown_textview)
     @Nullable
-    VelocimeterView velocimeterView;
-    @Bind(R.id.btn_validate_record_button)
+    ShimmerTextView      countdownText;
+    @Bind (R.id.velocimeter)
+    @Nullable
+    VelocimeterView      velocimeterView;
+    @Bind (R.id.btn_validate_record_button)
     @Nullable
     FloatingActionButton validateSoundRecord;
-    @Bind(R.id.reveal_record_frame_layout)
+    @Bind (R.id.reveal_record_frame_layout)
     @Nullable
-    RevealFrameLayout revealFrameLayout;
-    @Bind(R.id.edition_screen)
+    RevealFrameLayout    revealFrameLayout;
+    @Bind (R.id.edition_screen)
     @Nullable
-    LinearLayout editionScreenLayout;
-    @Bind(R.id.edition_screen_text_view)
+    LinearLayout         editionScreenLayout;
+    @Bind (R.id.edition_screen_text_view)
     @Nullable
-    TextView endOfRecordingTextView;
+    TextView             endOfRecordingTextView;
     
     private Sound  sound;
     private Object stopRecording = new Object ();
     
-    private Timer timer = null;
-    private Handler handler = null;
-    private Shimmer shimmer;
+    private Timer            timer     = null;
+    private Handler          handler   = null;
+    private Shimmer          shimmer;
     private static final int COUNTDOWN = 5;
     
     @Override
@@ -102,23 +104,15 @@ public class WelcomeScreenActivity extends Activity {
             
         });
     }
-
+    
     private void onRecordSound () {
         Transitions.recordScene (this);
         ButterKnife.bind (this);
-        this.startTimerForSoundRecording ();
-        this.velocimeterView.setVisibility (View.INVISIBLE);
-        this.editionScreenLayout.setVisibility (View.INVISIBLE);
-        this.readyText.setText (R.string.ready);
+        landOnRecordSceneAnimation ();
         this.cancelRecord.setOnClickListener (new OnClickListener () {
             @Override
             public void onClick (View v) {
-                endOfRecordingTextView.setText (R.string.nevermind);
-                WelcomeScreenActivity.this.cancelTimer();
-                synchronized (WelcomeScreenActivity.this.stopRecording) {
-                    WelcomeScreenActivity.this.stopRecording.notifyAll ();
-                }
-                WelcomeScreenActivity.this.earAnim.stopRippleAnimation ();
+                cancelRecordAnimation ();
                 WelcomeScreenActivity.this.onWelcome ();
             }
             
@@ -126,80 +120,72 @@ public class WelcomeScreenActivity extends Activity {
         this.validateSoundRecord.setOnClickListener (new OnClickListener () {
             @Override
             public void onClick (View v) {
-                endOfRecordingTextView.setText (R.string.impressive);
-                editionScreenLayout.setVisibility (View.VISIBLE);
-                int sizeOfTheButton = validateSoundRecord.getWidth ();
-                int screenDiagonal = (int) Math.sqrt (Math.pow (editionScreenLayout.getWidth (), 2) + Math.pow (editionScreenLayout.getHeight (), 2));
-                SupportAnimator animator =
-                        ViewAnimationUtils.createCircularReveal(
-                                editionScreenLayout, editionScreenLayout.getWidth () - sizeOfTheButton / 2, editionScreenLayout.getHeight () - sizeOfTheButton / 2, sizeOfTheButton, screenDiagonal);
-                animator.setInterpolator(new AccelerateDecelerateInterpolator());
-                animator.setDuration(1500);
-                animator.start();
+                endOfRecordingAnimation ();
             }
-            
         });
     }
-
+    
     private void startTimerForSoundRecording () {
         this.cancelTimer ();
         this.timer = new Timer ();
         this.handler = new Handler ();
-        this.shimmer = new Shimmer();
-        shimmer.start(this.countdownText);
+        this.shimmer = new Shimmer ();
+        shimmer.start (this.countdownText);
         this.timer.scheduleAtFixedRate (new TimerTask () {
             int occurence = WelcomeScreenActivity.COUNTDOWN;
+            
             @Override
             public void run () {
                 if (occurence == 0) {
-                    new Thread () {public void run () {WelcomeScreenActivity.this.startRecording ();}}.start();
+                    new Thread () {
+                        public void run () {
+                            WelcomeScreenActivity.this.startRecording ();
+                        }
+                    }.start ();
                     WelcomeScreenActivity.this.handler.post (new Runnable () {
                         public void run () {
-                            WelcomeScreenActivity.this.readyText.setText (R.string.sing_now);
-                            WelcomeScreenActivity.this.countdownText.setText ("");
-                            WelcomeScreenActivity.this.velocimeterView.setVisibility (View.VISIBLE);
-                            WelcomeScreenActivity.this.velocimeterView.setProgress (new DecelerateInterpolator (10));
-                            WelcomeScreenActivity.this.earAnim.startRippleAnimation ();
-                    }});
+                            startRecordingAnimation ();
+                        }
+                    });
                     this.cancel ();
-                }else {
+                } else {
                     occurence--;
                     WelcomeScreenActivity.this.handler.post (new Runnable () {
                         public void run () {
                             WelcomeScreenActivity.this.countdownText.setText ("" + (occurence + 1));
-                    }});
+                        }
+                    });
                 }
             }
             
-        } , 0, 1000);
+        }, 0, 1000);
     }
-
-    protected void cancelTimer () {
+    
+    private void cancelTimer () {
         if (this.timer != null) {
             this.timer.cancel ();
             this.shimmer.cancel ();
-            this.velocimeterView.setVisibility (View.INVISIBLE);
             this.timer = null;
             this.shimmer = null;
         }
         
     }
     
-    protected void startRecording () {
+    private void startRecording () {
         try {
-            this.sound = FluentClient.start ().whileRecordingASound (
-                    new StreamInfo (1, -1, 2, 8000, false, true, null), new AmplitudeObserver () {
-                        @Override
-                        public void update (final float soundLevel) {
-                            WelcomeScreenActivity.this.handler.post (new Runnable () {
-                                public void run () {
-                                    VelocimeterView view = WelcomeScreenActivity.this.velocimeterView;
-                                    if (view != null) {
-                                        WelcomeScreenActivity.this.velocimeterView.setValue (soundLevel, false);
-                                    }
-                            }});
+            this.sound = FluentClient.start ().whileRecordingASound (new StreamInfo (1, -1, 2, 8000, false, true, null), new AmplitudeObserver () {
+                @Override
+                public void update (final float soundLevel) {
+                    WelcomeScreenActivity.this.handler.post (new Runnable () {
+                        public void run () {
+                            VelocimeterView view = WelcomeScreenActivity.this.velocimeterView;
+                            if (view != null) {
+                                WelcomeScreenActivity.this.velocimeterView.setValue (soundLevel, false);
+                            }
                         }
-                    }, this.stopRecording).stopWithSound ();
+                    });
+                }
+            }, this.stopRecording).stopWithSound ();
         } catch (SoundTransformException e) {
             synchronized (this.stopRecording) {
                 this.stopRecording.notifyAll ();
@@ -208,4 +194,51 @@ public class WelcomeScreenActivity extends Activity {
         }
     }
 
+    private void landOnRecordSceneAnimation () {
+        this.startTimerForSoundRecording ();
+        this.earAnimPicture.setVisibility (View.VISIBLE);
+        this.cancelRecord.setVisibility (View.VISIBLE);
+        this.validateSoundRecord.setVisibility (View.INVISIBLE);
+        this.velocimeterView.setVisibility (View.INVISIBLE);
+        this.editionScreenLayout.setVisibility (View.INVISIBLE);
+        this.readyText.setText (R.string.ready);
+    }
+    
+    private void cancelRecordAnimation () {
+        this.validateSoundRecord.setVisibility (View.INVISIBLE);
+        this.velocimeterView.setVisibility (View.INVISIBLE);
+        this.endOfRecordingTextView.setText (R.string.nevermind);
+        this.countdownText.setVisibility (View.INVISIBLE);
+        this.earAnimPicture.setVisibility (View.INVISIBLE);
+        this.cancelTimer ();
+        synchronized (this.stopRecording) {
+            this.stopRecording.notifyAll ();
+        }
+        this.earAnim.stopRippleAnimation ();
+    }
+    
+    private void startRecordingAnimation () {
+        this.readyText.setText (R.string.sing_now);
+        this.countdownText.setText ("");
+        this.validateSoundRecord.setVisibility (View.VISIBLE);
+        this.velocimeterView.setVisibility (View.VISIBLE);
+        this.velocimeterView.setProgress (new DecelerateInterpolator (10));
+        this.earAnim.startRippleAnimation ();
+    }
+
+    private void endOfRecordingAnimation () {
+        cancelRecordAnimation();
+        this.validateSoundRecord.setVisibility (View.VISIBLE);
+        this.cancelRecord.setVisibility (View.INVISIBLE);
+        endOfRecordingTextView.setText (R.string.impressive);
+        editionScreenLayout.setVisibility (View.VISIBLE);
+        int sizeOfTheButton = validateSoundRecord.getWidth ();
+        int screenDiagonal = (int) Math.sqrt (Math.pow (editionScreenLayout.getWidth (), 2) + Math.pow (editionScreenLayout.getHeight (), 2));
+        SupportAnimator animator = ViewAnimationUtils.createCircularReveal (editionScreenLayout, editionScreenLayout.getWidth () - sizeOfTheButton / 2,
+                editionScreenLayout.getHeight () - sizeOfTheButton / 2, sizeOfTheButton, screenDiagonal);
+        animator.setInterpolator (new AccelerateDecelerateInterpolator ());
+        animator.setDuration (1500);
+        animator.start ();
+    }
+    
 }
