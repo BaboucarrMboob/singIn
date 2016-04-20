@@ -6,6 +6,7 @@
 	<color name="turquoise">#57c2ae</color>
 	<color name="lightred">#e0584a</color>
 
+  <color name="countdown_color">#a0000000</color>
   <color name="inside_progress">#80000000</color>
   <color name="external_progress">#ffffff</color>
   <color name="bottom_velocimeter">#0015171d</color>

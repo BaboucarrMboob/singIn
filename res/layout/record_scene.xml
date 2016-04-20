@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:gravity="center"
-    android:orientation="vertical" >
+    android:gravity="center">
 
     <io.codetail.widget.RevealFrameLayout
         android:id="@+id/reveal_record_frame_layout"
@@ -53,16 +52,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/ready"
                 android:textSize="40sp" />
-
-            <com.romainpiel.shimmer.ShimmerTextView
-                android:id="@+id/countdown_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginStart="20dp"
-                android:shadowColor="@color/white"
-                android:text="@string/countdown_text"
-                android:textSize="40sp" />
         </LinearLayout>
 
         <FrameLayout
@@ -106,6 +95,8 @@
                 app:needle_color="@color/needle"
                 app:progress_blur_color="@color/external_progress"
                 app:units="DB" />
+            
+
         </FrameLayout>
 
         <LinearLayout
@@ -143,4 +134,15 @@
         </LinearLayout>
     </LinearLayout>
 
+    <com.romainpiel.shimmer.ShimmerTextView
+        android:id="@+id/countdown_textview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:shadowColor="@color/digital_number"
+        app:reflectionColor="@color/digital_number"
+        android:textColor="@color/countdown_color"
+        android:text="@string/countdown_text"
+        android:textSize="200sp"
+        android:layout_marginTop="-100sp"/>
 </FrameLayout>
