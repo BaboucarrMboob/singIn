@@ -1,5 +1,6 @@
 package org.toilelibre.libe.singin;
 
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -71,13 +72,18 @@ public class WelcomeScreenActivity extends Activity {
     @Bind (R.id.edition_screen_text_view)
     @Nullable
     TextView             endOfRecordingTextView;
+    @Bind (R.id.timer_textview)
+    @Nullable
+    TextView             timerTextView;
     
     private Sound  sound;
     private Object stopRecording = new Object ();
-    
-    private Timer            timer     = null;
+
+    private Timer            recordTimer = null;
+    private Timer            countdownTimer = null;
     private Handler          handler   = null;
     private Shimmer          shimmer;
+    private long             recordStartTimestamp;
     private static final int COUNTDOWN = 5;
     
     @Override
@@ -127,11 +133,13 @@ public class WelcomeScreenActivity extends Activity {
     
     private void startTimerForSoundRecording () {
         this.cancelTimer ();
-        this.timer = new Timer ();
+        this.countdownTimer = new Timer ();
+        this.recordTimer = new Timer ();
         this.handler = new Handler ();
         this.shimmer = new Shimmer ();
+        this.timerTextView.setText (this.getText (R.string.zerozero));
         shimmer.start (this.countdownText);
-        this.timer.scheduleAtFixedRate (new TimerTask () {
+        this.countdownTimer.scheduleAtFixedRate (new TimerTask () {
             int occurence = WelcomeScreenActivity.COUNTDOWN;
             
             @Override
@@ -162,10 +170,11 @@ public class WelcomeScreenActivity extends Activity {
     }
     
     private void cancelTimer () {
-        if (this.timer != null) {
-            this.timer.cancel ();
+        if (this.countdownTimer != null) {
+            this.countdownTimer.cancel ();
+            this.recordTimer.cancel ();
             this.shimmer.cancel ();
-            this.timer = null;
+            this.countdownTimer = null;
             this.shimmer = null;
         }
         
@@ -186,6 +195,20 @@ public class WelcomeScreenActivity extends Activity {
                     });
                 }
             }, this.stopRecording).stopWithSound ();
+            this.recordStartTimestamp = System.currentTimeMillis () - 1000;
+            this.countdownTimer.scheduleAtFixedRate (new TimerTask () {
+                @Override
+                public void run () {
+                    int secs = (int) Math.round ((System.currentTimeMillis () - WelcomeScreenActivity.this.recordStartTimestamp * 1.0) / 1000);
+                    final String minutes = String.format (Locale.getDefault (), "%02d", secs / 60);
+                    final String seconds = String.format (Locale.getDefault (), "%02d", secs % 60);
+                    WelcomeScreenActivity.this.handler.post (new Runnable () {
+                        public void run () {
+                            WelcomeScreenActivity.this.timerTextView.setText (minutes + ":" + seconds);
+                        }
+                    });
+                }
+            }, 0, 1000);
         } catch (SoundTransformException e) {
             synchronized (this.stopRecording) {
                 this.stopRecording.notifyAll ();
@@ -200,6 +223,7 @@ public class WelcomeScreenActivity extends Activity {
         this.cancelRecord.setVisibility (View.VISIBLE);
         this.validateSoundRecord.setVisibility (View.INVISIBLE);
         this.velocimeterView.setVisibility (View.INVISIBLE);
+        this.timerTextView.setVisibility (View.INVISIBLE);
         this.editionScreenLayout.setVisibility (View.INVISIBLE);
         this.readyText.setText (R.string.ready);
     }
@@ -210,6 +234,7 @@ public class WelcomeScreenActivity extends Activity {
         this.endOfRecordingTextView.setText (R.string.nevermind);
         this.countdownText.setVisibility (View.INVISIBLE);
         this.earAnimPicture.setVisibility (View.INVISIBLE);
+        this.timerTextView.setVisibility (View.INVISIBLE);
         this.cancelTimer ();
         synchronized (this.stopRecording) {
             this.stopRecording.notifyAll ();
@@ -222,6 +247,7 @@ public class WelcomeScreenActivity extends Activity {
         this.countdownText.setText ("");
         this.validateSoundRecord.setVisibility (View.VISIBLE);
         this.velocimeterView.setVisibility (View.VISIBLE);
+        this.timerTextView.setVisibility (View.VISIBLE);
         this.velocimeterView.setProgress (new DecelerateInterpolator (10));
         this.earAnim.startRippleAnimation ();
     }

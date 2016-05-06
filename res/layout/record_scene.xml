@@ -96,7 +96,14 @@
                 app:progress_blur_color="@color/external_progress"
                 app:units="DB" />
             
-
+            <org.toilelibre.libe.singin.text.TextView
+                android:id="@+id/timer_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/zerozero"
+                android:textSize="40sp"
+                android:layout_gravity="center|bottom"
+                android:textColor="@color/countdown_color"/>
         </FrameLayout>
 
         <LinearLayout
