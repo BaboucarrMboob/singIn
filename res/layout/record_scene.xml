@@ -5,32 +5,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:gravity="center">
-
-    <io.codetail.widget.RevealFrameLayout
-        android:id="@+id/reveal_record_frame_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:gravity="center" >
-
-        <LinearLayout
-            android:id="@+id/edition_screen"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:background="@color/background_red"
-            android:gravity="center"
-            android:visibility="invisible" >
-
-            <org.toilelibre.libe.singin.text.TextView
-                android:id="@+id/edition_screen_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/impressive"
-                android:textSize="40sp" />
-        </LinearLayout>
-    </io.codetail.widget.RevealFrameLayout>
-
+    
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -152,4 +127,31 @@
         android:text="@string/countdown_text"
         android:textSize="200sp"
         android:layout_marginTop="-100sp"/>
+    
+    
+    <io.codetail.widget.RevealFrameLayout
+        android:id="@+id/reveal_record_frame_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center" >
+
+        <LinearLayout
+            android:id="@+id/edition_screen"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@color/lightred"
+            android:gravity="center"
+            android:visibility="invisible" >
+
+            <org.toilelibre.libe.singin.text.TextView
+                android:id="@+id/edition_screen_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/impressive"
+                android:textSize="40sp" />
+        </LinearLayout>
+    </io.codetail.widget.RevealFrameLayout>
+    
 </FrameLayout>

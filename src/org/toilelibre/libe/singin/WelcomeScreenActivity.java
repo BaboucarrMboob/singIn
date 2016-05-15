@@ -150,9 +150,10 @@ public class WelcomeScreenActivity extends Activity {
                             WelcomeScreenActivity.this.startRecording ();
                         }
                     }.start ();
+                    this.cancel ();
                     WelcomeScreenActivity.this.handler.post (new Runnable () {
                         public void run () {
-                            startRecordingAnimation ();
+                            WelcomeScreenActivity.this.startRecordingAnimation ();
                         }
                     });
                     this.cancel ();
@@ -235,13 +236,17 @@ public class WelcomeScreenActivity extends Activity {
         this.countdownText.setVisibility (View.INVISIBLE);
         this.earAnimPicture.setVisibility (View.INVISIBLE);
         this.timerTextView.setVisibility (View.INVISIBLE);
+        this.endOfRecordAction ();
+        this.earAnim.stopRippleAnimation ();
+    }
+    
+    private void endOfRecordAction () {
         this.cancelTimer ();
         synchronized (this.stopRecording) {
             this.stopRecording.notifyAll ();
         }
-        this.earAnim.stopRippleAnimation ();
     }
-    
+
     private void startRecordingAnimation () {
         this.readyText.setText (R.string.sing_now);
         this.countdownText.setText ("");
@@ -253,7 +258,7 @@ public class WelcomeScreenActivity extends Activity {
     }
 
     private void endOfRecordingAnimation () {
-        cancelRecordAnimation();
+        this.endOfRecordAction ();
         this.validateSoundRecord.setVisibility (View.VISIBLE);
         this.cancelRecord.setVisibility (View.INVISIBLE);
         endOfRecordingTextView.setText (R.string.impressive);
@@ -261,9 +266,9 @@ public class WelcomeScreenActivity extends Activity {
         int sizeOfTheButton = validateSoundRecord.getWidth ();
         int screenDiagonal = (int) Math.sqrt (Math.pow (editionScreenLayout.getWidth (), 2) + Math.pow (editionScreenLayout.getHeight (), 2));
         SupportAnimator animator = ViewAnimationUtils.createCircularReveal (editionScreenLayout, editionScreenLayout.getWidth () - sizeOfTheButton / 2,
-                editionScreenLayout.getHeight () - sizeOfTheButton / 2, sizeOfTheButton, screenDiagonal);
+                editionScreenLayout.getHeight () - sizeOfTheButton / 2, sizeOfTheButton / 2, screenDiagonal);
         animator.setInterpolator (new AccelerateDecelerateInterpolator ());
-        animator.setDuration (1500);
+        animator.setDuration (750);
         animator.start ();
     }
     
