@@ -173,7 +173,7 @@ public class WelcomeScreenActivity extends Activity {
     
     private void startRecording () {
         try {
-            this.sound = FluentClient.start ().whileRecordingASound (new StreamInfo (1, -1, 2, 8000, false, true, null), new AmplitudeObserver () {
+            this.sound = FluentClient.start ().whileRecordingASound (new StreamInfo (1, -1, 2, 8000, false, true, null), this.stopRecording, new AmplitudeObserver () {
                 @Override
                 public void update (final float soundLevel) {
                     WelcomeScreenActivity.this.handler.post (new Runnable () {
@@ -185,7 +185,7 @@ public class WelcomeScreenActivity extends Activity {
                         }
                     });
                 }
-            }, this.stopRecording).stopWithSound ();
+            }).stopWithSound ();
         } catch (SoundTransformException e) {
             synchronized (this.stopRecording) {
                 this.stopRecording.notifyAll ();
