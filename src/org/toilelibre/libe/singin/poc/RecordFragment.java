@@ -47,6 +47,10 @@ public class RecordFragment extends Fragment {
     protected StopObjectHandler        handler  = new StopObjectHandler ();
     protected RecordAudioService       service;
 
+    public RecordFragment () {
+        
+    }
+    
     static class StopObjectHandler extends Handler { // Handler of incoming messages from clients.
         public StopObjectHandler () {
     }

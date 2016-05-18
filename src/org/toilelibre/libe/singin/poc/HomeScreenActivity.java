@@ -49,7 +49,8 @@ public class HomeScreenActivity extends Activity {
     @Override
     public void onStart () {
         super.onStart ();
-        SoundFragment soundFragment = new SoundFragment (this);
+        SoundFragment soundFragment = new SoundFragment ();
+        soundFragment.setParent(this);
         this.getFragmentManager ().beginTransaction ().add (R.id.fragment_container, soundFragment).commit ();
         this.handler = new StatusTextHandler (this.currentStatus);
         this.startService (new Intent (this, DisplaySoundChannelService.class));

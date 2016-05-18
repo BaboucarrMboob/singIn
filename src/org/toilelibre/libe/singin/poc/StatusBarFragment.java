@@ -8,16 +8,14 @@ import android.view.ViewGroup;
 
 public class StatusBarFragment extends Fragment {
 
-    private int statusBarId;
 
-    public StatusBarFragment (int statusBarId) {
-        this.statusBarId = statusBarId;
+    public StatusBarFragment () {
     }
     
     @Override
     public View onCreateView (final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
 
-        final View rootView = inflater.inflate (statusBarId, container, false);
+        final View rootView = inflater.inflate (savedInstanceState.getInt ("statusBarId"), container, false);
         return rootView;
     }
 }

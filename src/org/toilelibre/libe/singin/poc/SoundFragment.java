@@ -1,5 +1,6 @@
 package org.toilelibre.libe.singin.poc;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -12,8 +13,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 import org.toilelibre.libe.singin.R;
-import org.toilelibre.libe.singin.R.id;
-import org.toilelibre.libe.singin.R.layout;
 
 import com.jjoe64.graphview.GraphView;
 
@@ -27,8 +26,8 @@ public class SoundFragment extends Fragment {
 
     private HomeScreenActivity parentActivity;
 
-    public SoundFragment (HomeScreenActivity homeScreenActivity) {
-        this.parentActivity = homeScreenActivity;
+
+    public SoundFragment () {
     }
 
     @Override
@@ -53,6 +52,10 @@ public class SoundFragment extends Fragment {
 
         });
         return rootView;
+    }
+
+    public void setParent (HomeScreenActivity parentActivity1) {
+        this.parentActivity = parentActivity1;
     }
 
 }
