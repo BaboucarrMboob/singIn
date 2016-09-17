@@ -214,6 +214,9 @@ public class WelcomeScreenActivity extends Activity {
             synchronized (this.stopRecording) {
                 this.stopRecording.notifyAll ();
             }
+            if ("STREAM_INFO_NOT_SUPPORTED".equals(e.getErrorCode().name())) {
+
+            }
             throw new RuntimeException (e);
         }
     }

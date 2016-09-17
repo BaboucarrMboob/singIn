@@ -27,6 +27,7 @@
         android:name="org.toilelibre.libe.singin.poc.StatusBarFragment"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" 
-    	android:layout_gravity="bottom" />
+    	android:layout_gravity="bottom"
+        tools:layout="@layout/poc_status_bar" />
 
 </FrameLayout>
