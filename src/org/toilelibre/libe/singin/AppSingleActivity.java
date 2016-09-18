@@ -1,9 +1,12 @@
 package org.toilelibre.libe.singin;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.toilelibre.libe.singin.poc.Sound2GraphSeries;
 import org.toilelibre.libe.singin.scenes.Transitions;
 import org.toilelibre.libe.singin.transition.BlinkAnimation;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
@@ -13,15 +16,20 @@ import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.record.AmplitudeObserver;
 
 import com.github.glomadrian.velocimeterlibrary.VelocimeterView;
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.GridLabelRenderer;
 import com.romainpiel.shimmer.Shimmer;
 import com.romainpiel.shimmer.ShimmerTextView;
 import com.skyfishjy.library.RippleBackground;
 
 import android.app.Activity;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.CardView;
+import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -29,7 +37,6 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -78,8 +85,11 @@ public class AppSingleActivity extends Activity {
     @Bind (R.id.timer_textview)
     @Nullable
     TextView             timerTextView;
+    @Bind (R.id.channels)
+    @Nullable
+    LinearLayout         editorChannels;
 
-    private Sound  sound;
+    private final List<Sound> sounds = new LinkedList<Sound>();
     private final Object stopRecording = new Object ();
 
     private Timer            recordTimer = null;
@@ -144,6 +154,21 @@ public class AppSingleActivity extends Activity {
     private void displayEditor() {
         Transitions.editorScene (this);
         ButterKnife.bind (this);
+        assert this.editorChannels != null;
+        Sound2GraphSeries converter = new Sound2GraphSeries();
+        for (Sound sound : this.sounds) {
+            Display display = getWindowManager().getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+            CardView cardView = (CardView) this.getLayoutInflater().inflate(R.layout.editor_channel, null);
+            GraphView graphView = ((GraphView)cardView.getChildAt(0));
+            graphView.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
+            graphView.getGridLabelRenderer().setHorizontalLabelsVisible(false);
+            graphView.getGridLabelRenderer().setVerticalLabelsVisible(false);
+            graphView.addSeries(converter.convert(sound.getChannels()[0], Math.max(size.x, size.y)));
+            this.editorChannels.addView(cardView);
+            cardView.animate();
+        }
     }
 
     private void startTimerForSoundRecording () {
@@ -200,7 +225,7 @@ public class AppSingleActivity extends Activity {
 
     private void startRecording () {
         try {
-            this.sound = FluentClient.start ().whileRecordingASound (new StreamInfo (1, -1, 2, 8000, false, true, null), this.stopRecording, new AmplitudeObserver () {
+            this.sounds.add(FluentClient.start ().whileRecordingASound (new StreamInfo (1, -1, 2, 8000, false, true, null), this.stopRecording, new AmplitudeObserver () {
                 @Override
                 public void update (final float soundLevel) {
                     AppSingleActivity.this.handler.post (new Runnable () {
@@ -212,7 +237,7 @@ public class AppSingleActivity extends Activity {
                         }
                     });
                 }
-            }).stopWithSound ();
+            }).stopWithSound ());
             this.recordStartTimestamp = System.currentTimeMillis () - 1000;
             this.countdownTimer.scheduleAtFixedRate (new TimerTask () {
                 @Override
