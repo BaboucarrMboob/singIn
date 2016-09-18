@@ -24,5 +24,6 @@ bin/*
 
 /.apt_generated/
 .factorypath
+local.properties
 .gradle
 *.apk
