@@ -155,19 +155,18 @@ public class AppSingleActivity extends Activity {
         Transitions.editorScene (this);
         ButterKnife.bind (this);
         assert this.editorChannels != null;
-        Sound2GraphSeries converter = new Sound2GraphSeries();
+        final Sound2GraphSeries converter = new Sound2GraphSeries();
         for (Sound sound : this.sounds) {
             Display display = getWindowManager().getDefaultDisplay();
             Point size = new Point();
             display.getSize(size);
-            CardView cardView = (CardView) this.getLayoutInflater().inflate(R.layout.editor_channel, null);
-            GraphView graphView = ((GraphView)cardView.getChildAt(0));
+            CardView cardView = (CardView) this.getLayoutInflater().inflate(R.layout.editor_channel, editorChannels).findViewById(R.id.card_view);
+            cardView.animate();
+            GraphView graphView = (GraphView)cardView.findViewById(R.id.graph2);
             graphView.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
             graphView.getGridLabelRenderer().setHorizontalLabelsVisible(false);
             graphView.getGridLabelRenderer().setVerticalLabelsVisible(false);
             graphView.addSeries(converter.convert(sound.getChannels()[0], Math.max(size.x, size.y)));
-            this.editorChannels.addView(cardView);
-            cardView.animate();
         }
     }
 

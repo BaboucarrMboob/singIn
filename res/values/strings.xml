@@ -19,5 +19,6 @@
     <string name="backward">Backward</string>
     <string name="play">Play</string>
     <string name="forward">Forward</string>
+    <string name="mute_channel">toggle mute on this channel</string>
 
 </resources>
