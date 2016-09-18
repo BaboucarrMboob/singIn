@@ -13,8 +13,9 @@ import android.app.Activity;
 
 public class Transitions {
     
-    private static final String            WELCOME_SCENE = "welcomeScene";
+    private static final String WELCOME_SCENE = "welcomeScene";
     private static final String RECORD_SCENE = "recordScene";
+    private static final String EDITOR_SCENE = "editorScene";
     private static Map<String, Transition> TRANSITIONS   = new HashMap<String, Transition> ();
     
     public static Transition welcomeScene (Activity activity) {
@@ -47,7 +48,17 @@ public class Transitions {
         }
         TransitionManager.go (recordScene, transitionSet);
         return transitionSet;
-        
+    }
+
+    public static Transition editorScene (Activity activity) {
+        Scene recordScene = Scenes.editorScene (activity);
+        Transition transitionSet = TRANSITIONS.get (EDITOR_SCENE);
+        if (transitionSet == null) {
+            transitionSet = new Slide ();
+            TRANSITIONS.put (EDITOR_SCENE, transitionSet);
+        }
+        TransitionManager.go (recordScene, transitionSet);
+        return transitionSet;
     }
     
 }

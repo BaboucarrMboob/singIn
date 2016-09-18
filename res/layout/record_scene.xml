@@ -95,7 +95,7 @@
                 android:clickable="true"
                 android:gravity="start"
                 android:scaleType="centerCrop"
-                android:src="@+drawable/back"
+                android:src="@drawable/back"
                 app:backgroundTint="@color/turquoise" />
 
             <Space
@@ -111,7 +111,7 @@
                 android:clickable="true"
                 android:gravity="end"
                 android:scaleType="centerCrop"
-                android:src="@+drawable/thumb_up"
+                android:src="@drawable/thumb_up"
                 app:backgroundTint="@color/lightred" />
         </LinearLayout>
     </LinearLayout>

@@ -19,5 +19,10 @@ public class Scenes {
         return Scene.getSceneForLayout (sceneViewGroup, R.layout.record_scene, targetActivity);
     }
 
+    public static Scene editorScene (Activity targetActivity) {
+        ViewGroup sceneViewGroup = (ViewGroup) ((ViewGroup)targetActivity.findViewById(android.R.id.content)).getChildAt (0);
+        return Scene.getSceneForLayout (sceneViewGroup, R.layout.editor_view, targetActivity);
+    }
+
 
 }

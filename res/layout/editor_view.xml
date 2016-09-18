@@ -1,24 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent" android:id="@+id/editor">
 
     <LinearLayout android:id="@+id/channels"
         android:orientation="vertical" android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1">
     </LinearLayout>
-
     <android.support.v7.widget.CardView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="horizontal" android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="120dp"
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view"
         android:layout_gravity="bottom"
-        card_view:cardCornerRadius="4dp">
-
-        <Button
+        card_view:cardCornerRadius="4dp"
+        android:layout_margin="20dp">
+        <ImageButton
+            android:layout_margin="20dp"
+            android:minWidth="60dp"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:id="@+id/backward"
+            android:src="@drawable/backward"
+            android:contentDescription="@string/backward"/>
+        <ImageButton
+            android:layout_margin="20dp"
+            android:minWidth="60dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/play"
+            android:src="@drawable/play"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@string/play"/>
+        <ImageButton
+            android:layout_margin="20dp"
+            android:minWidth="60dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/forward"
+            android:src="@drawable/forward"
+            android:layout_gravity="end"
+            android:contentDescription="@string/forward"/>
     </android.support.v7.widget.CardView>
 </LinearLayout>
