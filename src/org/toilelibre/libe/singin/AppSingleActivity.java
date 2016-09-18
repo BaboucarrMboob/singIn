@@ -33,6 +33,7 @@ import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -303,15 +304,16 @@ public class AppSingleActivity extends Activity {
         animator.setInterpolator (new AccelerateDecelerateInterpolator ());
         animator.setDuration (750);
         animator.start ();
-        this.endOfRecordingTextView.startAnimation(new BlinkAnimation());
-        animator.addListener(new SupportAnimator.AnimatorListener() {
-            @Override public void onAnimationStart() {} @Override public void onAnimationCancel() {} @Override public void onAnimationRepeat() {}
+        BlinkAnimation blinkAnimation = new BlinkAnimation();
+        blinkAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override public void onAnimationStart(Animation animation) {} @Override public void onAnimationRepeat(Animation animation) {}
 
             @Override
-            public void onAnimationEnd() {
+            public void onAnimationEnd(Animation animation) {
                 afterAnimation.run();
             }
         });
+        this.endOfRecordingTextView.startAnimation(blinkAnimation);
     }
 
     private void landOnRecordSceneAnimation () {
