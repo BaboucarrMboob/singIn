@@ -13,31 +13,36 @@
     card_view:cardElevation="10dp">
 
     <LinearLayout
-        android:layout_width="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginStart="20dp"
         android:orientation="vertical"
-        android:layout_height="match_parent">
-        <ImageButton
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/speaker_icon_gray"
+        android:layout_width="200dp"
+        android:layout_height="120dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp">
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/singer"
             android:contentDescription="@string/mute_channel"/>
-        <ImageButton
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:src="@drawable/speaker_icon_gray"
-            android:contentDescription="@string/mute_channel"/>
-        <ImageButton
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/speaker_icon_gray"
+            android:contentDescription="@string/mute_channel"
+            android:baselineAlignBottom="false"
+            android:focusableInTouchMode="false"
+            android:clickable="false"
+            android:adjustViewBounds="false" />
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/eye"
             android:contentDescription="@string/mute_channel"/>
     </LinearLayout>
     <com.jjoe64.graphview.GraphView
         android:id="@+id/graph2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="120dp"
         android:layout_marginEnd="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="40dp"

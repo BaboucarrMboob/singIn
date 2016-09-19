@@ -34,6 +34,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -162,7 +163,8 @@ public class AppSingleActivity extends Activity {
             Point size = new Point();
             display.getSize(size);
             CardView cardView = (CardView) this.getLayoutInflater().inflate(R.layout.editor_channel, editorChannels).findViewById(R.id.card_view);
-            cardView.animate();
+            Animation animation = AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left);
+            cardView.startAnimation(animation);
             GraphView graphView = (GraphView)cardView.findViewById(R.id.graph2);
             graphView.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
             graphView.getGridLabelRenderer().setHorizontalLabelsVisible(false);
