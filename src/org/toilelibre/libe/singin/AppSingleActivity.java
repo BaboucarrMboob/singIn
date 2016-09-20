@@ -54,6 +54,9 @@ public class AppSingleActivity extends Activity {
     @Bind (R.id.btn_record_sound)
     @Nullable
     FloatingActionButton recordASound;
+    @Bind (R.id.btn_record_another_sound)
+    @Nullable
+    FloatingActionButton recordAnotherSound;
     @Bind (R.id.btn_open_project)
     @Nullable
     FloatingActionButton openAProject;
@@ -98,7 +101,8 @@ public class AppSingleActivity extends Activity {
     private Timer            countdownTimer = null;
     private Handler          handler   = null;
     private Shimmer          shimmer;
-    private long             recordStartTimestamp;
+    private long             recordStartTimestamp = 0;
+    private boolean          hasStartedRecording = false;
     private static final int COUNTDOWN = 5;
 
     @Override
@@ -112,13 +116,13 @@ public class AppSingleActivity extends Activity {
         Transitions.welcomeScene (this);
         ButterKnife.bind (this);
         assert this.recordASound != null;
+        assert this.openAProject != null;
         this.recordASound.setOnClickListener (new OnClickListener () {
             @Override
             public void onClick (View v) {AppSingleActivity.this.recordSound();
             }
 
         });
-        assert this.openAProject != null;
         this.openAProject.setOnClickListener (new OnClickListener () {
             @Override
             public void onClick (View v) {
@@ -134,20 +138,31 @@ public class AppSingleActivity extends Activity {
     private void recordSound() {
         Transitions.recordScene (this);
         ButterKnife.bind (this);
+        this.startTimerForSoundRecording ();
         landOnRecordSceneAnimation ();
         assert this.cancelRecord != null;
+        assert this.validateSoundRecord != null;
         this.cancelRecord.setOnClickListener (new OnClickListener () {
             @Override
             public void onClick (View v) {
                 cancelRecordAnimation ();
-                AppSingleActivity.this.welcome();
+                if (hasStartedRecording) {
+                    AppSingleActivity.this.sounds.remove(AppSingleActivity.this.sounds.size() - 1);
+                }
+                if (AppSingleActivity.this.sounds.size() >= 1) {
+                    displayEditor ();
+                } else {
+                    AppSingleActivity.this.welcome();
+                }
+                hasStartedRecording = false;
             }
 
         });
-        assert this.validateSoundRecord != null;
         this.validateSoundRecord.setOnClickListener (new OnClickListener () {
             @Override
             public void onClick (View v) {
+                hasStartedRecording = false;
+                AppSingleActivity.this.endOfRecordAction ();
                 endOfRecordingAnimationAndAfterRun(new Runnable() {@Override public void run() {displayEditor ();}});
             }
         });
@@ -157,12 +172,15 @@ public class AppSingleActivity extends Activity {
         Transitions.editorScene (this);
         ButterKnife.bind (this);
         assert this.editorChannels != null;
+        assert this.recordAnotherSound != null;
         final Sound2GraphSeries converter = new Sound2GraphSeries();
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
         for (Sound sound : this.sounds) {
-            Display display = getWindowManager().getDefaultDisplay();
-            Point size = new Point();
-            display.getSize(size);
-            CardView cardView = (CardView) this.getLayoutInflater().inflate(R.layout.editor_channel, editorChannels).findViewById(R.id.card_view);
+            CardView cardView = (CardView) this.getLayoutInflater().inflate(R.layout.editor_channel, null);
+            editorChannels.addView(cardView);
             Animation animation = AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left);
             cardView.startAnimation(animation);
             GraphView graphView = (GraphView)cardView.findViewById(R.id.graph2);
@@ -171,6 +189,12 @@ public class AppSingleActivity extends Activity {
             graphView.getGridLabelRenderer().setVerticalLabelsVisible(false);
             graphView.addSeries(converter.convert(sound.getChannels()[0], Math.max(size.x, size.y)));
         }
+        this.recordAnotherSound.setOnClickListener (new OnClickListener () {
+            @Override
+            public void onClick (View v) {AppSingleActivity.this.recordSound();
+            }
+
+        });
     }
 
     private void startTimerForSoundRecording () {
@@ -215,6 +239,7 @@ public class AppSingleActivity extends Activity {
     }
 
     private void cancelTimer () {
+        recordStartTimestamp = 0;
         if (this.countdownTimer != null) {
             this.countdownTimer.cancel ();
             this.recordTimer.cancel ();
@@ -227,6 +252,7 @@ public class AppSingleActivity extends Activity {
 
     private void startRecording () {
         try {
+            hasStartedRecording = true;
             this.sounds.add(FluentClient.start ().whileRecordingASound (new StreamInfo (1, -1, 2, 8000, false, true, null), this.stopRecording, new AmplitudeObserver () {
                 @Override
                 public void update (final float soundLevel) {
@@ -290,7 +316,6 @@ public class AppSingleActivity extends Activity {
     }
 
     private void endOfRecordingAnimationAndAfterRun(final Runnable afterAnimation) {
-        this.endOfRecordAction ();
         assert this.validateSoundRecord != null;
         assert this.cancelRecord != null;
         assert endOfRecordingTextView != null;
@@ -319,7 +344,6 @@ public class AppSingleActivity extends Activity {
     }
 
     private void landOnRecordSceneAnimation () {
-        this.startTimerForSoundRecording ();
         assert this.earAnimPicture != null;
         assert this.editionScreenLayout != null;
         assert this.cancelRecord != null;

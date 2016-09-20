@@ -3,7 +3,6 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent" android:id="@+id/editor">
 
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -18,12 +17,13 @@
             <LinearLayout android:id="@+id/channels"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp">
             </LinearLayout>
 
             <android.support.design.widget.FloatingActionButton
                 xmlns:fab="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/btn_open_project"
+                android:id="@+id/btn_record_another_sound"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:src="@drawable/record_sound"
