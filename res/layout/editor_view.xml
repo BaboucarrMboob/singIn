@@ -54,7 +54,7 @@
             android:minWidth="60dp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/play"
+            android:id="@+id/playSound"
             android:src="@drawable/play"
             android:layout_gravity="center_horizontal"
             android:contentDescription="@string/play"/>

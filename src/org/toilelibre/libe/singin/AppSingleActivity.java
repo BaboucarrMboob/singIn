@@ -1,27 +1,5 @@
 package org.toilelibre.libe.singin;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import org.toilelibre.libe.singin.poc.Sound2GraphSeries;
-import org.toilelibre.libe.singin.scenes.Transitions;
-import org.toilelibre.libe.singin.transition.BlinkAnimation;
-import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
-import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
-import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
-import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
-import org.toilelibre.libe.soundtransform.model.record.AmplitudeObserver;
-
-import com.github.glomadrian.velocimeterlibrary.VelocimeterView;
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.GridLabelRenderer;
-import com.romainpiel.shimmer.Shimmer;
-import com.romainpiel.shimmer.ShimmerTextView;
-import com.skyfishjy.library.RippleBackground;
-
 import android.app.Activity;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -36,9 +14,32 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.github.glomadrian.velocimeterlibrary.VelocimeterView;
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.GridLabelRenderer;
+import com.romainpiel.shimmer.Shimmer;
+import com.romainpiel.shimmer.ShimmerTextView;
+import com.skyfishjy.library.RippleBackground;
+
+import org.toilelibre.libe.singin.poc.Sound2GraphSeries;
+import org.toilelibre.libe.singin.scenes.Transitions;
+import org.toilelibre.libe.singin.transition.BlinkAnimation;
+import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
+import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
+import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
+import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
+import org.toilelibre.libe.soundtransform.model.record.AmplitudeObserver;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -93,9 +94,13 @@ public class AppSingleActivity extends Activity {
     @Bind (R.id.channels)
     @Nullable
     LinearLayout         editorChannels;
+    @Bind (R.id.playSound)
+    @Nullable
+    ImageButton          playSoundButton;
 
     private final List<Sound> sounds = new LinkedList<Sound>();
     private final Object stopRecording = new Object ();
+    private Object stopPlaying = null;
 
     private Timer            recordTimer = null;
     private Timer            countdownTimer = null;
@@ -173,6 +178,7 @@ public class AppSingleActivity extends Activity {
         ButterKnife.bind (this);
         assert this.editorChannels != null;
         assert this.recordAnotherSound != null;
+        assert this.playSoundButton != null;
         final Sound2GraphSeries converter = new Sound2GraphSeries();
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
@@ -193,7 +199,21 @@ public class AppSingleActivity extends Activity {
             @Override
             public void onClick (View v) {AppSingleActivity.this.recordSound();
             }
+        });
 
+        this.playSoundButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (AppSingleActivity.this.stopPlaying != null) {
+                    AppSingleActivity.this.stopPlaying.notifyAll();
+                    return;
+                }
+                AppSingleActivity.this.stopPlaying = new Object();
+                try {
+                    FluentClient.start().withAMixedSound(AppSingleActivity.this.sounds.toArray(new Sound[AppSingleActivity.this.sounds.size()])).exportToStream().importToSound().playIt(AppSingleActivity.this.stopPlaying);
+                } catch (SoundTransformException e) {
+                }
+            }
         });
     }
 
