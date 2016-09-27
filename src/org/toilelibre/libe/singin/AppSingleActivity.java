@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -205,13 +206,16 @@ public class AppSingleActivity extends Activity {
             @Override
             public void onClick(View v) {
                 if (AppSingleActivity.this.stopPlaying != null) {
-                    AppSingleActivity.this.stopPlaying.notifyAll();
-                    return;
+                    synchronized (AppSingleActivity.this.stopPlaying) {
+                        AppSingleActivity.this.stopPlaying.notifyAll();
+                    }
                 }
                 AppSingleActivity.this.stopPlaying = new Object();
+                Log.i("playsound", "playing now");
                 try {
                     FluentClient.start().withAMixedSound(AppSingleActivity.this.sounds.toArray(new Sound[AppSingleActivity.this.sounds.size()])).exportToStream().importToSound().playIt(AppSingleActivity.this.stopPlaying);
                 } catch (SoundTransformException e) {
+                    Log.e("playsound", "problem", e);
                 }
             }
         });
