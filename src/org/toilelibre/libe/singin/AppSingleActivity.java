@@ -2,6 +2,8 @@ package org.toilelibre.libe.singin;
 
 import android.app.Activity;
 import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -11,13 +13,16 @@ import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.github.glomadrian.velocimeterlibrary.VelocimeterView;
@@ -36,6 +41,7 @@ import org.toilelibre.libe.soundtransform.model.exception.SoundTransformExceptio
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
 import org.toilelibre.libe.soundtransform.model.record.AmplitudeObserver;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -184,17 +190,23 @@ public class AppSingleActivity extends Activity {
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
+        final List<View> viewsToAnimate = new ArrayList<View>(this.sounds.size());
 
-        for (Sound sound : this.sounds) {
+        for (final Sound sound : this.sounds) {
             CardView cardView = (CardView) this.getLayoutInflater().inflate(R.layout.editor_channel, null);
             editorChannels.addView(cardView);
-            Animation animation = AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left);
-            cardView.startAnimation(animation);
+            viewsToAnimate.add(cardView);
             GraphView graphView = (GraphView)cardView.findViewById(R.id.graph2);
             graphView.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
             graphView.getGridLabelRenderer().setHorizontalLabelsVisible(false);
             graphView.getGridLabelRenderer().setVerticalLabelsVisible(false);
             graphView.addSeries(converter.convert(sound.getChannels()[0], Math.max(size.x, size.y)));
+            cardView.findViewById(R.id.sang_or_synthed).setOnClickListener(new OnClickListener () {
+                @Override
+                public void onClick (View v) {
+                    AppSingleActivity.this.chooseInstrumentPopup (sound);
+                }
+            });
         }
         this.recordAnotherSound.setOnClickListener (new OnClickListener () {
             @Override
@@ -219,6 +231,25 @@ public class AppSingleActivity extends Activity {
                 }
             }
         });
+
+        AppSingleActivity.this.handler.post(new Runnable() {
+            @Override
+            public void run() {
+                for (View oneCardView : viewsToAnimate) {
+                    oneCardView.startAnimation(AnimationUtils.loadAnimation(AppSingleActivity.this, android.R.anim.slide_in_left));
+                }
+
+            }
+        });
+    }
+
+    private void chooseInstrumentPopup(Sound sound) {
+        GridLayout gridLayout = (GridLayout) this.getLayoutInflater().inflate(R.layout.editor_channel, null);
+        PopupWindow popupWindow = new PopupWindow(gridLayout, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            popupWindow.setBackgroundDrawable(this.getDrawable(android.R.drawable.alert_light_frame));
+        }
+        popupWindow.setOutsideTouchable(true);
     }
 
     private void startTimerForSoundRecording () {

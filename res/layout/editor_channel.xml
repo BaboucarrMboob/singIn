@@ -23,6 +23,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/singer"
+            android:id="@+id/sang_or_synthed"
             android:contentDescription="@string/mute_channel"/>
         <ImageView
             android:layout_width="40dp"
