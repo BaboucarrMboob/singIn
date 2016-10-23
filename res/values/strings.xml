@@ -20,5 +20,6 @@
     <string name="play">Play</string>
     <string name="forward">Forward</string>
     <string name="mute_channel">toggle mute on this channel</string>
+    <string name="choose_an_instrument">Choose an instrument below</string>
 
 </resources>

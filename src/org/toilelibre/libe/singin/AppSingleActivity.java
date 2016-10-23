@@ -247,13 +247,12 @@ public class AppSingleActivity extends Activity {
     }
 
     private void chooseInstrumentPopup(View sourceView, Sound sound) {
-        GridLayout gridLayout = (GridLayout) this.getLayoutInflater().inflate(R.layout.editor_popup_instrument, null);
         MaryPopup.with(this)
+                .from(sourceView)
                 .cancellable(true)
                 .blackOverlayColor(Color.parseColor("#DD444444"))
                 .backgroundColor(Color.parseColor("#EFF4F5"))
-                .content(gridLayout)
-                .from(sourceView)
+                .content(this.getLayoutInflater().inflate(R.layout.editor_popup_instrument, null))
                 .show();
     }
 
