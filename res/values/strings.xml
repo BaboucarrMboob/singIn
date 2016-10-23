@@ -21,5 +21,6 @@
     <string name="forward">Forward</string>
     <string name="mute_channel">toggle mute on this channel</string>
     <string name="choose_an_instrument">Choose an instrument below</string>
+    <string name="pick_singer">Pick the singer to revert to your voice</string>
 
 </resources>

@@ -247,14 +247,18 @@ public class AppSingleActivity extends Activity {
     }
 
     private void chooseInstrumentPopup(View sourceView, Sound sound) {
-        MaryPopup.with(this)
+        View contentView = this.getLayoutInflater().inflate(R.layout.editor_popup_instrument, null);
+        MaryPopup instrumentPopup =
+                MaryPopup.with(this)
                 .from(sourceView)
                 .cancellable(true)
                 .blackOverlayColor(Color.parseColor("#DD444444"))
-                .backgroundColor(Color.parseColor("#EFF4F5"))
-                .content(this.getLayoutInflater().inflate(R.layout.editor_popup_instrument, null))
+                .backgroundColor(Color.parseColor("#CFD4D5"))
+                .content(contentView)
                 .center(true)
-                .show();
+                .draggable(true);
+        instrumentPopup.show();
+
     }
 
     private void startTimerForSoundRecording () {
