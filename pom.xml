@@ -13,6 +13,10 @@
 			<name>repositoryForVuMeter</name>
 			<url>http://dl.bintray.com/glomadrian/maven</url>
 		</repository>
+        <repository>
+            <id>jcenter.bintray.com</id>
+            <url>https://jcenter.bintray.com</url>
+        </repository>
 		<repository>
 		    <id>jitpack.io</id>
 		    <url>https://jitpack.io</url>
@@ -423,6 +427,49 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<dependency>
+            <groupId>com.meetic.marypopup</groupId>
+            <artifactId>marypopup</artifactId>
+            <version>1.0.0</version>
+            <type>aar</type>
+            <exclusions>
+                <exclusion>
+                    <artifactId>appcompat-v7</artifactId>
+                    <groupId>com.android.support</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>support-v4</artifactId>
+                    <groupId>com.android.support</groupId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.android.support</groupId>
+                    <artifactId>cardview-v7</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.meetic.dragueur</groupId>
+                    <artifactId>dragueur</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency><dependency>
+        <groupId>com.meetic.dragueur</groupId>
+        <artifactId>dragueur</artifactId>
+        <version>1.0.3</version>
+        <type>aar</type>
+        <exclusions>
+            <exclusion>
+                <artifactId>appcompat-v7</artifactId>
+                <groupId>com.android.support</groupId>
+            </exclusion>
+            <exclusion>
+                <artifactId>support-v4</artifactId>
+                <groupId>com.android.support</groupId>
+            </exclusion>
+            <exclusion>
+                <groupId>com.android.support</groupId>
+                <artifactId>cardview-v7</artifactId>
+            </exclusion>
+        </exclusions>
+    </dependency>
 	</dependencies>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

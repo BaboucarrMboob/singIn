@@ -1,6 +1,7 @@
 package org.toilelibre.libe.singin;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
@@ -11,6 +12,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -28,6 +30,7 @@ import android.widget.TextView;
 import com.github.glomadrian.velocimeterlibrary.VelocimeterView;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
+import com.meetic.marypopup.MaryPopup;
 import com.romainpiel.shimmer.Shimmer;
 import com.romainpiel.shimmer.ShimmerTextView;
 import com.skyfishjy.library.RippleBackground;
@@ -204,7 +207,7 @@ public class AppSingleActivity extends Activity {
             cardView.findViewById(R.id.sang_or_synthed).setOnClickListener(new OnClickListener () {
                 @Override
                 public void onClick (View v) {
-                    AppSingleActivity.this.chooseInstrumentPopup (sound);
+                    AppSingleActivity.this.chooseInstrumentPopup (v, sound);
                 }
             });
         }
@@ -243,13 +246,15 @@ public class AppSingleActivity extends Activity {
         });
     }
 
-    private void chooseInstrumentPopup(Sound sound) {
-        GridLayout gridLayout = (GridLayout) this.getLayoutInflater().inflate(R.layout.editor_channel, null);
-        PopupWindow popupWindow = new PopupWindow(gridLayout, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            popupWindow.setBackgroundDrawable(this.getDrawable(android.R.drawable.alert_light_frame));
-        }
-        popupWindow.setOutsideTouchable(true);
+    private void chooseInstrumentPopup(View sourceView, Sound sound) {
+        GridLayout gridLayout = (GridLayout) this.getLayoutInflater().inflate(R.layout.editor_popup_instrument, null);
+        MaryPopup.with(this)
+                .cancellable(true)
+                .blackOverlayColor(Color.parseColor("#DD444444"))
+                .backgroundColor(Color.parseColor("#EFF4F5"))
+                .content(gridLayout)
+                .from(sourceView)
+                .show();
     }
 
     private void startTimerForSoundRecording () {
