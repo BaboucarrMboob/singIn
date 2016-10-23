@@ -253,6 +253,7 @@ public class AppSingleActivity extends Activity {
                 .blackOverlayColor(Color.parseColor("#DD444444"))
                 .backgroundColor(Color.parseColor("#EFF4F5"))
                 .content(this.getLayoutInflater().inflate(R.layout.editor_popup_instrument, null))
+                .center(true)
                 .show();
     }
 
