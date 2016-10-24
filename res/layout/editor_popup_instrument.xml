@@ -33,16 +33,19 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.8"
-        android:numColumns="auto_fit">
+        android:numColumns="auto_fit"
+        android:id="@+id/instrument_popup_choice">
         <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_margin="10dp"
-            android:src="@drawable/singer"/>
+            android:src="@drawable/singer"
+            android:id="@+id/instrument_singer"/>
         <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_margin="10dp"
-            android:src="@drawable/piano"/>
+            android:src="@drawable/piano"
+            android:id="@+id/instrument_defaultpack_gpiano"/>
     </GridLayout>
 </LinearLayout>

@@ -107,6 +107,9 @@ public class AppSingleActivity extends Activity {
     @Bind (R.id.playSound)
     @Nullable
     ImageButton          playSoundButton;
+    @Bind(R.id.instrument_popup_choice)
+    @Nullable
+    GridLayout           instrumentPopupChoice;
 
     private final List<Sound> sounds = new LinkedList<Sound>();
     private final Object stopRecording = new Object ();
@@ -258,6 +261,17 @@ public class AppSingleActivity extends Activity {
                 .center(true)
                 .draggable(true);
         instrumentPopup.show();
+        ButterKnife.bind (this);
+        assert instrumentPopupChoice != null;
+        for (int childIndex = 0 ; childIndex < instrumentPopupChoice.getChildCount() ; childIndex++) {
+            View instrument = instrumentPopupChoice.getChildAt(childIndex);
+            instrument.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+        }
 
     }
 
