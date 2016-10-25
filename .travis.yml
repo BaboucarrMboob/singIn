@@ -32,12 +32,20 @@ jdk:
  - oraclejdk8
 
 script: 
+ - mkdir -p $HOME/.m2/repository/com/android/support/cardview-v7/23.4.0
  - cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/cardview-v7/23.4.0/* $HOME/.m2/repository/com/android/support/cardview-v7/23.4.0
+ - mkdir -p $HOME/.m2/repository/com/android/support/animated-vector-drawable/23.4.0
  - cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/animated-vector-drawable/23.4.0/* $HOME/.m2/repository/com/android/support/animated-vector-drawable/23.4.0
+ - mkdir -p $HOME/.m2/repository/com/android/support/support-vector-drawable/23.4.0
  - cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/support-vector-drawable/23.4.0/* $HOME/.m2/repository/com/android/support/support-vector-drawable/23.4.0
+ - mkdir -p $HOME/.m2/repository/com/android/support/support-annotations/23.4.0
  - cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/support-annotations/23.4.0/* $HOME/.m2/repository/com/android/support/support-annotations/23.4.0
+ - mkdir -p $HOME/.m2/repository/com/android/support/recyclerview-v7/23.4.0
  - cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/recyclerview-v7/23.4.0/* $HOME/.m2/repository/com/android/support/recyclerview-v7/23.4.0
+ - mkdir -p $HOME/.m2/repository/com/android/support/design/23.4.0
  - cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/design/23.4.0/* $HOME/.m2/repository/com/android/support/design/23.4.0
+ - mkdir -p $HOME/.m2/repository/com/android/support/support-v4/23.4.0
  - cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/support-v4/23.4.0/* $HOME/.m2/repository/com/android/support/support-v4/23.4.0
+ - mkdir -p $HOME/.m2/repository/com/android/support/appcompat-v7/23.4.0
  - cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/appcompat-v7/23.4.0/* $HOME/.m2/repository/com/android/support/appcompat-v7/23.4.0
  - mvn -B org.jacoco:jacoco-maven-plugin:prepare-agent test org.jacoco:jacoco-maven-plugin:report org.eluder.coveralls:coveralls-maven-plugin:report -DrepoToken=$COVERALLS_TOKEN
