@@ -13,13 +13,13 @@
 			<name>repositoryForVuMeter</name>
 			<url>http://dl.bintray.com/glomadrian/maven</url>
 		</repository>
-        <repository>
-            <id>jcenter.bintray.com</id>
-            <url>https://jcenter.bintray.com</url>
-        </repository>
 		<repository>
-		    <id>jitpack.io</id>
-		    <url>https://jitpack.io</url>
+			<id>jcenter.bintray.com</id>
+			<url>https://jcenter.bintray.com</url>
+		</repository>
+		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
 		</repository>
 	</repositories>
 	<build>
@@ -49,14 +49,14 @@
 						<platform>23</platform>
 					</sdk>
 					<sign>
-						<debug>both</debug>
+						<debug>false</debug>
 					</sign>
 					<emulator>
 						<avd>23</avd>
 						<wait>10000</wait>
 					</emulator>
 					<run>
-						<debug>true</debug>
+						<debug>false</debug>
 					</run>
 					<resourceDirectory>${basedir}/res</resourceDirectory>
 					<assetsDirectory>${basedir}/assets</assetsDirectory>
@@ -68,6 +68,14 @@
 					<excludeJarResources>
 						<excludeJarResource>.*\.jar$</excludeJarResource>
 					</excludeJarResources>
+					<zipalign>
+						<verbose>true</verbose>
+						<inputApk>${project.build.directory}/${project.build.finalName}.apk</inputApk>
+						<outputApk>${project.build.directory}/${project.build.finalName}-aligned.apk</outputApk>
+						<skip>false</skip>
+					</zipalign>
+					<apkDebug>false</apkDebug>
+					<release>true</release>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -77,7 +85,9 @@
 				<executions>
 					<execution>
 						<id>ldpi</id>
-						<goals><goal>rasterizer</goal></goals>
+						<goals>
+							<goal>rasterizer</goal>
+						</goals>
 						<phase>initialize</phase>
 						<configuration>
 							<destDir>${basedir}/res/drawable-ldpi</destDir>
@@ -99,7 +109,9 @@
 					</execution>
 					<execution>
 						<id>mdpi</id>
-						<goals><goal>rasterizer</goal></goals>
+						<goals>
+							<goal>rasterizer</goal>
+						</goals>
 						<phase>initialize</phase>
 						<configuration>
 							<destDir>${basedir}/res/drawable-mdpi</destDir>
@@ -121,7 +133,9 @@
 					</execution>
 					<execution>
 						<id>hdpi</id>
-						<goals><goal>rasterizer</goal></goals>
+						<goals>
+							<goal>rasterizer</goal>
+						</goals>
 						<phase>initialize</phase>
 						<configuration>
 							<destDir>${basedir}/res/drawable-hdpi</destDir>
@@ -143,7 +157,9 @@
 					</execution>
 					<execution>
 						<id>xhdpi</id>
-						<goals><goal>rasterizer</goal></goals>
+						<goals>
+							<goal>rasterizer</goal>
+						</goals>
 						<phase>initialize</phase>
 						<configuration>
 							<destDir>${basedir}/res/drawable-xhdpi</destDir>
@@ -165,7 +181,9 @@
 					</execution>
 					<execution>
 						<id>xxhdpi</id>
-						<goals><goal>rasterizer</goal></goals>
+						<goals>
+							<goal>rasterizer</goal>
+						</goals>
 						<phase>initialize</phase>
 						<configuration>
 							<destDir>${basedir}/res/drawable-xxhdpi</destDir>
@@ -222,6 +240,32 @@
 					</sourceDirectories>
 				</configuration>
 			</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jarsigner-plugin</artifactId>
+					<executions>
+						<execution>
+							<id>signing</id>
+							<goals>
+								<goal>sign</goal>
+								<goal>verify</goal>
+							</goals>
+							<phase>package</phase>
+							<inherited>true</inherited>
+							<configuration>
+								<archiveDirectory></archiveDirectory>
+								<includes>
+									<include>bin/*.apk</include>
+								</includes>
+								<keystore>../libe.keystore</keystore>
+								<keypass>${secret.keypass}</keypass>
+                				<storepass>${secret.storepass}</storepass>
+								<alias>libekeystore</alias>
+								<verbose>true</verbose>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
 		</plugins>
 		<pluginManagement>
 			<plugins>
@@ -412,9 +456,9 @@
 			</exclusions>
 		</dependency>
 		<dependency>
-	    	<groupId>com.github.ozodrukh</groupId>
-	    	<artifactId>CircularReveal</artifactId>
-	    	<version>1.3.1</version>
+			<groupId>com.github.ozodrukh</groupId>
+			<artifactId>CircularReveal</artifactId>
+			<version>1.3.1</version>
 			<type>aar</type>
 			<exclusions>
 				<exclusion>
@@ -428,50 +472,63 @@
 			</exclusions>
 		</dependency>
 		<dependency>
-            <groupId>com.meetic.marypopup</groupId>
-            <artifactId>marypopup</artifactId>
-            <version>1.0.0</version>
-            <type>aar</type>
-            <exclusions>
-                <exclusion>
-                    <artifactId>appcompat-v7</artifactId>
-                    <groupId>com.android.support</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>support-v4</artifactId>
-                    <groupId>com.android.support</groupId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.android.support</groupId>
-                    <artifactId>cardview-v7</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.meetic.dragueur</groupId>
-                    <artifactId>dragueur</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency><dependency>
-        <groupId>com.meetic.dragueur</groupId>
-        <artifactId>dragueur</artifactId>
-        <version>1.0.3</version>
-        <type>aar</type>
-        <exclusions>
-            <exclusion>
-                <artifactId>appcompat-v7</artifactId>
-                <groupId>com.android.support</groupId>
-            </exclusion>
-            <exclusion>
-                <artifactId>support-v4</artifactId>
-                <groupId>com.android.support</groupId>
-            </exclusion>
-            <exclusion>
-                <groupId>com.android.support</groupId>
-                <artifactId>cardview-v7</artifactId>
-            </exclusion>
-        </exclusions>
-    </dependency>
+			<groupId>com.meetic.marypopup</groupId>
+			<artifactId>marypopup</artifactId>
+			<version>1.0.0</version>
+			<type>aar</type>
+			<exclusions>
+				<exclusion>
+					<artifactId>appcompat-v7</artifactId>
+					<groupId>com.android.support</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>support-v4</artifactId>
+					<groupId>com.android.support</groupId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.android.support</groupId>
+					<artifactId>cardview-v7</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.meetic.dragueur</groupId>
+					<artifactId>dragueur</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.meetic.dragueur</groupId>
+			<artifactId>dragueur</artifactId>
+			<version>1.0.3</version>
+			<type>aar</type>
+			<exclusions>
+				<exclusion>
+					<artifactId>appcompat-v7</artifactId>
+					<groupId>com.android.support</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>support-v4</artifactId>
+					<groupId>com.android.support</groupId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.android.support</groupId>
+					<artifactId>cardview-v7</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 	</dependencies>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
+	<profiles>
+		<profile>
+			<id>publisher</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<android.publisher.google.email>366481881527-compute@developer.gserviceaccount.com</android.publisher.google.email>
+				<android.publisher.google.p12>../libe.p12</android.publisher.google.p12>
+			</properties>
+		</profile>
+	</profiles>
 </project>
