@@ -27,3 +27,6 @@ bin/*
 local.properties
 .gradle
 *.apk
+gen-external-apklibs
+.vscode/
+
