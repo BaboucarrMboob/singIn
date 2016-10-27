@@ -1,55 +1,49 @@
 sudo: false
-
 language: android
-
 android:
   components:
-    # Uncomment the lines below if you want to
-    # use the latest revision of Android SDK Tools
-    # - platform-tools
-    # - tools
-
-    # The BuildTools version used by your project
-    - build-tools-23.0.1
-
-    # The SDK version used to compile your project
-    - android-23
-
-    # Additional components
-    - extra-android-support
-    - extra-google-m2repository
-    - extra-android-m2repository
-
-    # Specify at least one system image,
-    # if you need to run emulator(s) during your tests
-    - sys-img-armeabi-v7a-android-23
-
+  - build-tools-23.0.1
+  - android-23
+  - extra-android-support
+  - extra-google-m2repository
+  - extra-android-m2repository
+  - sys-img-armeabi-v7a-android-23
 cache:
- directories:
- - $HOME/.m2/repository
-
+  directories:
+  - "$HOME/.m2/repository"
 jdk:
- - oraclejdk8
-
+- oraclejdk8
 before_install:
- - openssl aes-256-cbc -K $encrypted_23480f79020f_key -iv $encrypted_23480f79020f_iv -in libe.p12.enc -out ../libe.p12 -d
- - openssl aes-256-cbc -K $encrypted_23480f79020f_key -iv $encrypted_23480f79020f_iv -in libe.keystore.enc -out ../libe.keystore -d
-
-script: 
- - mkdir -p $HOME/.m2/repository/com/android/support/cardview-v7/23.4.0
- - cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/cardview-v7/23.4.0/* $HOME/.m2/repository/com/android/support/cardview-v7/23.4.0
- - mkdir -p $HOME/.m2/repository/com/android/support/animated-vector-drawable/23.4.0
- - cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/animated-vector-drawable/23.4.0/* $HOME/.m2/repository/com/android/support/animated-vector-drawable/23.4.0
- - mkdir -p $HOME/.m2/repository/com/android/support/support-vector-drawable/23.4.0
- - cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/support-vector-drawable/23.4.0/* $HOME/.m2/repository/com/android/support/support-vector-drawable/23.4.0
- - mkdir -p $HOME/.m2/repository/com/android/support/support-annotations/23.4.0
- - cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/support-annotations/23.4.0/* $HOME/.m2/repository/com/android/support/support-annotations/23.4.0
- - mkdir -p $HOME/.m2/repository/com/android/support/recyclerview-v7/23.4.0
- - cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/recyclerview-v7/23.4.0/* $HOME/.m2/repository/com/android/support/recyclerview-v7/23.4.0
- - mkdir -p $HOME/.m2/repository/com/android/support/design/23.4.0
- - cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/design/23.4.0/* $HOME/.m2/repository/com/android/support/design/23.4.0
- - mkdir -p $HOME/.m2/repository/com/android/support/support-v4/23.4.0
- - cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/support-v4/23.4.0/* $HOME/.m2/repository/com/android/support/support-v4/23.4.0
- - mkdir -p $HOME/.m2/repository/com/android/support/appcompat-v7/23.4.0
- - cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/appcompat-v7/23.4.0/* $HOME/.m2/repository/com/android/support/appcompat-v7/23.4.0
- - mvn -B org.jacoco:jacoco-maven-plugin:prepare-agent test org.jacoco:jacoco-maven-plugin:report org.eluder.coveralls:coveralls-maven-plugin:report -DrepoToken=$COVERALLS_TOKEN android:zipalign android:publish-apk -Ppublisher -Dsecret.storepass=$SECRET_STOREPASS -Dsecret.keypass=$SECRET_KEYPASS
+- openssl aes-256-cbc -K $encrypted_23480f79020f_key -iv $encrypted_23480f79020f_iv
+  -in libe.keystore.enc -out ../libe.keystore -d
+- openssl aes-256-cbc -K $encrypted_23480f79020f_key -iv $encrypted_23480f79020f_iv
+  -in libe.p12.enc -out ../libe.p12 -d
+script:
+- mkdir -p $HOME/.m2/repository/com/android/support/cardview-v7/23.4.0
+- cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/cardview-v7/23.4.0/*
+  $HOME/.m2/repository/com/android/support/cardview-v7/23.4.0
+- mkdir -p $HOME/.m2/repository/com/android/support/animated-vector-drawable/23.4.0
+- cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/animated-vector-drawable/23.4.0/*
+  $HOME/.m2/repository/com/android/support/animated-vector-drawable/23.4.0
+- mkdir -p $HOME/.m2/repository/com/android/support/support-vector-drawable/23.4.0
+- cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/support-vector-drawable/23.4.0/*
+  $HOME/.m2/repository/com/android/support/support-vector-drawable/23.4.0
+- mkdir -p $HOME/.m2/repository/com/android/support/support-annotations/23.4.0
+- cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/support-annotations/23.4.0/*
+  $HOME/.m2/repository/com/android/support/support-annotations/23.4.0
+- mkdir -p $HOME/.m2/repository/com/android/support/recyclerview-v7/23.4.0
+- cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/recyclerview-v7/23.4.0/*
+  $HOME/.m2/repository/com/android/support/recyclerview-v7/23.4.0
+- mkdir -p $HOME/.m2/repository/com/android/support/design/23.4.0
+- cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/design/23.4.0/*
+  $HOME/.m2/repository/com/android/support/design/23.4.0
+- mkdir -p $HOME/.m2/repository/com/android/support/support-v4/23.4.0
+- cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/support-v4/23.4.0/*
+  $HOME/.m2/repository/com/android/support/support-v4/23.4.0
+- mkdir -p $HOME/.m2/repository/com/android/support/appcompat-v7/23.4.0
+- cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/appcompat-v7/23.4.0/*
+  $HOME/.m2/repository/com/android/support/appcompat-v7/23.4.0
+- mvn -B org.jacoco:jacoco-maven-plugin:prepare-agent test org.jacoco:jacoco-maven-plugin:report
+  org.eluder.coveralls:coveralls-maven-plugin:report -DrepoToken=$COVERALLS_TOKEN
+  android:zipalign android:publish-apk -Ppublisher -Dsecret.storepass=$SECRET_STOREPASS
+  -Dsecret.keypass=$SECRET_KEYPASS
