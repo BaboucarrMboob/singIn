@@ -31,6 +31,10 @@ cache:
 jdk:
  - oraclejdk8
 
+before_install:
+ - openssl aes-256-cbc -K $encrypted_23480f79020f_key -iv $encrypted_23480f79020f_iv -in libe.p12.enc -out ../libe.p12 -d
+ - openssl aes-256-cbc -K $encrypted_23480f79020f_key -iv $encrypted_23480f79020f_iv -in libe.keystore.enc -out ../libe.keystore -d
+
 script: 
  - mkdir -p $HOME/.m2/repository/com/android/support/cardview-v7/23.4.0
  - cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/cardview-v7/23.4.0/* $HOME/.m2/repository/com/android/support/cardview-v7/23.4.0
@@ -48,6 +52,4 @@ script:
  - cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/support-v4/23.4.0/* $HOME/.m2/repository/com/android/support/support-v4/23.4.0
  - mkdir -p $HOME/.m2/repository/com/android/support/appcompat-v7/23.4.0
  - cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/appcompat-v7/23.4.0/* $HOME/.m2/repository/com/android/support/appcompat-v7/23.4.0
- - echo "$P12_BASE64" | base64 -d > ../libe.p12
- - echo "$KEYSTORE_BASE64" | base64 -d > ../libe.keystore
  - mvn -B org.jacoco:jacoco-maven-plugin:prepare-agent test org.jacoco:jacoco-maven-plugin:report org.eluder.coveralls:coveralls-maven-plugin:report -DrepoToken=$COVERALLS_TOKEN android:zipalign android:publish-apk -Ppublisher -Dsecret.storepass=$SECRET_STOREPASS -Dsecret.keypass=$SECRET_KEYPASS
