@@ -45,5 +45,5 @@ before_install:
 script:
 - mvn -B org.jacoco:jacoco-maven-plugin:prepare-agent test org.jacoco:jacoco-maven-plugin:report
   org.eluder.coveralls:coveralls-maven-plugin:report -DrepoToken=$COVERALLS_TOKEN install
-  android:zipalign android:publish-apk -Ppublisher -Dsecret.storepass=$SECRET_STOREPASS
-  -Dsecret.keypass=$SECRET_KEYPASS -Dandroidmanifest.version.code=$(expr $TRAVIS_BUILD_NUMBER - 116)
+  android:manifest-merger android:zipalign android:publish-apk -Ppublisher -Dsecret.storepass=$SECRET_STOREPASS
+  -Dsecret.keypass=$SECRET_KEYPASS -Dandroidmanifest.version.code=$(expr $TRAVIS_BUILD_NUMBER - 117)
