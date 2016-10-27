@@ -15,10 +15,9 @@ cache:
 jdk:
 - oraclejdk8
 before_install:
-- openssl aes-256-cbc -K $encrypted_23480f79020f_key -iv $encrypted_23480f79020f_iv
-  -in libe.keystore.enc -out ../libe.keystore -d
-- openssl aes-256-cbc -K $encrypted_23480f79020f_key -iv $encrypted_23480f79020f_iv
-  -in libe.p12.enc -out ../libe.p12 -d
+- openssl aes-256-cbc -K $encrypted_23480f79020f_key -iv $encrypted_23480f79020f_iv -in libe.b64.enc -out ../libe.b64 -d
+- cat ../libe.b64 | sed -e '/==/q' | base64 -d > ../libe.p12
+- cat ../libe.b64 | sed -e '1,/==/d' | base64 -d > ../libe.keystore
 script:
 - mkdir -p $HOME/.m2/repository/com/android/support/cardview-v7/23.4.0
 - cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/cardview-v7/23.4.0/*
