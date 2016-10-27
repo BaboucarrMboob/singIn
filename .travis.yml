@@ -10,6 +10,7 @@ android:
   - sys-img-armeabi-v7a-android-23
 cache:
   directories:
+  - /usr/local/android-sdk
   - "$HOME/.m2/repository"
 jdk:
 - oraclejdk8
