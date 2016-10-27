@@ -58,6 +58,7 @@
 					<run>
 						<debug>false</debug>
 					</run>
+					<manifestVersionCode>${androidmanifest.version.code}</manifestVersionCode>
 					<resourceDirectory>${basedir}/res</resourceDirectory>
 					<assetsDirectory>${basedir}/assets</assetsDirectory>
 					<androidManifestFile>${basedir}/AndroidManifest.xml</androidManifestFile>
