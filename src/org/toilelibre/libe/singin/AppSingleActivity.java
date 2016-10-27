@@ -3,8 +3,6 @@ package org.toilelibre.libe.singin;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Point;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -12,10 +10,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.Display;
-import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -24,7 +20,6 @@ import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.github.glomadrian.velocimeterlibrary.VelocimeterView;
@@ -42,6 +37,8 @@ import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
 import org.toilelibre.libe.soundtransform.model.exception.SoundTransformException;
 import org.toilelibre.libe.soundtransform.model.inputstream.StreamInfo;
+import org.toilelibre.libe.soundtransform.model.logging.LogEvent;
+import org.toilelibre.libe.soundtransform.model.logging.Observer;
 import org.toilelibre.libe.soundtransform.model.record.AmplitudeObserver;
 
 import java.util.ArrayList;
@@ -112,6 +109,7 @@ public class AppSingleActivity extends Activity {
     GridLayout           instrumentPopupChoice;
 
     private final List<Sound> sounds = new LinkedList<Sound>();
+    private final List<Sound> originalSounds = new LinkedList<Sound>();
     private final Object stopRecording = new Object ();
     private Object stopPlaying = null;
 
@@ -127,12 +125,29 @@ public class AppSingleActivity extends Activity {
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
         this.setContentView (R.layout.welcome_screen);
+        this.setLogObserver ();
         this.welcome();
+    }
+
+    private void setLogObserver() {
+        FluentClient.setDefaultObservers(new Observer() {
+            @Override
+            public void notify(LogEvent logEvent) {
+                Log.i("soundtransform", logEvent.getEventCode().name() + " " + logEvent.getMsg());
+            }
+        });
     }
 
     private void welcome() {
         Transitions.welcomeScene (this);
         ButterKnife.bind (this);
+        if (FluentClient.start().stopWithAPack ("defaultpack") == null) {
+            try {
+                FluentClient.start().withAPack ("defaultpack", this, R.raw.class, R.raw.defaultpack);
+            } catch (SoundTransformException e) {
+                Log.e("importpack", "problem", e);
+            }
+        }
         assert this.recordASound != null;
         assert this.openAProject != null;
         this.recordASound.setOnClickListener (new OnClickListener () {
@@ -166,6 +181,7 @@ public class AppSingleActivity extends Activity {
                 cancelRecordAnimation ();
                 if (hasStartedRecording) {
                     AppSingleActivity.this.sounds.remove(AppSingleActivity.this.sounds.size() - 1);
+                    AppSingleActivity.this.originalSounds.remove(AppSingleActivity.this.originalSounds.size() - 1);
                 }
                 if (AppSingleActivity.this.sounds.size() >= 1) {
                     displayEditor ();
@@ -249,9 +265,9 @@ public class AppSingleActivity extends Activity {
         });
     }
 
-    private void chooseInstrumentPopup(View sourceView, Sound sound) {
+    private void chooseInstrumentPopup(View sourceView, final Sound sound) {
         View contentView = this.getLayoutInflater().inflate(R.layout.editor_popup_instrument, null);
-        MaryPopup instrumentPopup =
+        final MaryPopup instrumentPopup =
                 MaryPopup.with(this)
                 .from(sourceView)
                 .cancellable(true)
@@ -264,11 +280,25 @@ public class AppSingleActivity extends Activity {
         ButterKnife.bind (this);
         assert instrumentPopupChoice != null;
         for (int childIndex = 0 ; childIndex < instrumentPopupChoice.getChildCount() ; childIndex++) {
-            View instrument = instrumentPopupChoice.getChildAt(childIndex);
+            final View instrument = instrumentPopupChoice.getChildAt(childIndex);
             instrument.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    String[] tag = instrument.getTag().toString().split("_");
+                    if (tag.length != 2) {
+                        AppSingleActivity.this.sounds.set(
+                                AppSingleActivity.this.sounds.indexOf(sound),
+                                AppSingleActivity.this.originalSounds.get(AppSingleActivity.this.sounds.indexOf(sound)));
+                        return;
+                    }
+                    try {
+                        AppSingleActivity.this.sounds.set(
+                                AppSingleActivity.this.sounds.indexOf(sound),
+                                FluentClient.start().withSound(sound).findLoudestFrequencies().shapeIntoSound(tag [0], tag[1], sound.getFormatInfo()).stopWithSound());
+                    } catch (SoundTransformException e) {
+                        Log.e("transform", "problem while shaping", e);
+                    }
+                    instrumentPopup.close(true);
                 }
             });
         }
@@ -331,7 +361,8 @@ public class AppSingleActivity extends Activity {
     private void startRecording () {
         try {
             hasStartedRecording = true;
-            this.sounds.add(FluentClient.start ().whileRecordingASound (new StreamInfo (1, -1, 2, 8000, false, true, null), this.stopRecording, new AmplitudeObserver () {
+            Sound newSound =
+                    FluentClient.start ().whileRecordingASound (new StreamInfo (1, -1, 2, 8000, false, true, null), this.stopRecording, new AmplitudeObserver () {
                 @Override
                 public void update (final float soundLevel) {
                     AppSingleActivity.this.handler.post (new Runnable () {
@@ -343,7 +374,9 @@ public class AppSingleActivity extends Activity {
                         }
                     });
                 }
-            }).stopWithSound ());
+            }).stopWithSound ();
+            this.originalSounds.add(newSound);
+            this.sounds.add(newSound);
             this.recordStartTimestamp = System.currentTimeMillis () - 1000;
             this.countdownTimer.scheduleAtFixedRate (new TimerTask () {
                 @Override

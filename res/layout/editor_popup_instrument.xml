@@ -40,12 +40,14 @@
             android:layout_height="40dp"
             android:layout_margin="10dp"
             android:src="@drawable/singer"
+            android:tag="null"
             android:id="@+id/instrument_singer"/>
         <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_margin="10dp"
             android:src="@drawable/piano"
+            android:tag="defaultpack_gpiano"
             android:id="@+id/instrument_defaultpack_gpiano"/>
     </GridLayout>
 </LinearLayout>
