@@ -47,4 +47,4 @@ script:
   org.eluder.coveralls:coveralls-maven-plugin:report -DrepoToken=$COVERALLS_TOKEN android:manifest-merger
   install android:zipalign android:publish-apk -Ppublisher -Dsecret.storepass=$SECRET_STOREPASS
   -Dsecret.keypass=$SECRET_KEYPASS -Dandroid.manifestMerger.versionCode=$(expr $TRAVIS_BUILD_NUMBER - 119)
-  -Dandroid.publisher.track=$(git rev-parse --abbrev-ref HEAD) -Ddestination.manifestFile=AndroidManifest.xml
+  -Dandroid.publisher.track=$TRAVIS_BRANCH -Ddestination.manifestFile=AndroidManifest.xml
