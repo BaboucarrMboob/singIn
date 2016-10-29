@@ -69,7 +69,7 @@
 						<excludeJarResource>.*\.jar$</excludeJarResource>
 					</excludeJarResources>
 					<zipalign>
-						<verbose>true</verbose>
+						<verbose>false</verbose>
 						<inputApk>${project.build.directory}/${project.build.finalName}.apk</inputApk>
 						<outputApk>${project.build.directory}/${project.build.finalName}-aligned.apk</outputApk>
 						<skip>false</skip>
@@ -259,9 +259,9 @@
 								</includes>
 								<keystore>../libe.keystore</keystore>
 								<keypass>${secret.keypass}</keypass>
-                				<storepass>${secret.storepass}</storepass>
+								<storepass>${secret.storepass}</storepass>
 								<alias>libekeystore</alias>
-								<verbose>true</verbose>
+								<verbose>false</verbose>
 							</configuration>
 						</execution>
 					</executions>
