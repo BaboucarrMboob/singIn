@@ -487,6 +487,6 @@ public class AppSingleActivity extends Activity {
         this.earAnimPicture.setVisibility (View.INVISIBLE);
         this.timerTextView.setVisibility (View.INVISIBLE);
         this.endOfRecordAction ();
-        this.earAnim.stopRippleAnimation ();
+        //this.earAnim.stopRippleAnimation ();
     }
 }

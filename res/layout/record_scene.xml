@@ -5,29 +5,13 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:gravity="center">
-    
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:gravity="center"
         android:orientation="vertical" >
-
-        <LinearLayout
-            android:id="@+id/record_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:orientation="horizontal" >
-
-            <org.toilelibre.libe.singin.text.TextView
-                android:id="@+id/ready_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ready"
-                android:textSize="40sp" />
-        </LinearLayout>
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -70,7 +54,7 @@
                 app:needle_color="@color/needle"
                 app:progress_blur_color="@color/external_progress"
                 app:units="DB" />
-            
+
             <org.toilelibre.libe.singin.text.TextView
                 android:id="@+id/timer_textview"
                 android:layout_width="wrap_content"
@@ -80,40 +64,6 @@
                 android:layout_gravity="center|bottom"
                 android:textColor="@color/countdown_color"/>
         </FrameLayout>
-
-        <LinearLayout
-            android:id="@+id/buttons"
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:gravity="bottom"
-            android:orientation="horizontal" >
-
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/btn_record_cancel_button"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:clickable="true"
-                android:gravity="start"
-                android:scaleType="centerCrop"
-                android:src="@drawable/back"
-                app:backgroundTint="@color/turquoise" />
-
-            <Space
-                android:layout_width="0dip"
-                android:layout_height="120dp"
-                android:layout_weight="1" />
-
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/btn_validate_record_button"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_gravity="end"
-                android:clickable="true"
-                android:gravity="end"
-                android:scaleType="centerCrop"
-                android:src="@drawable/thumb_up"
-                app:backgroundTint="@color/lightred" />
-        </LinearLayout>
     </LinearLayout>
 
     <com.romainpiel.shimmer.ShimmerTextView
@@ -127,8 +77,51 @@
         android:text="@string/countdown_text"
         android:textSize="200sp"
         android:layout_marginTop="-100sp"/>
-    
-    
+
+    <LinearLayout
+        android:id="@+id/record_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <org.toilelibre.libe.singin.text.TextView
+            android:id="@+id/ready_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ready"
+            android:textSize="40sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="bottom">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/btn_record_cancel_button"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:clickable="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/back"
+            app:backgroundTint="@color/lightred"
+            android:layout_gravity="end" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/btn_validate_record_button"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:clickable="true"
+            android:gravity="end"
+            android:scaleType="centerCrop"
+            android:src="@drawable/thumb_up"
+            app:backgroundTint="@color/turquoise"
+            android:layout_gravity="end" />
+    </LinearLayout>
+
     <io.codetail.widget.RevealFrameLayout
         android:id="@+id/reveal_record_frame_layout"
         android:layout_width="match_parent"
@@ -153,5 +146,5 @@
                 android:textSize="40sp" />
         </LinearLayout>
     </io.codetail.widget.RevealFrameLayout>
-    
+
 </FrameLayout>
