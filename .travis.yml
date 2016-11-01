@@ -48,7 +48,7 @@ before_install:
 - cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/appcompat-v7/20.0.0/*
   $HOME/.m2/repository/com/android/support/appcompat-v7/20.0.0/
 - mkdir -p $HOME/.m2/repository/com/android/support/appcompat-v7/22.2.0/
-- cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/appcompat-v7/20.0.0/*
+- cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/appcompat-v7/22.2.0/*
   $HOME/.m2/repository/com/android/support/appcompat-v7/22.2.0/
 script:
 - mvn -B org.jacoco:jacoco-maven-plugin:prepare-agent test org.jacoco:jacoco-maven-plugin:report
