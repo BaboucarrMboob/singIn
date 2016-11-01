@@ -42,6 +42,10 @@ before_install:
 - mkdir -p $HOME/.m2/repository/com/android/support/appcompat-v7/23.4.0
 - cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/appcompat-v7/23.4.0/*
   $HOME/.m2/repository/com/android/support/appcompat-v7/23.4.0
+install:
+  - git clone https://github.com/$TRAVIS_REPO_SLUG.git $TRAVIS_REPO_SLUG
+  - cd $TRAVIS_REPO_SLUG
+  - git checkout -qf $TRAVIS_COMMIT
 script:
 - mvn -B org.jacoco:jacoco-maven-plugin:prepare-agent test org.jacoco:jacoco-maven-plugin:report
   org.eluder.coveralls:coveralls-maven-plugin:report -DrepoToken=$COVERALLS_TOKEN android:manifest-merger
