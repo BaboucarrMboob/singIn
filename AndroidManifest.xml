@@ -27,6 +27,7 @@
         </activity>
         <service android:name="org.toilelibre.libe.singin.poc.DisplaySoundChannelService"/>
         <service android:name="org.toilelibre.libe.singin.poc.RecordAudioService"/>
+        <service android:name="org.toilelibre.libe.singin.services.ShapeSoundService"/>
     </application>
 
 </manifest>

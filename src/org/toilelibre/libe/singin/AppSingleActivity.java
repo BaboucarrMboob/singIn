@@ -1,12 +1,18 @@
 package org.toilelibre.libe.singin;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.Display;
@@ -32,6 +38,7 @@ import com.skyfishjy.library.RippleBackground;
 
 import org.toilelibre.libe.singin.poc.Sound2GraphSeries;
 import org.toilelibre.libe.singin.scenes.Transitions;
+import org.toilelibre.libe.singin.services.ShapeSoundService;
 import org.toilelibre.libe.singin.transition.BlinkAnimation;
 import org.toilelibre.libe.soundtransform.actions.fluent.FluentClient;
 import org.toilelibre.libe.soundtransform.model.converted.sound.Sound;
@@ -115,7 +122,7 @@ public class AppSingleActivity extends Activity {
 
     private Timer            recordTimer = null;
     private Timer            countdownTimer = null;
-    private Handler          handler   = null;
+    private Handler          handler = new Handler ();
     private Shimmer          shimmer;
     private long             recordStartTimestamp = 0;
     private boolean          hasStartedRecording = false;
@@ -134,6 +141,19 @@ public class AppSingleActivity extends Activity {
             @Override
             public void notify(LogEvent logEvent) {
                 Log.i("soundtransform", logEvent.getEventCode().name() + " " + logEvent.getMsg());
+            }
+        }, new Observer() {
+            @Override
+            public void notify(final LogEvent logEvent) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        //if (Arrays.asList("STARTING_IMPORT", "FINISHED_IMPORT","","").contains(logEvent.getEventCode().name())) {
+                            Snackbar.make(AppSingleActivity.this.findViewById(R.id.welcome_screen),
+                                    logEvent.getMsg(), Snackbar.LENGTH_SHORT).show();
+                        //}
+                    }
+                });
             }
         });
     }
@@ -291,13 +311,7 @@ public class AppSingleActivity extends Activity {
                                 AppSingleActivity.this.originalSounds.get(AppSingleActivity.this.sounds.indexOf(sound)));
                         return;
                     }
-                    try {
-                        AppSingleActivity.this.sounds.set(
-                                AppSingleActivity.this.sounds.indexOf(sound),
-                                FluentClient.start().withSound(sound).findLoudestFrequencies().shapeIntoSound(tag [0], tag[1], sound.getFormatInfo()).stopWithSound());
-                    } catch (SoundTransformException e) {
-                        Log.e("transform", "problem while shaping", e);
-                    }
+                    startShapingASound (sound, tag);
                     instrumentPopup.close(true);
                 }
             });
@@ -305,11 +319,32 @@ public class AppSingleActivity extends Activity {
 
     }
 
+    private void startShapingASound(final Sound sound, final String [] tag) {
+        final Intent intent = new Intent(this, ShapeSoundService.class);
+        final Bundle bundle = new Bundle();
+        bundle.putString("pack", tag [0]);
+        bundle.putString("instrument", tag[1]);
+        bundle.putSerializable("inputsound", sound);
+        intent.putExtras(bundle);
+        LocalBroadcastManager.getInstance(this).registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                int index = AppSingleActivity.this.sounds.indexOf(sound);
+                Sound result = (Sound) intent.getSerializableExtra("soundshaperesult");
+                if (AppSingleActivity.this.sounds.size() <= index || index == -1) {
+                    AppSingleActivity.this.sounds.add(result);
+                }else {
+                    AppSingleActivity.this.sounds.set(AppSingleActivity.this.sounds.indexOf(sound), result);
+                }
+            }
+        }, new IntentFilter("soundshaperesult"));
+        this.startService(intent);
+    }
+
     private void startTimerForSoundRecording () {
         this.cancelTimer ();
         this.countdownTimer = new Timer ();
         this.recordTimer = new Timer ();
-        this.handler = new Handler ();
         this.shimmer = new Shimmer ();
         assert this.timerTextView != null;
         this.timerTextView.setText (this.getText (R.string.zerozero));
