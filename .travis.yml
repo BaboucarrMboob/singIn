@@ -2,12 +2,11 @@ sudo: false
 language: android
 android:
   components:
+  - platform-tools
+  - tools
   - build-tools-25.0.0
   - android-25
-  - extra-android-support
-  - extra-google-m2repository
   - extra-android-m2repository
-  - sys-img-armeabi-v7a-android-25
 cache:
   directories:
   - /usr/local/android-sdk
