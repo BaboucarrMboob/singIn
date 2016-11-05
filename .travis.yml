@@ -2,12 +2,12 @@ sudo: false
 language: android
 android:
   components:
-  - build-tools-23.0.1
-  - android-23
+  - build-tools-25.0.0
+  - android-25
   - extra-android-support
   - extra-google-m2repository
   - extra-android-m2repository
-  - sys-img-armeabi-v7a-android-23
+  - sys-img-armeabi-v7a-android-25
 cache:
   directories:
   - /usr/local/android-sdk
@@ -20,36 +20,30 @@ before_install:
 - openssl aes-256-cbc -K $encrypted_23480f79020f_key -iv $encrypted_23480f79020f_iv -in libe.b64.enc -out ../libe.b64 -d
 - cat ../libe.b64 | sed -e '/==/q' | base64 -d > ../libe.p12
 - cat ../libe.b64 | sed -e '1,/==/d' | base64 -d > ../libe.keystore
-- mkdir -p $HOME/.m2/repository/com/android/support/cardview-v7/23.4.0
-- cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/cardview-v7/23.4.0/*
-  $HOME/.m2/repository/com/android/support/cardview-v7/23.4.0
-- mkdir -p $HOME/.m2/repository/com/android/support/animated-vector-drawable/23.4.0
-- cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/animated-vector-drawable/23.4.0/*
-  $HOME/.m2/repository/com/android/support/animated-vector-drawable/23.4.0
-- mkdir -p $HOME/.m2/repository/com/android/support/support-vector-drawable/23.4.0
-- cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/support-vector-drawable/23.4.0/*
-  $HOME/.m2/repository/com/android/support/support-vector-drawable/23.4.0
-- mkdir -p $HOME/.m2/repository/com/android/support/support-annotations/23.4.0
-- cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/support-annotations/23.4.0/*
-  $HOME/.m2/repository/com/android/support/support-annotations/23.4.0
-- mkdir -p $HOME/.m2/repository/com/android/support/recyclerview-v7/23.4.0
-- cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/recyclerview-v7/23.4.0/*
-  $HOME/.m2/repository/com/android/support/recyclerview-v7/23.4.0
-- mkdir -p $HOME/.m2/repository/com/android/support/design/23.4.0
-- cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/design/23.4.0/*
-  $HOME/.m2/repository/com/android/support/design/23.4.0
-- mkdir -p $HOME/.m2/repository/com/android/support/support-v4/23.4.0
-- cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/support-v4/23.4.0/*
-  $HOME/.m2/repository/com/android/support/support-v4/23.4.0
-- mkdir -p $HOME/.m2/repository/com/android/support/appcompat-v7/23.4.0
-- cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/appcompat-v7/23.4.0/*
-  $HOME/.m2/repository/com/android/support/appcompat-v7/23.4.0
-- mkdir -p $HOME/.m2/repository/com/android/support/appcompat-v7/20.0.0/
-- cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/appcompat-v7/20.0.0/*
-  $HOME/.m2/repository/com/android/support/appcompat-v7/20.0.0/
-- mkdir -p $HOME/.m2/repository/com/android/support/appcompat-v7/22.2.0/
-- cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/appcompat-v7/22.2.0/*
-  $HOME/.m2/repository/com/android/support/appcompat-v7/22.2.0/
+- mkdir -p $HOME/.m2/repository/com/android/support/cardview-v7/25.0.0
+- cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/cardview-v7/25.0.0/*
+  $HOME/.m2/repository/com/android/support/cardview-v7/25.0.0
+- mkdir -p $HOME/.m2/repository/com/android/support/animated-vector-drawable/25.0.0
+- cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/animated-vector-drawable/25.0.0/*
+  $HOME/.m2/repository/com/android/support/animated-vector-drawable/25.0.0
+- mkdir -p $HOME/.m2/repository/com/android/support/support-vector-drawable/25.0.0
+- cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/support-vector-drawable/25.0.0/*
+  $HOME/.m2/repository/com/android/support/support-vector-drawable/25.0.0
+- mkdir -p $HOME/.m2/repository/com/android/support/support-annotations/25.0.0
+- cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/support-annotations/25.0.0/*
+  $HOME/.m2/repository/com/android/support/support-annotations/25.0.0
+- mkdir -p $HOME/.m2/repository/com/android/support/recyclerview-v7/25.0.0
+- cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/recyclerview-v7/25.0.0/*
+  $HOME/.m2/repository/com/android/support/recyclerview-v7/25.0.0
+- mkdir -p $HOME/.m2/repository/com/android/support/design/25.0.0
+- cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/design/25.0.0/*
+  $HOME/.m2/repository/com/android/support/design/25.0.0
+- mkdir -p $HOME/.m2/repository/com/android/support/support-v4/25.0.0
+- cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/support-v4/25.0.0/*
+  $HOME/.m2/repository/com/android/support/support-v4/25.0.0
+- mkdir -p $HOME/.m2/repository/com/android/support/appcompat-v7/25.0.0
+- cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/appcompat-v7/25.0.0/*
+  $HOME/.m2/repository/com/android/support/appcompat-v7/25.0.0
 script:
 - mvn -B org.jacoco:jacoco-maven-plugin:prepare-agent test org.jacoco:jacoco-maven-plugin:report
   org.eluder.coveralls:coveralls-maven-plugin:report -DrepoToken=$COVERALLS_TOKEN android:manifest-merger
