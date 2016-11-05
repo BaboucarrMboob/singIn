@@ -44,6 +44,24 @@ before_install:
 - mkdir -p $HOME/.m2/repository/com/android/support/appcompat-v7/25.0.0
 - cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/appcompat-v7/25.0.0/*
   $HOME/.m2/repository/com/android/support/appcompat-v7/25.0.0
+- mkdir -p $HOME/.m2/repository/com/android/support/support-compat/25.0.0
+- cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/support-compat/25.0.0/*
+  $HOME/.m2/repository/com/android/support/support-compat/25.0.0
+- mkdir -p $HOME/.m2/repository/com/android/support/support-media-compat/25.0.0
+- cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/support-media-compat/25.0.0/*
+  $HOME/.m2/repository/com/android/support/support-media-compat/25.0.0
+- mkdir -p $HOME/.m2/repository/com/android/support/support-core-utils/25.0.0
+- cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/support-core-utils/25.0.0/*
+  $HOME/.m2/repository/com/android/support/support-core-utils/25.0.0
+- mkdir -p $HOME/.m2/repository/com/android/support/support-core-ui/25.0.0
+- cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/support-core-ui/25.0.0/*
+  $HOME/.m2/repository/com/android/support/support-core-ui/25.0.0
+- mkdir -p $HOME/.m2/repository/com/android/support/support-fragment/25.0.0
+- cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/support-fragment/25.0.0/*
+  $HOME/.m2/repository/com/android/support/support-fragment/25.0.0
+- mkdir -p $HOME/.m2/repository/com/android/support/transition/25.0.0
+- cp /usr/local/android-sdk/extras/android/m2repository/com/android/support/transition/25.0.0/*
+  $HOME/.m2/repository/com/android/support/transition/25.0.0
 script:
 - mvn -B org.jacoco:jacoco-maven-plugin:prepare-agent test org.jacoco:jacoco-maven-plugin:report
   org.eluder.coveralls:coveralls-maven-plugin:report -DrepoToken=$COVERALLS_TOKEN android:manifest-merger
