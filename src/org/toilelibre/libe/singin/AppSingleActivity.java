@@ -1,17 +1,23 @@
 package org.toilelibre.libe.singin;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.CardView;
 import android.util.Log;
@@ -189,8 +195,12 @@ public class AppSingleActivity extends Activity {
     }
 
     private void recordSound() {
+
+        if (!ensureAudioRecordingIsAllowed ())return;
+
         Transitions.recordScene (this);
         ButterKnife.bind (this);
+
         this.startTimerForSoundRecording ();
         landOnRecordSceneAnimation ();
         assert this.cancelRecord != null;
@@ -220,6 +230,20 @@ public class AppSingleActivity extends Activity {
                 endOfRecordingAnimationAndAfterRun(new Runnable() {@Override public void run() {displayEditor ();}});
             }
         });
+    }
+
+    private boolean ensureAudioRecordingIsAllowed() {
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED){
+            return true;
+        }
+
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
+            try {
+                ActivityCompat.requestPermissions(this, new String []{Manifest.permission.RECORD_AUDIO}, 0);
+            }catch (SecurityException se) {
+            }
+        }
+        return false;
     }
 
     private void displayEditor() {
@@ -342,6 +366,7 @@ public class AppSingleActivity extends Activity {
     }
 
     private void startTimerForSoundRecording () {
+
         this.cancelTimer ();
         this.countdownTimer = new Timer ();
         this.recordTimer = new Timer ();
@@ -394,6 +419,7 @@ public class AppSingleActivity extends Activity {
     }
 
     private void startRecording () {
+
         try {
             hasStartedRecording = true;
             Sound newSound =
