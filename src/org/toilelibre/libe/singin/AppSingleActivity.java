@@ -237,7 +237,7 @@ public class AppSingleActivity extends Activity {
             return true;
         }
 
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
+        if (Build.VERSION.SDK_INT >= 23) {
             try {
                 ActivityCompat.requestPermissions(this, new String []{Manifest.permission.RECORD_AUDIO}, 0);
             }catch (SecurityException se) {
