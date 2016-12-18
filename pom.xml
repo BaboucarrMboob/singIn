@@ -79,133 +79,6 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>net.trajano.mojo</groupId>
-				<artifactId>batik-maven-plugin</artifactId>
-				<version>1.0.1</version>
-				<executions>
-					<execution>
-						<id>ldpi</id>
-						<goals>
-							<goal>rasterizer</goal>
-						</goals>
-						<phase>initialize</phase>
-						<configuration>
-							<destDir>${basedir}/res/drawable-ldpi</destDir>
-							<mimeType>image/png</mimeType>
-							<svgResources>
-								<resources>
-									<directory>${basedir}/svg</directory>
-									<filtering>false</filtering>
-									<includes>
-										<include>**\/\*.svg</include>
-									</includes>
-									<excludes>
-									</excludes>
-								</resources>
-							</svgResources>
-							<maxHeight>32</maxHeight>
-							<maxHeight>32</maxHeight>
-						</configuration>
-					</execution>
-					<execution>
-						<id>mdpi</id>
-						<goals>
-							<goal>rasterizer</goal>
-						</goals>
-						<phase>initialize</phase>
-						<configuration>
-							<destDir>${basedir}/res/drawable-mdpi</destDir>
-							<mimeType>image/png</mimeType>
-							<svgResources>
-								<resources>
-									<directory>${basedir}/svg</directory>
-									<filtering>false</filtering>
-									<includes>
-										<include>**\/\*.svg</include>
-									</includes>
-									<excludes>
-									</excludes>
-								</resources>
-							</svgResources>
-							<maxHeight>64</maxHeight>
-							<maxHeight>64</maxHeight>
-						</configuration>
-					</execution>
-					<execution>
-						<id>hdpi</id>
-						<goals>
-							<goal>rasterizer</goal>
-						</goals>
-						<phase>initialize</phase>
-						<configuration>
-							<destDir>${basedir}/res/drawable-hdpi</destDir>
-							<mimeType>image/png</mimeType>
-							<svgResources>
-								<resources>
-									<directory>${basedir}/svg</directory>
-									<filtering>false</filtering>
-									<includes>
-										<include>**\/\*.svg</include>
-									</includes>
-									<excludes>
-									</excludes>
-								</resources>
-							</svgResources>
-							<maxHeight>128</maxHeight>
-							<maxHeight>128</maxHeight>
-						</configuration>
-					</execution>
-					<execution>
-						<id>xhdpi</id>
-						<goals>
-							<goal>rasterizer</goal>
-						</goals>
-						<phase>initialize</phase>
-						<configuration>
-							<destDir>${basedir}/res/drawable-xhdpi</destDir>
-							<mimeType>image/png</mimeType>
-							<svgResources>
-								<resources>
-									<directory>${basedir}/svg</directory>
-									<filtering>false</filtering>
-									<includes>
-										<include>**\/\*.svg</include>
-									</includes>
-									<excludes>
-									</excludes>
-								</resources>
-							</svgResources>
-							<maxHeight>256</maxHeight>
-							<maxHeight>256</maxHeight>
-						</configuration>
-					</execution>
-					<execution>
-						<id>xxhdpi</id>
-						<goals>
-							<goal>rasterizer</goal>
-						</goals>
-						<phase>initialize</phase>
-						<configuration>
-							<destDir>${basedir}/res/drawable-xxhdpi</destDir>
-							<mimeType>image/png</mimeType>
-							<svgResources>
-								<resources>
-									<directory>${basedir}/svg</directory>
-									<filtering>false</filtering>
-									<includes>
-										<include>**\/\*.svg</include>
-									</includes>
-									<excludes>
-									</excludes>
-								</resources>
-							</svgResources>
-							<maxHeight>512</maxHeight>
-							<maxHeight>512</maxHeight>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
 				<configuration>
@@ -426,7 +299,7 @@
 		<dependency>
 			<groupId>org.toile-libre.libe</groupId>
 			<artifactId>soundtransform</artifactId>
-			<version>1.0.22</version>
+			<version>1.0.23</version>
 			<type>aar</type>
 			<exclusions>
 				<exclusion>
