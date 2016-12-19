@@ -55,6 +55,7 @@ import org.toilelibre.libe.soundtransform.model.logging.Observer;
 import org.toilelibre.libe.soundtransform.model.record.AmplitudeObserver;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -149,15 +150,16 @@ public class AppSingleActivity extends Activity {
                 Log.i("soundtransform", logEvent.getEventCode().name() + " " + logEvent.getMsg());
             }
         }, new Observer() {
+            private final List<String> notDisplayedEvents = Arrays.asList("SOUND_INIT", "READ_START", "READ_END", "CONVERT_DONE", "CONVERT_INTO_JAVA_OBJECT");
             @Override
             public void notify(final LogEvent logEvent) {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        //if (Arrays.asList("STARTING_IMPORT", "FINISHED_IMPORT","","").contains(logEvent.getEventCode().name())) {
+                        if (!notDisplayedEvents.contains(logEvent.getEventCode().name())) {
                             Snackbar.make(AppSingleActivity.this.findViewById(R.id.welcome_screen),
                                     logEvent.getMsg(), Snackbar.LENGTH_SHORT).show();
-                        //}
+                        }
                     }
                 });
             }
